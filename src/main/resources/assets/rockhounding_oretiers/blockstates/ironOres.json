@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "type=magnetite": {"model" : "rockhounding_oretiers:ironOres_magnetite"},
+        "type=hematite": {"model" : "rockhounding_oretiers:ironOres_hematite"},
+        "type=goethite": {"model" : "rockhounding_oretiers:ironOres_goethite"},
+        "type=limonite": {"model" : "rockhounding_oretiers:ironOres_limonite"},
+        "type=siderite": {"model" : "rockhounding_oretiers:ironOres_siderite"},
+        "type=bog": {"model" : "rockhounding_oretiers:ironOres_bog"},
+        "type=taconite": {"model" : "rockhounding_oretiers:ironOres_taconite"},
+        "type=bif": {"model" : "rockhounding_oretiers:ironOres_bif"}
+    }
+}

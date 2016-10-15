@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=down":  { "model": "rockhounding_oretiers:coalRefiner"	},
+        "facing=up":    { "model": "rockhounding_oretiers:coalRefiner" 	},
+        "facing=south": { "model": "rockhounding_oretiers:coalRefiner", "y": 180},
+        "facing=north": { "model": "rockhounding_oretiers:coalRefiner" },
+        "facing=east":  { "model": "rockhounding_oretiers:coalRefiner", "y": 90 },
+        "facing=west":  { "model": "rockhounding_oretiers:coalRefiner", "y": 270  }
+    }
+}

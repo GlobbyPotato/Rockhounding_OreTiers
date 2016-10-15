@@ -1,0 +1,41 @@
+#### GENERAL ####
+itemGroup.rockhoundingTiers=Rockhounding: Ore Tiers
+
+#### ORE TIERS ####
+#machines
+tile.rockhounding_oretiers:peatDrier.name=Peat Drying Pallet
+tile.rockhounding_oretiers:coalRefiner.name=Basic Coal Refiner
+#containers
+container.peatDrier=Peat Drying Pallet
+container.coalRefiner=Basic Coal Refiner
+#ores
+tile.rockhounding_oretiers:coalOres.anthracite.name=Anthracite Coal Ore
+tile.rockhounding_oretiers:coalOres.bituminous.name=Bituminous Coal Ore
+tile.rockhounding_oretiers:coalOres.lignite.name=Lignite Coal Ore
+tile.rockhounding_oretiers:coalOres.peat.name=Peat Coal Ore
+tile.rockhounding_oretiers:ironOres.magnetite.name=Magnetite Ore
+tile.rockhounding_oretiers:ironOres.hematite.name=Hematite Ore
+tile.rockhounding_oretiers:ironOres.goethite.name=Goethite Ore
+tile.rockhounding_oretiers:ironOres.limonite.name=Limonite Ore
+tile.rockhounding_oretiers:ironOres.siderite.name=Siderite Ore
+tile.rockhounding_oretiers:ironOres.bog.name=Bog Iron Ore
+tile.rockhounding_oretiers:ironOres.taconite.name=Taconite Ore
+tile.rockhounding_oretiers:ironOres.bif.name=Banded Iron Ore
+#blocks
+tile.rockhounding_oretiers:seamFire.name=Smouldering Coal Deposit
+tile.rockhounding_oretiers:coalBlocks.anthracite.name=Anthracite Coal Block
+tile.rockhounding_oretiers:coalBlocks.bituminous.name=Bituminous Coal Block
+tile.rockhounding_oretiers:coalBlocks.lignite.name=Lignite Coal Block
+tile.rockhounding_oretiers:coalBlocks.peat.name=Peat Coal Block
+tile.rockhounding_oretiers:coalBlocks.charcoal.name=Charcoal Block
+#items
+item.rockhounding_oretiers:tiersItems.anthracite.name=Anthracite Coal
+item.rockhounding_oretiers:tiersItems.bituminous.name=Bituminous Coal
+item.rockhounding_oretiers:tiersItems.lignite.name=Lignite Coal
+item.rockhounding_oretiers:tiersItems.peat.name=Moist Peat Chunk
+item.rockhounding_oretiers:tiersItems.charcoal.name=Charcoal Lump
+item.rockhounding_oretiers:tiersItems.coalpellet.name=Coal Pellet
+item.rockhounding_oretiers:tiersItems.ironpellet.name=Iron Pellet
+item.rockhounding_oretiers:tiersItems.ironlump.name=Iron Lumps
+item.rockhounding_oretiers:tiersItems.drypeat.name=Dried Peat
+item.rockhounding_oretiers:tiersBook.name=Ore Tiers Guide

@@ -1,0 +1,10 @@
+{
+    "forge_marker": 1,
+	"defaults": {
+	"model": "rockhounding_oretiers:peatDrier"
+	},
+	"variants": {
+	"normal": [{}],
+	"inventory": [{}]
+	}
+}
