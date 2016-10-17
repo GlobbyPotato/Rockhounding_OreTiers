@@ -19,7 +19,7 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class TiersOresGenerator implements IWorldGenerator {
-// Coal Ores
+
 	public static int coalFrequency; public static int coalMinVein; public static int coalMaxVein;
 	public static int ironFrequency; public static int ironMinVein; public static int ironMaxVein;
 	Random rand = new Random();
@@ -38,7 +38,7 @@ public class TiersOresGenerator implements IWorldGenerator {
 	private void generateOverworld(World world, Random random, BlockPos pos) {
 		Biome biome = world.getBiomeGenForCoords(pos);
 
-		//COAL SPAWN
+	//Coal ores
 		if(!BiomeDictionary.isBiomeOfType(biome, Type.DEAD) && !BiomeDictionary.isBiomeOfType(biome, Type.SANDY)  && !BiomeDictionary.isBiomeOfType(biome, Type.OCEAN)){
 			addNewOre(ModContents.coalOres, 0,  world, random, pos, 16, 16, coalMinVein, coalMaxVein, coalFrequency, 15, 33, Blocks.STONE);//anthracite
 		}
@@ -58,15 +58,13 @@ public class TiersOresGenerator implements IWorldGenerator {
 			if(!BiomeDictionary.isBiomeOfType(biome, Type.OCEAN)){
 				addNewOre(Blocks.COAL_ORE, 0,  world, random, pos, 16, 16, coalMinVein, coalMaxVein, coalFrequency, 40, 70, Blocks.STONE);//sub
 				addNewOre(ModContents.coalOres, 1,  world, random, pos, 16, 16, coalMinVein, coalMaxVein, coalFrequency, 29, 44, Blocks.STONE);//bituminous
+				if(rand.nextInt(20) == 0){addNewOre(ModContents.seamFire, 0,  world, random, pos, 16, 16, (coalMaxVein-1)*3, coalMaxVein*3, 1, 40, 55, Blocks.STONE);//seam fire}
 			}
 		}
 
-		if(rand.nextInt(20) == 0){
-			addNewOre(ModContents.seamFire, 0,  world, random, pos, 16, 16, (coalMaxVein-1)*3, coalMaxVein*3, 1, 40, 55, Blocks.STONE);//seam fire
-		}
 
 
-	//IRON SPAWN
+	//Iron Ores
 		if(BiomeDictionary.isBiomeOfType(biome, Type.HOT)){
 			addNewOre(ModContents.ironOres, 1,  world, random, pos, 16, 16, ironMinVein, ironMaxVein, ironFrequency, 14, 34, Blocks.STONE);//hematite
 		}else{
@@ -103,7 +101,7 @@ public class TiersOresGenerator implements IWorldGenerator {
 			int y = minY + random.nextInt(maxY - minY);
 			int z = pos.getZ() + random.nextInt(maxZ);
 			BlockPos blockpos = new BlockPos(x, y, z);
-            IBlockState state = block.getStateFromMeta(metadata);
+            		IBlockState state = block.getStateFromMeta(metadata);
 			WorldGenMinable mine = new WorldGenMinable(state, coalVeinSize, BlockMatcher.forBlock(generateIn));
 			mine.generate(world, random, new BlockPos(x, y, z));
 		}
