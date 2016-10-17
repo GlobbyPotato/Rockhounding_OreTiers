@@ -106,5 +106,4 @@ public class TiersOresGenerator implements IWorldGenerator {
 			mine.generate(world, random, new BlockPos(x, y, z));
 		}
 	}
-
 }
