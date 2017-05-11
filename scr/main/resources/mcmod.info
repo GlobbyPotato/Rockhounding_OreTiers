@@ -1,0 +1,16 @@
+[
+{
+  "modid": "rockhounding_oretiers",
+  "name": "Rockhounding: Ore Tiers",
+  "description": "Turns vanilla coal and iron ores into tiers of them for a less cheaper and more challenging access to resources. Additional processes included.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["GlobbyPotato"],
+  "credits": "The Forge and FML guys. MrCrayfish for the Model Creator.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
