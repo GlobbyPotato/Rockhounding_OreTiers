@@ -7,11 +7,10 @@ import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityPeat
 
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
-public class ModTileEntity {
+public class ModRenderers {
 
-	public static void specoalRenders() {
+	public static void specialRenders() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPeatDrier.class, new RendererPeatDrier());		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCoalRefiner.class, new RendererCoalRefiner());		
 	}
-
 }

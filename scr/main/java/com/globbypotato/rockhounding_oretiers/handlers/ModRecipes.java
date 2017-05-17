@@ -138,8 +138,7 @@ public class ModRecipes {
 		for (Iterator<Map.Entry<ItemStack, ItemStack>> entries = recipes.entrySet().iterator(); entries.hasNext(); ){
 			Map.Entry<ItemStack,ItemStack> entry = entries.next();
 			ItemStack result = entry.getValue();
-			if(ItemStack.areItemStacksEqual(result, new ItemStack(Items.COAL, 1, 1) ) || 
-			  (ModConfig.enableBloomery && ItemStack.areItemStacksEqual(result, new ItemStack(Items.IRON_INGOT)) )){
+			if(ItemStack.areItemStacksEqual(result, new ItemStack(Items.COAL, 1, 1) )){
 				entries.remove();
 			}
 		}

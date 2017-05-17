@@ -1,3 +1,8 @@
+v1.23 changelog
+	Swapped default Goethite and Limonite bloom values to sort out some furnace recipe conflicts
+		Added a config value to set the Bloomery capacity
+		Fixed Lignite block accidentally taking the wrong burn power
+
 v1.22 changelog
 	Changed the working tool for Peat ore into shovel (Thanks Zygus42)
 	Minor fixes to JEI and guis

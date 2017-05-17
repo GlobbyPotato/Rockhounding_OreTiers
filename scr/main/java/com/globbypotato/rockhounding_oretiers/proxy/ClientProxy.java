@@ -1,7 +1,7 @@
 package com.globbypotato.rockhounding_oretiers.proxy;
 
 import com.globbypotato.rockhounding_oretiers.ModContents;
-import com.globbypotato.rockhounding_oretiers.handlers.ModTileEntity;
+import com.globbypotato.rockhounding_oretiers.handlers.ModRenderers;
 import com.globbypotato.rockhounding_oretiers.handlers.Reference;
 
 import net.minecraft.block.Block;
@@ -27,7 +27,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void init(FMLInitializationEvent e) {
 		super.init(e);
-		ModTileEntity.specoalRenders();
+		ModRenderers.specialRenders();
 	}
 
 	@Override

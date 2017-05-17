@@ -48,7 +48,7 @@ public class TileEntityBloomery extends TileEntityBase implements IFluidHandling
 	public TileEntityBloomery() {
 		super(3, 1, 1);
 
-		bloomTank = new FluidTank(Fluid.BUCKET_VOLUME * 5){
+		bloomTank = new FluidTank(Fluid.BUCKET_VOLUME + ModConfig.tankCapacity){
 			@Override  
 			public boolean canFillFluidType(FluidStack fluid){
 				return moltenHasRecipe(fluid);
@@ -150,7 +150,6 @@ public class TileEntityBloomery extends TileEntityBase implements IFluidHandling
 		if(worldObj.isRemote){
 			if (isCooking() != cooking) {
 				cooking = isCooking();
-	
 				worldObj.notifyBlockOfStateChange(pos, worldObj.getBlockState(pos).getBlock());
 				worldObj.markBlockRangeForRenderUpdate(pos, pos);
 			}

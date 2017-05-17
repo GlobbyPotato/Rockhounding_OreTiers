@@ -83,7 +83,6 @@ public class TileEntityPeatDrier extends TileEntityBase {
 		if(worldObj.isRemote){
 			if (isCooking() != cooking) {
 				cooking = isCooking();
-	
 				worldObj.notifyBlockOfStateChange(pos, worldObj.getBlockState(pos).getBlock());
 				worldObj.markBlockRangeForRenderUpdate(pos, pos);
 			}

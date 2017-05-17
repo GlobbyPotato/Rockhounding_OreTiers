@@ -33,6 +33,7 @@ public class ModConfig {
     public static int bloomingSpeed;
     public static int hammerUses;
     public static int baseSpeed;
+	public static int tankCapacity;
 
     public static boolean enableCoalTiers;
     public static boolean enableIronTiers;
@@ -107,13 +108,13 @@ public class ModConfig {
 		TiersGenerator.FREQUENCY_LIMONITE 		= config.get(IRON_LIMONITE, 	"Frequency",	9,		"Frequency of the ore. Zero to disable").getInt();
 		TiersGenerator.SIZE_MIN_LIMONITE 		= config.get(IRON_LIMONITE, 	"Min Size",		2,		"Min vein size").getInt();
 		TiersGenerator.SIZE_MAX_LIMONITE 		= config.get(IRON_LIMONITE, 	"Max Size",		9,		"Max vein size").getInt();
-		TiersGenerator.VALUE_LIMONITE 			= config.get(IRON_LIMONITE, 	"Bloom",		500,	"Bloom quantity").getInt();
+		TiersGenerator.VALUE_LIMONITE 			= config.get(IRON_LIMONITE, 	"Bloom",		450,	"Bloom quantity").getInt();
 
 		config.addCustomCategoryComment("Goethite", "Spawning of the Goethite Ore.");
 		TiersGenerator.FREQUENCY_GOETHITE 		= config.get(IRON_GOETHITE, 	"Frequency",	8,		"Frequency of the ore. Zero to disable").getInt();
 		TiersGenerator.SIZE_MIN_GOETHITE 		= config.get(IRON_GOETHITE, 	"Min Size",		5,		"Min vein size").getInt();
 		TiersGenerator.SIZE_MAX_GOETHITE 		= config.get(IRON_GOETHITE, 	"Max Size",		8,		"Max vein size").getInt();
-		TiersGenerator.VALUE_GOETHITE 			= config.get(IRON_GOETHITE, 	"Bloom",		450,	"Bloom quantity").getInt();
+		TiersGenerator.VALUE_GOETHITE 			= config.get(IRON_GOETHITE, 	"Bloom",		500,	"Bloom quantity").getInt();
 
 		config.addCustomCategoryComment("Siderite", "Spawning of the Siderite Ore.");
 		TiersGenerator.FREQUENCY_SIDERITE 		= config.get(IRON_SIDERITE, 	"Frequency",	8,		"Frequency of the ore. Zero to disable").getInt();
@@ -148,6 +149,7 @@ public class ModConfig {
 		hammerUses									= config.get(DEVICE_SETTINGS, 	"ForgeHammerUses",		150,	"Max uses for the Forge Hammer inside the Bloomery").getInt();
 		enableBloomery 								= config.get(DEVICE_SETTINGS, 	"EnableBloomery",		true,	"Enable the Bloomery smelting against furnace smelting. Lower production alert").getBoolean();
 		baseSpeed									= config.get(DEVICE_SETTINGS, 	"BaseRefiningSpeed",	3000,	"Base Speed for Coal Refiner and Peat Drier").getInt();
+		tankCapacity								= config.get(DEVICE_SETTINGS, 	"TankCapacity",			4000,	"Capacity of the Bloomery tank in mB. Will be increased by 1000mB by default").getInt();
 
 //GENERAL SETTINGS
 		config.addCustomCategoryComment(GENERAL_SETTINGS, "General settings of the mod.");
