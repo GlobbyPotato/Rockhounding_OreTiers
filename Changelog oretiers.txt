@@ -1,3 +1,8 @@
+v1.24 changelog
+	Fixed a potential issue with Bloomery custom recipes output
+	Uniformed a CrafTweaker key from "DryingRack" to "DryingPallet"
+	Minor fixes
+
 v1.23 changelog
 	Swapped default Goethite and Limonite bloom values to sort out some furnace recipe conflicts
 		Added a config value to set the Bloomery capacity

@@ -11,9 +11,9 @@ import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-@ZenClass("mods.rockhounding_oretiers.DryingRack")
+@ZenClass("mods.rockhounding_oretiers.DryingPallet")
 public class DryingRecipes {
-	private static String name = "Drying Rack";
+	private static String name = "Drying Pallet";
 
     @ZenMethod
     public static void add(IItemStack input, IItemStack output) {

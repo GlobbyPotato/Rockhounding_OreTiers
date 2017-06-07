@@ -288,9 +288,13 @@ public class TileEntityBloomery extends TileEntityBase implements IFluidHandling
 					private boolean isCorrectOutput(ItemStack stack) {
 						if(stack != null){
 							for(BloomeryRecipes recipe: ModRecipes.bloomeryRecipe){
-								if(recipe.getOutput() != null){
-									if(stack.isItemEqual(recipe.getOutput())){
-										return true;
+								if(bloomTank.getFluid() != null){
+									if(recipe.getMolten().isFluidEqual(bloomTank.getFluid())){
+										if(recipe.getOutput() != null){
+											if(stack.isItemEqual(recipe.getOutput())){
+												return true;
+											}
+										}
 									}
 								}
 							}

@@ -4,11 +4,11 @@
 //Parameters = input, output
 //input = the input itemstack
 //output = the output itemstack
-mods.rockhounding_oretiers.DryingRack.add(<minecraft:rotten_flesh>, <minecraft:leather>);
+mods.rockhounding_oretiers.DryingPallet.add(<minecraft:rotten_flesh>, <minecraft:leather>);
 
 //Parameters = input
 //input = the input itemstack
-mods.rockhounding_oretiers.DryingRack.remove(<rockhounding_oretiers:tiersItems:3>);
+mods.rockhounding_oretiers.DryingPallet.remove(<rockhounding_oretiers:tiersItems:3>);
 
 
 //----------------------------------
