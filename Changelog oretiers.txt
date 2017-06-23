@@ -1,3 +1,10 @@
+v1.25 changelog
+	All devices
+		Output items can be extracted from any side
+	Misc fixes
+		Enabled the Universal Bucket
+		Some code cleaning
+		
 v1.24 changelog
 	Fixed a potential issue with Bloomery custom recipes output
 	Uniformed a CrafTweaker key from "DryingRack" to "DryingPallet"
