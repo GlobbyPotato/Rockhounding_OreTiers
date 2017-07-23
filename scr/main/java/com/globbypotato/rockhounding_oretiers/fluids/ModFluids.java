@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import com.globbypotato.rockhounding_oretiers.handlers.Reference;
-import com.globbypotato.rockhounding_oretiers.items.BloomBucket;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -14,10 +13,8 @@ import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -25,7 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.Mod;
@@ -33,7 +29,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
 //Courtesy of Choonster, (MIT License) https://github.com/Choonster/TestMod3
-@SuppressWarnings("WeakerAccess")
 public class ModFluids {
 	/**
 	 * The fluids registered by this mod. Includes fluids that were already registered by another mod.
@@ -56,8 +51,6 @@ public class ModFluids {
 			}
 		}
 	);
-
-	public static Item bloomBucket;
 
 	/**
 	 * Create a {@link Fluid} and its {@link IFluidBlock}, or use the existing ones if a fluid has already been registered with the same name.
@@ -133,15 +126,6 @@ public class ModFluids {
 
 	private static void registerBucket(Fluid fluid) {
 		FluidRegistry.addBucketForFluid(fluid);
-	}
-
-	public static void loadBeakers(){
-		bloomBucket = new BloomBucket("bloomBucket", BLOOM.getBlock());
-	}
-
-	public static void registerFluidBeakers() {
-	    FluidContainerRegistry.registerFluidContainer(BLOOM, new ItemStack(bloomBucket), new ItemStack(Items.BUCKET));
-		BucketHandler.INSTANCE.registerFluid(BLOOM.getBlock(), bloomBucket);
 	}
 
 }

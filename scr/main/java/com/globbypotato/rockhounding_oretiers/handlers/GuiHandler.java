@@ -1,6 +1,5 @@
 package com.globbypotato.rockhounding_oretiers.handlers;
 
-import com.globbypotato.rockhounding_oretiers.ModContents;
 import com.globbypotato.rockhounding_oretiers.machines.container.ContainerBloomery;
 import com.globbypotato.rockhounding_oretiers.machines.container.ContainerCoalRefiner;
 import com.globbypotato.rockhounding_oretiers.machines.container.ContainerPeatDrier;
@@ -19,16 +18,20 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 
 public class GuiHandler implements IGuiHandler {
 
+    public static final int peatDrierID = 0;
+    public static final int coalRefinerID = 1;
+    public static final int bloomeryID = 2;
+
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity entity = world.getTileEntity(new BlockPos(x,y,z));
 		switch(ID) {
 			default: return null;
-			case ModContents.peatDrierID:
+			case peatDrierID:
 				if (entity != null && entity instanceof TileEntityPeatDrier){return new ContainerPeatDrier(player.inventory, (TileEntityPeatDrier) entity);}
-			case ModContents.coalRefinerID:
+			case coalRefinerID:
 				if (entity != null && entity instanceof TileEntityCoalRefiner){return new ContainerCoalRefiner(player.inventory, (TileEntityCoalRefiner) entity);}
-			case ModContents.bloomeryID:
+			case bloomeryID:
 				if (entity != null && entity instanceof TileEntityBloomery){return new ContainerBloomery(player.inventory, (TileEntityBloomery) entity);}
 		}
         return null;
@@ -39,11 +42,11 @@ public class GuiHandler implements IGuiHandler {
 		TileEntity entity = world.getTileEntity(new BlockPos(x,y,z));
 		switch(ID) {
 			default: return null;
-			case ModContents.peatDrierID:
+			case peatDrierID:
 				if (entity != null && entity instanceof TileEntityPeatDrier) {return new GuiPeatDrier(player.inventory, (TileEntityPeatDrier) entity);}
-			case ModContents.coalRefinerID:
+			case coalRefinerID:
 				if (entity != null && entity instanceof TileEntityCoalRefiner) {return new GuiCoalRefiner(player.inventory, (TileEntityCoalRefiner) entity);}
-			case ModContents.bloomeryID:
+			case bloomeryID:
 				if (entity != null && entity instanceof TileEntityBloomery) {return new GuiBloomery(player.inventory, (TileEntityBloomery) entity);}
 		}
         return null;

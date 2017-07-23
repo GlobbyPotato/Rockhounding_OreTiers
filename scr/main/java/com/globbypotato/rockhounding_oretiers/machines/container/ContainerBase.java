@@ -2,7 +2,7 @@ package com.globbypotato.rockhounding_oretiers.machines.container;
 
 import javax.annotation.Nullable;
 
-import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityBase;
+import com.globbypotato.rockhounding_core.machines.tileentity.TileEntityMachineInv;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -10,7 +10,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public abstract class ContainerBase<T extends TileEntityBase> extends Container {
+public abstract class ContainerBase<T extends TileEntityMachineInv> extends Container {
 
 	public T tile;
 

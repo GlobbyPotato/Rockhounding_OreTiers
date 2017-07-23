@@ -1,6 +1,7 @@
 package com.globbypotato.rockhounding_oretiers.handlers;
 
 import com.globbypotato.rockhounding_oretiers.machines.recipes.BloomeryRecipes;
+import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
@@ -11,13 +12,11 @@ public class GlobbyEventHandler {
 
 	@SubscribeEvent
 	public void handleTooltip(ItemTooltipEvent event){
-		if(ModConfig.enableBloomery){
-			ItemStack itemstack = event.getItemStack();
-			for(BloomeryRecipes recipe: ModRecipes.bloomeryRecipe){
-				if(recipe.getInput() != null && itemstack != null && ItemStack.areItemsEqual(recipe.getInput().copy(), itemstack)){
-					event.getToolTip().add(TextFormatting.DARK_GRAY + "Melts into: " + TextFormatting.GOLD + recipe.getMolten().amount + " mB of " + recipe.getMolten().getLocalizedName());
-					event.getToolTip().add(TextFormatting.DARK_GRAY + "Casts into: " + TextFormatting.WHITE + recipe.getOutput().getDisplayName());
-				}
+		ItemStack itemstack = event.getItemStack();
+		for(BloomeryRecipes recipe: MachineRecipes.bloomeryRecipe){
+			if(recipe.getInput() != null && itemstack != null && ItemStack.areItemsEqual(recipe.getInput().copy(), itemstack)){
+				event.getToolTip().add(TextFormatting.DARK_GRAY + "Melts into: " + TextFormatting.GOLD + recipe.getMolten().amount + " mB of " + recipe.getMolten().getLocalizedName());
+				event.getToolTip().add(TextFormatting.DARK_GRAY + "Casts into: " + TextFormatting.WHITE + recipe.getOutput().getDisplayName());
 			}
 		}
 	}

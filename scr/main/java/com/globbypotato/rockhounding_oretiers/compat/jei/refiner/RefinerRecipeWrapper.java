@@ -1,13 +1,12 @@
 package com.globbypotato.rockhounding_oretiers.compat.jei.refiner;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.globbypotato.rockhounding_oretiers.compat.RHRecipeWrapper;
-import com.globbypotato.rockhounding_oretiers.handlers.ModRecipes;
+import com.globbypotato.rockhounding_oretiers.compat.jei.RHRecipeWrapper;
+import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.RefinerRecipes;
 
 import mezz.jei.api.ingredients.IIngredients;
@@ -21,7 +20,7 @@ public class RefinerRecipeWrapper extends RHRecipeWrapper<RefinerRecipes> {
 
 	public static List<RefinerRecipeWrapper> getRecipes() {
 		List<RefinerRecipeWrapper> recipes = new ArrayList<>();
-		for (RefinerRecipes recipe : ModRecipes.refinerRecipe) {
+		for (RefinerRecipes recipe : MachineRecipes.refinerRecipe) {
 			recipes.add(new RefinerRecipeWrapper(recipe));
 		}
 		return recipes;

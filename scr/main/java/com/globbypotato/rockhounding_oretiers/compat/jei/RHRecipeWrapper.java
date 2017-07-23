@@ -1,4 +1,4 @@
-package com.globbypotato.rockhounding_oretiers.compat;
+package com.globbypotato.rockhounding_oretiers.compat.jei;
 
 import javax.annotation.Nonnull;
 

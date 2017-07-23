@@ -1,6 +1,7 @@
 package com.globbypotato.rockhounding_oretiers.proxy;
 
-import com.globbypotato.rockhounding_oretiers.ModContents;
+import com.globbypotato.rockhounding_oretiers.ModBlocks;
+import com.globbypotato.rockhounding_oretiers.ModItems;
 import com.globbypotato.rockhounding_oretiers.handlers.ModRenderers;
 import com.globbypotato.rockhounding_oretiers.handlers.Reference;
 
@@ -20,8 +21,8 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent e){
 		super.preInit(e);
-  		ModContents.initBlockClient();
-  		ModContents.initItemClient();
+  		ModBlocks.initClient();
+  		ModItems.initClient();
 	}
 
 	@Override

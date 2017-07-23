@@ -3,12 +3,12 @@ package com.globbypotato.rockhounding_oretiers.machines.gui;
 import java.util.Arrays;
 import java.util.List;
 
+import com.globbypotato.rockhounding_core.utils.RenderUtils;
+import com.globbypotato.rockhounding_core.utils.Translator;
 import com.globbypotato.rockhounding_oretiers.handlers.ModConfig;
 import com.globbypotato.rockhounding_oretiers.handlers.Reference;
 import com.globbypotato.rockhounding_oretiers.machines.container.ContainerBloomery;
 import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityBloomery;
-import com.globbypotato.rockhounding_oretiers.utils.RenderUtils;
-import com.globbypotato.rockhounding_oretiers.utils.Translator;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -19,12 +19,12 @@ public class GuiBloomery extends GuiBase{
 	private final TileEntityBloomery bloomery;
 	public static final int WIDTH = 176;
 	public static final int HEIGHT = 178;
-	public static final ResourceLocation TEXTURE =  new ResourceLocation(Reference.MODID + ":textures/gui/guibloomery.png");
+	public static final ResourceLocation TEXTURE_REF =  new ResourceLocation(Reference.MODID + ":textures/gui/guibloomery.png");
 
 	public GuiBloomery(InventoryPlayer playerInv, TileEntityBloomery tile){
 		super(tile,new ContainerBloomery(playerInv, tile));
 		this.playerInventory = playerInv;
-		BASE_TEXTURE = TEXTURE;
+		TEXTURE = TEXTURE_REF;
 		this.bloomery = tile;
 		this.xSize = WIDTH;
 		this.ySize = HEIGHT;

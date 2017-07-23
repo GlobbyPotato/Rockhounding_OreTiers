@@ -2,8 +2,8 @@ package com.globbypotato.rockhounding_oretiers.compat.jei.drier;
 
 import javax.annotation.Nonnull;
 
-import com.globbypotato.rockhounding_oretiers.compat.RHRecipeCategory;
-import com.globbypotato.rockhounding_oretiers.compat.RHRecipeUID;
+import com.globbypotato.rockhounding_oretiers.compat.jei.RHRecipeCategory;
+import com.globbypotato.rockhounding_oretiers.compat.jei.RHRecipeUID;
 import com.globbypotato.rockhounding_oretiers.machines.gui.GuiPeatDrier;
 
 import mezz.jei.api.IGuiHelper;
@@ -18,7 +18,7 @@ public class DrierRecipeCategory extends RHRecipeCategory {
 	private static final int INPUT_SLOT = 1;
 	private static final int OUTPUT_SLOT = 2;
 
-	private final static ResourceLocation guiTexture = GuiPeatDrier.TEXTURE;
+	private final static ResourceLocation guiTexture = GuiPeatDrier.TEXTURE_REF;
 
 	public DrierRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper.createDrawable(guiTexture, 35, 15, 105, 60), "jei.drier.name");

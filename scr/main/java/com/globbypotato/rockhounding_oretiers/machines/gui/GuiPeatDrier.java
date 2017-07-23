@@ -1,9 +1,9 @@
 package com.globbypotato.rockhounding_oretiers.machines.gui;
 
+import com.globbypotato.rockhounding_core.utils.Translator;
 import com.globbypotato.rockhounding_oretiers.handlers.Reference;
 import com.globbypotato.rockhounding_oretiers.machines.container.ContainerPeatDrier;
 import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityPeatDrier;
-import com.globbypotato.rockhounding_oretiers.utils.Translator;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -13,12 +13,12 @@ public class GuiPeatDrier extends GuiBase{
 	private final TileEntityPeatDrier peatDrier;
 	public static final int WIDTH = 176;
 	public static final int HEIGHT = 178;
-	public static final ResourceLocation TEXTURE =  new ResourceLocation(Reference.MODID + ":textures/gui/guipeatdrier.png");
+	public static final ResourceLocation TEXTURE_REF =  new ResourceLocation(Reference.MODID + ":textures/gui/guipeatdrier.png");
 
 	public GuiPeatDrier(InventoryPlayer playerInv, TileEntityPeatDrier tile){
 		super(tile,new ContainerPeatDrier(playerInv, tile));
 		this.playerInventory = playerInv;
-		BASE_TEXTURE = TEXTURE;
+		TEXTURE = TEXTURE_REF;
 		this.peatDrier = tile;
 		this.xSize = WIDTH;
 		this.ySize = HEIGHT;

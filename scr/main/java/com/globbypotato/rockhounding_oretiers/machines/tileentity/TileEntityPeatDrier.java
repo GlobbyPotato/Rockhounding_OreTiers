@@ -2,17 +2,21 @@ package com.globbypotato.rockhounding_oretiers.machines.tileentity;
 
 import java.util.ArrayList;
 
+import com.globbypotato.rockhounding_core.machines.tileentity.MachineStackHandler;
+import com.globbypotato.rockhounding_core.machines.tileentity.TileEntityMachineEnergy;
+import com.globbypotato.rockhounding_core.machines.tileentity.WrappedItemHandler;
+import com.globbypotato.rockhounding_core.machines.tileentity.WrappedItemHandler.WriteMode;
+import com.globbypotato.rockhounding_core.utils.Utils;
 import com.globbypotato.rockhounding_oretiers.handlers.ModConfig;
-import com.globbypotato.rockhounding_oretiers.handlers.ModRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.gui.GuiPeatDrier;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.DrierRecipes;
-import com.globbypotato.rockhounding_oretiers.machines.tileentity.WrappedItemHandler.WriteMode;
-import com.globbypotato.rockhounding_oretiers.utils.Utils;
+import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class TileEntityPeatDrier extends TileEntityBase {
+public class TileEntityPeatDrier extends TileEntityMachineEnergy {
+	private boolean cooking;
 
 	public TileEntityPeatDrier() {
 		super(1, 1, 0);
@@ -26,7 +30,7 @@ public class TileEntityPeatDrier extends TileEntityBase {
 				return insertingStack;
 			}
 		};
-		automationInput = new WrappedItemHandler(input,WriteMode.IN_OUT);
+		automationInput = new WrappedItemHandler(input, WriteMode.IN);
 		this.markDirtyClient();
 	}
 
@@ -46,14 +50,14 @@ public class TileEntityPeatDrier extends TileEntityBase {
 
 	//-------------- CUSTOM ---------------- 
 	public boolean hasRecipe(ItemStack stack){
-		return ModRecipes.drierRecipe.stream().anyMatch(
+		return MachineRecipes.drierRecipe.stream().anyMatch(
 				recipe -> stack != null && recipe.getInput() != null && stack.isItemEqual(recipe.getInput()));
 	}
 
 	private boolean isValidOredict(ItemStack stack) {
 		if(stack != null){
 			ArrayList<Integer> inputOreIDs = Utils.intArrayToList(OreDictionary.getOreIDs(stack));
-			for(DrierRecipes recipe: ModRecipes.drierRecipe){
+			for(DrierRecipes recipe: MachineRecipes.drierRecipe){
 				ArrayList<Integer> recipeOreIDs = Utils.intArrayToList(OreDictionary.getOreIDs(recipe.getInput()));
 				for(Integer oreID: recipeOreIDs){
 					if(inputOreIDs.contains(oreID)) return true;
@@ -65,7 +69,7 @@ public class TileEntityPeatDrier extends TileEntityBase {
 
 	public ItemStack getRecipeOutput(ItemStack inputStack){
 		if(inputStack != null){
-			for(DrierRecipes recipe: ModRecipes.drierRecipe){
+			for(DrierRecipes recipe: MachineRecipes.drierRecipe){
 				if(inputStack.isItemEqual(recipe.getInput())){
 					return recipe.getOutput();
 				}
@@ -94,15 +98,17 @@ public class TileEntityPeatDrier extends TileEntityBase {
 	//-------------- PROCESS ---------------- 
 	@Override
 	public void update() {
-		if(canRefine()){
-            this.cookTime++;
-			if(cookTime >= getCookTime()) { 
-				cookTime = 0; 
-				refine(); 
-				this.markDirtyClient();
+		if(!worldObj.isRemote){
+			if(canRefine()){
+	            this.cookTime++;
+				if(cookTime >= getCookTime()) { 
+					cookTime = 0; 
+					refine(); 
+				}
+			}else{
+				cookTime = 0;
 			}
-		}else{
-			cookTime = 0;
+			this.markDirtyClient();
 		}
 		burnState();
 	}

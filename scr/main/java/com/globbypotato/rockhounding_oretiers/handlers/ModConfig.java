@@ -37,8 +37,6 @@ public class ModConfig {
 
     public static boolean enableCoalTiers;
     public static boolean enableIronTiers;
-    public static boolean enableBloomery;
-    public static boolean listAllCoals;
 
 	public static boolean AROMA_ENABLER;
 	public static int AROMA_ID;
@@ -147,7 +145,6 @@ public class ModConfig {
 		bloomingSpeed								= config.get(DEVICE_SETTINGS, 	"BloomerySpeed",		200,	"Ticks required to cast an iron Ingot").getInt();
 		TileEntityBloomery.consumedBloom			= config.get(DEVICE_SETTINGS, 	"ConsumedMolten",		500,	"How many millibuckets of molten material are consumed to cast the output").getInt();
 		hammerUses									= config.get(DEVICE_SETTINGS, 	"ForgeHammerUses",		150,	"Max uses for the Forge Hammer inside the Bloomery").getInt();
-		enableBloomery 								= config.get(DEVICE_SETTINGS, 	"EnableBloomery",		true,	"Enable the Bloomery smelting against furnace smelting. Lower production alert").getBoolean();
 		baseSpeed									= config.get(DEVICE_SETTINGS, 	"BaseRefiningSpeed",	3000,	"Base Speed for Coal Refiner and Peat Drier").getInt();
 		tankCapacity								= config.get(DEVICE_SETTINGS, 	"TankCapacity",			4000,	"Capacity of the Bloomery tank in mB. Will be increased by 1000mB by default").getInt();
 
@@ -155,7 +152,6 @@ public class ModConfig {
 		config.addCustomCategoryComment(GENERAL_SETTINGS, "General settings of the mod.");
 		enableCoalTiers 							= config.get(GENERAL_SETTINGS, 	"EnableCoalTiers",		true,	"General enabler for Coal Tiers").getBoolean();
 		enableIronTiers 							= config.get(GENERAL_SETTINGS, 	"EnableIronTiers",		true,	"General enabler for Iron Tiers").getBoolean();
-		listAllCoals 								= config.get(GENERAL_SETTINGS, 	"ListAllCoals",			false,	"Unlocks the oredict entry 'listAllcoal' to include all the coal tipes").getBoolean();
 
 //DIMENSION SETTINGS
 		config.addCustomCategoryComment(DIMENSION_SETTINGS, "Parameters about dimensions. For Built-In dimensions, parameters should match those in the original mods. Additional dimensions should be listed in the array");

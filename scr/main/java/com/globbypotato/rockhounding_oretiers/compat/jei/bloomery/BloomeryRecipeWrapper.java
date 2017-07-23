@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.globbypotato.rockhounding_oretiers.compat.RHRecipeWrapper;
-import com.globbypotato.rockhounding_oretiers.handlers.ModRecipes;
+import com.globbypotato.rockhounding_oretiers.compat.jei.RHRecipeWrapper;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.BloomeryRecipes;
+import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
@@ -21,7 +21,7 @@ public class BloomeryRecipeWrapper extends RHRecipeWrapper<BloomeryRecipes> {
 
 	public static List<BloomeryRecipeWrapper> getRecipes() {
 		List<BloomeryRecipeWrapper> recipes = new ArrayList<>();
-		for (BloomeryRecipes recipe : ModRecipes.bloomeryRecipe) {
+		for (BloomeryRecipes recipe : MachineRecipes.bloomeryRecipe) {
 			recipes.add(new BloomeryRecipeWrapper(recipe));
 		}
 		return recipes;

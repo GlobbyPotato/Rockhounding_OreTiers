@@ -2,9 +2,9 @@ package com.globbypotato.rockhounding_oretiers.utils;
 
 import java.util.List;
 
-import com.globbypotato.rockhounding_oretiers.handlers.ModRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.BloomeryRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.DrierRecipes;
+import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.RefinerRecipes;
 
 import net.minecraft.item.ItemStack;
@@ -37,9 +37,9 @@ public class IMCUtils {
 		        			casted = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
 		        		}
 		        		if(casted != null){
-		        			for(int x = 0; x < ModRecipes.bloomeryRecipe.size(); x++){
-		        				if(ModRecipes.bloomeryRecipe.get(x).getInput().isItemEqual(casted)){
-		        					ModRecipes.bloomeryRecipe.remove(x);
+		        			for(int x = 0; x < MachineRecipes.bloomeryRecipe.size(); x++){
+		        				if(MachineRecipes.bloomeryRecipe.get(x).getInput().isItemEqual(casted)){
+		        					MachineRecipes.bloomeryRecipe.remove(x);
 		        				}
 		        			}
 		        		}
@@ -48,9 +48,9 @@ public class IMCUtils {
 		        			input = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
 		        		}
 		        		if(input != null){
-		        			for(int x = 0; x < ModRecipes.refinerRecipe.size(); x++){
-		        				if(ModRecipes.refinerRecipe.get(x).getInput().isItemEqual(input)){
-		        					ModRecipes.refinerRecipe.remove(x);
+		        			for(int x = 0; x < MachineRecipes.refinerRecipe.size(); x++){
+		        				if(MachineRecipes.refinerRecipe.get(x).getInput().isItemEqual(input)){
+		        					MachineRecipes.refinerRecipe.remove(x);
 		        				}
 		        			}
 		        		}
@@ -59,9 +59,9 @@ public class IMCUtils {
 		        			input = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
 		        		}
 		        		if(input != null){
-		        			for(int x = 0; x < ModRecipes.drierRecipe.size(); x++){
-		        				if(ModRecipes.drierRecipe.get(x).getInput().isItemEqual(input)){
-		        					ModRecipes.drierRecipe.remove(x);
+		        			for(int x = 0; x < MachineRecipes.drierRecipe.size(); x++){
+		        				if(MachineRecipes.drierRecipe.get(x).getInput().isItemEqual(input)){
+		        					MachineRecipes.drierRecipe.remove(x);
 		        				}
 		        			}
 		        		}
@@ -80,7 +80,7 @@ public class IMCUtils {
 		        			output = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output"));
 		        		}
 		        		if(input != null && molten != null && output != null){
-		        			ModRecipes.bloomeryRecipe.add(new BloomeryRecipes(input, molten, output));
+		        			MachineRecipes.bloomeryRecipe.add(new BloomeryRecipes(input, molten, output));
 		        		}
 		    		}else if(message.key.equalsIgnoreCase(REFINERY_KEY)){
 		        		if(tag.hasKey("Input")){
@@ -90,7 +90,7 @@ public class IMCUtils {
 		        			output = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output"));
 		        		}
 		        		if(input != null && output != null){
-		        			ModRecipes.refinerRecipe.add(new RefinerRecipes(input, output));
+		        			MachineRecipes.refinerRecipe.add(new RefinerRecipes(input, output));
 		        		}
 		    		}else if(message.key.equalsIgnoreCase(PALLET_KEY)){
 		        		if(tag.hasKey("Input")){
@@ -100,7 +100,7 @@ public class IMCUtils {
 		        			output = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output"));
 		        		}
 		        		if(input != null && output != null){
-		        			ModRecipes.drierRecipe.add(new DrierRecipes(input, output));
+		        			MachineRecipes.drierRecipe.add(new DrierRecipes(input, output));
 		        		}
 					}
 				}catch (Exception e){

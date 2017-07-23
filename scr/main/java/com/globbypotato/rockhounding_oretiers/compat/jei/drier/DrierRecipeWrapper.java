@@ -1,14 +1,13 @@
 package com.globbypotato.rockhounding_oretiers.compat.jei.drier;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.globbypotato.rockhounding_oretiers.compat.RHRecipeWrapper;
-import com.globbypotato.rockhounding_oretiers.handlers.ModRecipes;
+import com.globbypotato.rockhounding_oretiers.compat.jei.RHRecipeWrapper;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.DrierRecipes;
+import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
@@ -21,7 +20,7 @@ public class DrierRecipeWrapper extends RHRecipeWrapper<DrierRecipes> {
 
 	public static List<DrierRecipeWrapper> getRecipes() {
 		List<DrierRecipeWrapper> recipes = new ArrayList<>();
-		for (DrierRecipes recipe : ModRecipes.drierRecipe) {
+		for (DrierRecipes recipe : MachineRecipes.drierRecipe) {
 			recipes.add(new DrierRecipeWrapper(recipe));
 		}
 		return recipes;

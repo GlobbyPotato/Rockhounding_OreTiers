@@ -1,3 +1,15 @@
+v1.28 changelog
+	Rockhounding core updated to v1.02
+	Removed obsolete items (old method with iron lumps and pellets). Dried Peat shifted its itemDamage() by this
+	Minor fixes, cleaning and maintenance
+
+v1.27 changelog
+	Minor tweaks
+		Sync to latest Core
+		Since version 1.26 it requires the Rockhounding Core which contains shared classes by all the Rockhounding modules.
+
+Fixed tile entities registration (existing machines may may suffer a slot cleaning)
+
 1.26 changelog
 	Bloomery
 		Lava can be piped in as fuel and lava buckets used on it

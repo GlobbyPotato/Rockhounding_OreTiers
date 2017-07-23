@@ -10,7 +10,6 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
-
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -19,12 +18,11 @@ archivesBaseName = "rockhounding_oretiers"
 version = "${version_mc}-${version_mod}"
 
 minecraft {
-    version = "1.10.2-12.18.3.2297"
-    runDir = "run"
-	replace '${version}', project.version
+    version = "1.10.2-12.18.3.2316"
     runDir = "run"
     mappings = "snapshot_20161111"
     makeObfSourceJar = false
+	replace '${version_mod}', project.version
 }
 
 repositories {
@@ -40,6 +38,7 @@ repositories {
 dependencies {
     deobfCompile "mezz.jei:jei_${version_mc}:${version_jei}"
     deobfCompile "MineTweaker3:MineTweaker3-MC1102-Main:${version_ct}"
+	compile files("lib/rockhounding_core-1.10.2-1.02.jar")
 }
 
 processResources

@@ -1,9 +1,9 @@
 package com.globbypotato.rockhounding_oretiers.machines.gui;
 
+import com.globbypotato.rockhounding_core.utils.Translator;
 import com.globbypotato.rockhounding_oretiers.handlers.Reference;
 import com.globbypotato.rockhounding_oretiers.machines.container.ContainerCoalRefiner;
 import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityCoalRefiner;
-import com.globbypotato.rockhounding_oretiers.utils.Translator;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -13,12 +13,12 @@ public class GuiCoalRefiner extends GuiBase{
 	private final TileEntityCoalRefiner coalRefiner;
 	public static final int WIDTH = 176;
 	public static final int HEIGHT = 178;
-	public static final ResourceLocation TEXTURE =  new ResourceLocation(Reference.MODID + ":textures/gui/guicoalrefiner.png");
+	public static final ResourceLocation TEXTURE_REF =  new ResourceLocation(Reference.MODID + ":textures/gui/guicoalrefiner.png");
 
 	public GuiCoalRefiner(InventoryPlayer playerInv, TileEntityCoalRefiner tile){
 		super(tile,new ContainerCoalRefiner(playerInv, tile));
 		this.playerInventory = playerInv;
-		BASE_TEXTURE = TEXTURE;
+		TEXTURE = TEXTURE_REF;
 		this.coalRefiner = tile;
 		this.xSize = WIDTH;
 		this.ySize = HEIGHT;

@@ -2,11 +2,10 @@ package com.globbypotato.rockhounding_oretiers.machines;
 
 import java.util.Random;
 
-import com.globbypotato.rockhounding_oretiers.ModContents;
+import com.globbypotato.rockhounding_oretiers.handlers.GuiHandler;
 import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityCoalRefiner;
 
 import net.minecraft.block.BlockTorch;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -22,9 +21,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class CoalRefiner extends BaseMachine {
 
 	public CoalRefiner(float hardness, float resistance, String name) {
-		super(name, Material.ROCK, resistance, resistance, TileEntityCoalRefiner.class, ModContents.coalRefinerID, 1.0F);
+		super(name, Material.ROCK, TileEntityCoalRefiner.class, GuiHandler.coalRefinerID, 1.0F);
+		setHardness(hardness); setResistance(resistance);	
 		setHarvestLevel("pickaxe", 0);
-		setSoundType(SoundType.STONE);
 	}
 
     @SideOnly(Side.CLIENT)

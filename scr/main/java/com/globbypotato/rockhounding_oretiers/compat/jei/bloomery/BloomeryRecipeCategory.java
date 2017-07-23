@@ -2,9 +2,9 @@ package com.globbypotato.rockhounding_oretiers.compat.jei.bloomery;
 
 import javax.annotation.Nonnull;
 
-import com.globbypotato.rockhounding_oretiers.ModContents;
-import com.globbypotato.rockhounding_oretiers.compat.RHRecipeCategory;
-import com.globbypotato.rockhounding_oretiers.compat.RHRecipeUID;
+import com.globbypotato.rockhounding_oretiers.ModItems;
+import com.globbypotato.rockhounding_oretiers.compat.jei.RHRecipeCategory;
+import com.globbypotato.rockhounding_oretiers.compat.jei.RHRecipeUID;
 import com.globbypotato.rockhounding_oretiers.machines.gui.GuiBloomery;
 
 import mezz.jei.api.IGuiHelper;
@@ -23,7 +23,7 @@ public class BloomeryRecipeCategory extends RHRecipeCategory {
 	private static final int OUTPUT_SLOT = 2;
 	private static final int CONSUMABLE_SLOT = 3;
 
-	private final static ResourceLocation guiTexture = GuiBloomery.TEXTURE;
+	private final static ResourceLocation guiTexture = GuiBloomery.TEXTURE_REF;
 
 	public BloomeryRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper.createDrawable(guiTexture, 26, 15, 124, 68), "jei.bloomery.name");
@@ -48,7 +48,7 @@ public class BloomeryRecipeCategory extends RHRecipeCategory {
 		guiItemStacks.set(INPUT_SLOT, wrapper.getInputs());
 
 		guiItemStacks.init(CONSUMABLE_SLOT, true, 81, 31);
-		guiItemStacks.set(CONSUMABLE_SLOT, new ItemStack(ModContents.forgeHammer));
+		guiItemStacks.set(CONSUMABLE_SLOT, new ItemStack(ModItems.forgeHammer));
 
 		guiItemStacks.init(OUTPUT_SLOT, true, 105, 49);
 		guiItemStacks.set(OUTPUT_SLOT, wrapper.getRecipe().getOutput());

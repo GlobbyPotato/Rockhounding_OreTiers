@@ -1,8 +1,8 @@
 package com.globbypotato.rockhounding_oretiers.integration.crafttweaker;
 
 import com.globbypotato.rockhounding_oretiers.compat.jei.bloomery.BloomeryRecipeWrapper;
-import com.globbypotato.rockhounding_oretiers.handlers.ModRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.BloomeryRecipes;
+import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
@@ -31,14 +31,14 @@ public class CastingRecipes {
 		    	}
 		    	@Override
 		    	public void apply() {
-		    		ModRecipes.bloomeryRecipe.add(this.recipe);
+		    		MachineRecipes.bloomeryRecipe.add(this.recipe);
 		    		MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new BloomeryRecipeWrapper(this.recipe));
 		    	}
 		    	@Override
 		    	public void undo() {
-		    		for(BloomeryRecipes recipe : ModRecipes.bloomeryRecipe){
+		    		for(BloomeryRecipes recipe : MachineRecipes.bloomeryRecipe){
 		    			if(recipe.equals(this.recipe)){
-		    				ModRecipes.bloomeryRecipe.remove(recipe);
+		    				MachineRecipes.bloomeryRecipe.remove(recipe);
 		    				MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new BloomeryRecipeWrapper(recipe));
 	                        break;
 		    			}
@@ -69,10 +69,10 @@ public class CastingRecipes {
 		    	}
 		    	@Override
 		    	public void apply() {
-		    		for(BloomeryRecipes recipe : ModRecipes.bloomeryRecipe){
+		    		for(BloomeryRecipes recipe : MachineRecipes.bloomeryRecipe){
 		    			if(this.input != null && recipe.getInput().isItemEqual(this.input)){
 		    				removedRecipe =recipe;
-		    				ModRecipes.bloomeryRecipe.remove(recipe);
+		    				MachineRecipes.bloomeryRecipe.remove(recipe);
 		    				MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new BloomeryRecipeWrapper(removedRecipe));
 	                        break;
 		    			}
@@ -81,7 +81,7 @@ public class CastingRecipes {
 		    	@Override
 		    	public void undo() {
 		    		if(removedRecipe != null){
-			    		ModRecipes.bloomeryRecipe.add(removedRecipe);
+		    			MachineRecipes.bloomeryRecipe.add(removedRecipe);
 			    		MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new BloomeryRecipeWrapper(removedRecipe));
 		    		}
 		    	}

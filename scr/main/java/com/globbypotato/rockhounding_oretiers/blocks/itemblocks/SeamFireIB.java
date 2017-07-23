@@ -2,7 +2,7 @@ package com.globbypotato.rockhounding_oretiers.blocks.itemblocks;
 
 import java.util.Random;
 
-import com.globbypotato.rockhounding_oretiers.ModContents;
+import com.globbypotato.rockhounding_oretiers.ModBlocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
@@ -46,7 +46,7 @@ public class SeamFireIB extends ItemBlock {
         if(block == Blocks.CAULDRON){
             int i = ((Integer)iblockstate.getValue(BlockCauldron.LEVEL)).intValue();
             if(i == 3){
-	        	if(playerIn.getHeldItem(EnumHand.MAIN_HAND) != null && playerIn.getHeldItemMainhand().getItem() == Item.getItemFromBlock(ModContents.seamFire)){
+	        	if(playerIn.getHeldItem(EnumHand.MAIN_HAND) != null && playerIn.getHeldItemMainhand().getItem() == Item.getItemFromBlock(ModBlocks.seamFire)){
 	                if (!worldIn.isRemote){
                         if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Blocks.COAL_BLOCK))){
                         	playerIn.dropItem(new ItemStack(Blocks.COAL_BLOCK), false);

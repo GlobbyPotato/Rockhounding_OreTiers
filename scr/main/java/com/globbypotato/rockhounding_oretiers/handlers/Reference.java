@@ -1,6 +1,6 @@
 package com.globbypotato.rockhounding_oretiers.handlers;
 
-import com.globbypotato.rockhounding_oretiers.ModContents;
+import com.globbypotato.rockhounding_oretiers.ModItems;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -14,6 +14,6 @@ public class Reference {
 
 	//Create new Creative Tab with Icon
 	public static CreativeTabs RockhoundingTiers = new CreativeTabs("rockhoundingTiers") {
-		public Item getTabIconItem() { return ModContents.tiersItems; }
+		public Item getTabIconItem() { return ModItems.tiersItems; }
 	};
 }

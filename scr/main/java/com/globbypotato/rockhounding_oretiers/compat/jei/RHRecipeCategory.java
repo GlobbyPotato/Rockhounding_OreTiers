@@ -1,9 +1,9 @@
-package com.globbypotato.rockhounding_oretiers.compat;
+package com.globbypotato.rockhounding_oretiers.compat.jei;
 
 
 import javax.annotation.Nonnull;
 
-import com.globbypotato.rockhounding_oretiers.utils.Translator;
+import com.globbypotato.rockhounding_core.utils.Translator;
 
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.recipe.BlankRecipeCategory;

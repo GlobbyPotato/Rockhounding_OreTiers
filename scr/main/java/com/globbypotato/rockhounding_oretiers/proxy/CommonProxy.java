@@ -1,25 +1,24 @@
 package com.globbypotato.rockhounding_oretiers.proxy;
 
-import com.globbypotato.rockhounding_oretiers.ModContents;
-import com.globbypotato.rockhounding_oretiers.fluids.BucketHandler;
+import com.globbypotato.rockhounding_oretiers.ModBlocks;
+import com.globbypotato.rockhounding_oretiers.ModItems;
 import com.globbypotato.rockhounding_oretiers.fluids.ModFluids;
 import com.globbypotato.rockhounding_oretiers.handlers.FuelHandler;
 import com.globbypotato.rockhounding_oretiers.handlers.GlobbyEventHandler;
 import com.globbypotato.rockhounding_oretiers.handlers.GuiHandler;
-import com.globbypotato.rockhounding_oretiers.handlers.ModArray;
 import com.globbypotato.rockhounding_oretiers.handlers.ModConfig;
 import com.globbypotato.rockhounding_oretiers.handlers.ModDictionary;
 import com.globbypotato.rockhounding_oretiers.handlers.ModRecipes;
 import com.globbypotato.rockhounding_oretiers.handlers.OreEventHandler;
 import com.globbypotato.rockhounding_oretiers.handlers.Reference;
 import com.globbypotato.rockhounding_oretiers.integration.crafttweaker.CTSupport;
+import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 import com.globbypotato.rockhounding_oretiers.utils.IMCUtils;
 import com.globbypotato.rockhounding_oretiers.world.TiersGenerator;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -33,20 +32,12 @@ public class CommonProxy {
 		// Load Config
 		ModConfig.loadConfig(event);
 
-		// Load Arrays
-		ModArray.loadArray();
-
 		// Register Fluids
-		if( !FluidRegistry.isUniversalBucketEnabled() ){
-		   	MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
-		   	ModFluids.loadBeakers();
-			ModFluids.registerFluidBeakers();
-		}
 		ModFluids.registerFluidContainers();
 
 		// Register Contents
-		ModContents.blockInit();
-		ModContents.itemInit();
+		ModBlocks.init();
+		ModItems.init();
 
 		// Regidter Events
 		MinecraftForge.EVENT_BUS.register(new GlobbyEventHandler());	
@@ -62,11 +53,9 @@ public class CommonProxy {
 	}
 
 	public void init(FMLInitializationEvent e){
-		// Register Craft Tweaker Support
-		CTSupport.init();
-
 		// Register Recipes
 		ModRecipes.init();
+		MachineRecipes.machinesRecipes();
 
 		//Register Guis
 		NetworkRegistry.INSTANCE.registerGuiHandler(Reference.MODID, new GuiHandler());
@@ -80,7 +69,10 @@ public class CommonProxy {
 		IMCUtils.extraRecipes(event.getMessages());
 	}
 
-	public void postInit(FMLPostInitializationEvent e){}
+	public void postInit(FMLPostInitializationEvent e){
+		// Register Craft Tweaker Support
+		CTSupport.init();
+	}
 
 	public void initFluidModel(Block block, Fluid fluid) {}
 

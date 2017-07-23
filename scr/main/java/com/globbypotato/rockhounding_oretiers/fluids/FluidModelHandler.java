@@ -1,6 +1,5 @@
 package com.globbypotato.rockhounding_oretiers.fluids;
 
-
 import com.globbypotato.rockhounding_oretiers.handlers.Reference;
 
 import net.minecraft.block.Block;
@@ -15,10 +14,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
-
 //Courtesy of Choonster, (MIT License) https://github.com/Choonster/TestMod3
-
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class FluidModelHandler {
@@ -26,8 +22,7 @@ public class FluidModelHandler {
 
 	private static final String FLUID_MODEL_PATH = Reference.MODID + ":fluids";
 
-	private FluidModelHandler() {
-	}
+	private FluidModelHandler() {}
 
 	/**
 	 * Register this mod's fluid, block and item models.
@@ -45,13 +40,9 @@ public class FluidModelHandler {
 
 	private void registerFluidModel(IFluidBlock fluidBlock) {
 		final Item item = Item.getItemFromBlock((Block) fluidBlock);
-
 		ModelBakery.registerItemVariants(item);
-
 		final ModelResourceLocation modelResourceLocation = new ModelResourceLocation(FLUID_MODEL_PATH, fluidBlock.getFluid().getName());
-
 		ModelLoader.setCustomMeshDefinition(item, MeshDefinitionFix.create(stack -> modelResourceLocation));
-
 		ModelLoader.setCustomStateMapper((Block) fluidBlock, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState p_178132_1_) {

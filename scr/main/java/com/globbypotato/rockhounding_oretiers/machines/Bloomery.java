@@ -4,10 +4,9 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.globbypotato.rockhounding_oretiers.ModContents;
+import com.globbypotato.rockhounding_oretiers.handlers.GuiHandler;
 import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityBloomery;
 
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,9 +30,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class Bloomery extends BaseMachine {
 
 	public Bloomery(float hardness, float resistance, String name) {
-		super(name, Material.ROCK, resistance, resistance, TileEntityBloomery.class, ModContents.bloomeryID, 2.0F);
+		super(name, Material.ROCK, TileEntityBloomery.class, GuiHandler.bloomeryID, 2.0F);
+		setHardness(hardness); setResistance(resistance);	
 		setHarvestLevel("pickaxe", 0);
-		setSoundType(SoundType.STONE);
 	}
 
     @SideOnly(Side.CLIENT)
@@ -84,12 +83,11 @@ public class Bloomery extends BaseMachine {
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack){
+    	super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
         worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing()), 2);
 		if(stack.hasTagCompound()){
-        	int fuel = stack.getTagCompound().getInteger("Fuel");
         	TileEntityBloomery te = (TileEntityBloomery)getTileEntitySafely(worldIn, pos);
 			if(te != null){
-            	te.powerCount = fuel;
         		if(stack.getTagCompound().hasKey("Bloom")){
         			te.bloomTank.setFluid(FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Bloom")));
         		}
@@ -114,13 +112,11 @@ public class Bloomery extends BaseMachine {
 	private void addNbt(ItemStack itemstack, TileEntity tileentity) {
 		TileEntityBloomery bloomery = ((TileEntityBloomery)tileentity);
 		itemstack.setTagCompound(new NBTTagCompound());
-		NBTTagCompound solvent = new NBTTagCompound(); 
-		NBTTagCompound reagent = new NBTTagCompound(); 
-		NBTTagCompound acid = new NBTTagCompound(); 
-		itemstack.getTagCompound().setInteger("Fuel", bloomery.powerCount);
+    	addPowerNbt(itemstack, tileentity);
+		NBTTagCompound bloom = new NBTTagCompound(); 
 		if(bloomery.bloomTank.getFluid() != null){
-			bloomery.bloomTank.getFluid().writeToNBT(solvent);
-			itemstack.getTagCompound().setTag("Bloom", solvent);
+			bloomery.bloomTank.getFluid().writeToNBT(bloom);
+			itemstack.getTagCompound().setTag("Bloom", bloom);
 		}
 	}
 

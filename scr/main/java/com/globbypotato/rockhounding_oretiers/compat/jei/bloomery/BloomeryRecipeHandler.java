@@ -2,7 +2,7 @@ package com.globbypotato.rockhounding_oretiers.compat.jei.bloomery;
 
 import javax.annotation.Nonnull;
 
-import com.globbypotato.rockhounding_oretiers.compat.RHRecipeUID;
+import com.globbypotato.rockhounding_oretiers.compat.jei.RHRecipeUID;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.BloomeryRecipes;
 
 import mezz.jei.api.recipe.IRecipeHandler;

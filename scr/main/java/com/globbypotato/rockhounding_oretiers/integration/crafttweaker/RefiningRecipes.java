@@ -1,7 +1,7 @@
 package com.globbypotato.rockhounding_oretiers.integration.crafttweaker;
 
 import com.globbypotato.rockhounding_oretiers.compat.jei.refiner.RefinerRecipeWrapper;
-import com.globbypotato.rockhounding_oretiers.handlers.ModRecipes;
+import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.RefinerRecipes;
 
 import minetweaker.IUndoableAction;
@@ -28,15 +28,15 @@ public class RefiningRecipes {
 		    	}
 		    	@Override
 		    	public void apply() {
-		    		ModRecipes.refinerRecipe.add(this.recipe);
+		    		MachineRecipes.refinerRecipe.add(this.recipe);
 		    		MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new RefinerRecipeWrapper(this.recipe));
 		    	}
 		    	@Override
 		    	public void undo() {
-		    		for(RefinerRecipes recipe : ModRecipes.refinerRecipe){
+		    		for(RefinerRecipes recipe : MachineRecipes.refinerRecipe){
 		    			if(recipe.equals(this.recipe)){
 		    				MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new RefinerRecipeWrapper(recipe));
-		    				ModRecipes.refinerRecipe.remove(recipe);	
+		    				MachineRecipes.refinerRecipe.remove(recipe);	
 	                        break;
 		    			}
 		    		}
@@ -66,11 +66,11 @@ public class RefiningRecipes {
 		    	}
 		    	@Override
 		    	public void apply() {
-		    		for(RefinerRecipes recipe : ModRecipes.refinerRecipe){
+		    		for(RefinerRecipes recipe : MachineRecipes.refinerRecipe){
 		    			if(this.input != null && recipe.getInput().isItemEqual(this.input)){
 				    		this.removedRecipe = recipe;
 		    				MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new RefinerRecipeWrapper(recipe));
-		    				ModRecipes.refinerRecipe.remove(recipe);	
+		    				MachineRecipes.refinerRecipe.remove(recipe);	
 	                        break;
 		    			}
 		    		}
@@ -78,7 +78,7 @@ public class RefiningRecipes {
 		    	@Override
 		    	public void undo() {
 		    		if(this.removedRecipe != null){
-			    		ModRecipes.refinerRecipe.add(this.removedRecipe);
+		    			MachineRecipes.refinerRecipe.add(this.removedRecipe);
 			    		MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new RefinerRecipeWrapper(this.removedRecipe));
 		    		}
 		    	}

@@ -2,7 +2,7 @@ package com.globbypotato.rockhounding_oretiers.machines;
 
 import java.util.Random;
 
-import com.globbypotato.rockhounding_oretiers.ModContents;
+import com.globbypotato.rockhounding_oretiers.handlers.GuiHandler;
 import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityPeatDrier;
 
 import net.minecraft.block.SoundType;
@@ -18,7 +18,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class PeatDrier extends BaseMachine {
 
 	public PeatDrier(float hardness, float resistance, String name) {
-		super(name, Material.WOOD, resistance, resistance, TileEntityPeatDrier.class, ModContents.peatDrierID, 0.2F);
+		super(name, Material.WOOD, TileEntityPeatDrier.class, GuiHandler.peatDrierID, 0.2F);
+		setHardness(hardness); setResistance(resistance);	
 		setHarvestLevel("axe", 0);
 		setSoundType(SoundType.WOOD);
 	}

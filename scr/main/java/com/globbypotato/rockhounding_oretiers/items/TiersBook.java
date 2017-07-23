@@ -94,40 +94,36 @@ public class TiersBook extends ItemWrittenBook {
 			
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
 						"IRON TIERS\n"
-					  + "Iron tiers replace the vanilla iron ore with 8 tiers of ores depending on occurrency and quantity of smeltable iron. They can smelt into ingots, pellets or lumps or a certain quantity of Molten Bloom."))));
+					  + "Iron tiers replace the vanilla iron ore with 8 tiers of ores depending on occurrency and quantity of smeltable iron. They can smelt into a certain quantity of Molten Bloom."))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
 						"Magnetite:\n"
-					  + "It can be found in deeper levels (20/42) in any biome excluded hot biomes. It is an high bearing iron ore. It smelts into 3 pellets or 700mB of Molten Bloom."))));
+					  + "It can be found in deeper levels (20/42) in any biome excluded hot biomes. It is an high bearing iron ore. It smelts into 700mB of Molten Bloom."))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
 						"Hematite:\n"
-					  + "It can be found in deeper levels (14/34) only in hot biomes. It is an high bearing iron ore. It smelts into 3 pellets or 650mB of Molten Bloom."))));
+					  + "It can be found in deeper levels (14/34) only in hot biomes. It is an high bearing iron ore. It smelts into 650mB of Molten Bloom."))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
 						"Goethite:\n"
-					  + "It can be found in mid-low levels (40/55) in any biome excluded the sandy biomes. It is equal to a vanilla ore. It smelts into 1 ingot or 450mB of Molten Bloom."))));
+					  + "It can be found in mid-low levels (40/55) in any biome excluded the sandy biomes. It is equal to a vanilla ore. It smelts into 450mB of Molten Bloom."))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
 						"Limonite:\n"
-					  + "It can be found around the surface (50/70) in sandy biomes only. It is equal to a vanilla ore. It smelts into 1 ingot or 500mB of Molten Bloom."))));
+					  + "It can be found around the surface (50/70) in sandy biomes only. It is equal to a vanilla ore. It smelts into 500mB of Molten Bloom."))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
 						"Siderite:\n"
-					  + "It can be found around the surface (55/70) in any biome excluded wet biomes. It is a moderate bearing iron ore. It smelts into 5 lumps or 400mB of Molten Bloom."))));
+					  + "It can be found around the surface (55/70) in any biome excluded wet biomes. It is a moderate bearing iron ore. It smelts into 400mB of Molten Bloom."))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
 						"Bog Iron:\n"
-					  + "It can be found in the dirt around the surface (55/70) in swamp biomes only. It is a reasonaly low bearing iron ore. It smelts into 4 lumps or 300mB of Molten Bloom."))));
+					  + "It can be found in the dirt around the surface (55/70) in swamp biomes only. It is a reasonaly low bearing iron ore. It smelts into 300mB of Molten Bloom."))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
 						"Taconite:\n"
-					  + "It can be found in levels above the surface (70/90) and rarely at higher heights (100/200) in any biome. It is a low bearing iron ore. It smelts into 3 lumps or 200mB of Molten Bloom."))));
+					  + "It can be found in levels above the surface (70/90) and rarely at higher heights (100/200) in any biome. It is a low bearing iron ore. It smelts into 200mB of Molten Bloom."))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
 						"Banded iron formation:\n"
-					  + "It can be found at high levels (80/150) in hills and mountains only. It is a very low bearing iron ore. It smelts into 2 lumps or 100mB of Molten Bloom."))));
+					  + "It can be found at high levels (80/150) in hills and mountains only. It is a very low bearing iron ore. It smelts into or 100mB of Molten Bloom."))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
 						"Bloomery:\n"
 					  + "This is a 2 blocks tall device needed to smelt the iron ores and get their amount of useful product. Each ore will return a certain amount of Molten Bloom that will be then forged into ingots."))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
 					    "The device needs fuel to melt the ore, producing a dense fluid that will fill the tank. A Forge Hammer will automatically forge ingots when enough fluid is available while a Draining Valve will allow to drain the fluid for external uses."))));
-			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
-						"NOTES\n"
-					  + "- Crafting ingots from pellets gives a little profit, saving one nugget per craft."
-					  + "- Iron Lumps equal to nuggets though intentionally not compatible.\n"))));
 
 			// Add detals
 			itemStackIn.setTagInfo("pages", bookPages);
