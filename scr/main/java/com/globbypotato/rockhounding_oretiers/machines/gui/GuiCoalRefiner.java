@@ -1,6 +1,5 @@
 package com.globbypotato.rockhounding_oretiers.machines.gui;
 
-import com.globbypotato.rockhounding_core.utils.Translator;
 import com.globbypotato.rockhounding_oretiers.handlers.Reference;
 import com.globbypotato.rockhounding_oretiers.machines.container.ContainerCoalRefiner;
 import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityCoalRefiner;
@@ -22,14 +21,9 @@ public class GuiCoalRefiner extends GuiBase{
 		this.coalRefiner = tile;
 		this.xSize = WIDTH;
 		this.ySize = HEIGHT;
+		this.containerName = "container.coalRefiner";
 	}
     
-	public void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		String device = Translator.translateToLocal("container.coalRefiner");
-		this.fontRendererObj.drawString(device, this.xSize / 2 - this.fontRendererObj.getStringWidth(device) / 2, 4, 4210752);
-	}
-
 	public void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
     	super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
         int i = (this.width - this.xSize) / 2;

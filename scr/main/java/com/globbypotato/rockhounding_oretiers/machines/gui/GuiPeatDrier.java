@@ -1,6 +1,5 @@
 package com.globbypotato.rockhounding_oretiers.machines.gui;
 
-import com.globbypotato.rockhounding_core.utils.Translator;
 import com.globbypotato.rockhounding_oretiers.handlers.Reference;
 import com.globbypotato.rockhounding_oretiers.machines.container.ContainerPeatDrier;
 import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityPeatDrier;
@@ -22,12 +21,7 @@ public class GuiPeatDrier extends GuiBase{
 		this.peatDrier = tile;
 		this.xSize = WIDTH;
 		this.ySize = HEIGHT;
-	}
-
-	public void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		String device = Translator.translateToLocal("container.peatDrier");
-		this.fontRendererObj.drawString(device, this.xSize / 2 - this.fontRendererObj.getStringWidth(device) / 2, 4, 4210752);
+		this.containerName = "container.peatDrier";
 	}
 
 	public void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){

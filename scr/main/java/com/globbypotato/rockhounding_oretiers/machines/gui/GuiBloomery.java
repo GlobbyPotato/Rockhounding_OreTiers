@@ -1,10 +1,5 @@
 package com.globbypotato.rockhounding_oretiers.machines.gui;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.globbypotato.rockhounding_core.utils.RenderUtils;
-import com.globbypotato.rockhounding_core.utils.Translator;
 import com.globbypotato.rockhounding_oretiers.handlers.ModConfig;
 import com.globbypotato.rockhounding_oretiers.handlers.Reference;
 import com.globbypotato.rockhounding_oretiers.machines.container.ContainerBloomery;
@@ -12,7 +7,7 @@ import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityBloo
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 
 public class GuiBloomery extends GuiBase{
 	private final InventoryPlayer playerInventory;
@@ -20,6 +15,7 @@ public class GuiBloomery extends GuiBase{
 	public static final int WIDTH = 176;
 	public static final int HEIGHT = 178;
 	public static final ResourceLocation TEXTURE_REF =  new ResourceLocation(Reference.MODID + ":textures/gui/guibloomery.png");
+	private FluidTank bloomTank;
 
 	public GuiBloomery(InventoryPlayer playerInv, TileEntityBloomery tile){
 		super(tile,new ContainerBloomery(playerInv, tile));
@@ -28,12 +24,8 @@ public class GuiBloomery extends GuiBase{
 		this.bloomery = tile;
 		this.xSize = WIDTH;
 		this.ySize = HEIGHT;
-	}
-
-	public void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		String device = Translator.translateToLocal("container.bloomery");
-		this.fontRendererObj.drawString(device, this.xSize / 2 - this.fontRendererObj.getStringWidth(device) / 2, 4, 4210752);
+		this.bloomTank = this.bloomery.bloomTank;
+		this.containerName = "container.bloomery";
 	}
 
     @Override
@@ -41,29 +33,20 @@ public class GuiBloomery extends GuiBase{
        super.drawScreen(mouseX, mouseY, f);
 	   int x = (this.width - this.xSize) / 2;
 	   int y = (this.height - this.ySize) / 2;
-	   //bars progression (fuel-redstone)
+
+	   //fuel
 	   if(mouseX >= 31+x && mouseX <= 40+x && mouseY >= 35+y && mouseY <= 62+y){
-		   String[] text = {this.bloomery.powerCount + "/" + this.bloomery.powerMax + " ticks"};
-		   List<String> tooltip = Arrays.asList(text);
-		   drawHoveringText(tooltip, mouseX, mouseY, fontRendererObj);
+			drawPowerInfo("ticks", this.bloomery.getPower(), this.bloomery.getPowerMax(), mouseX, mouseY);
 	   }
+
 	   //Activation
 	   if(mouseX >= 101+x && mouseX <= 118+x && mouseY >= 16+y && mouseY <= 33+y){
-		   List<String> tooltip = Arrays.asList("Drain Fluid");
-		   drawHoveringText(tooltip, mouseX, mouseY, fontRendererObj);
+			drawButtonLabel("Activation", mouseX, mouseY);
 	   }
+
 	   //bloom tank
 		if(mouseX>= 75+x && mouseX <= 100+x && mouseY >= 16+y && mouseY <= 81+y){
-			int fluidAmount = 0; 
-			if(bloomery.bloomTank.getFluid() != null){
-				fluidAmount = this.bloomery.bloomTank.getFluidAmount();
-				String[] text = {fluidAmount + "/" + this.bloomery.bloomTank.getCapacity() + " mb", this.bloomery.bloomTank.getFluid().getLocalizedName()};
-				List<String> tooltip = Arrays.asList(text);
-				drawHoveringText(tooltip, mouseX, mouseY, fontRendererObj);
-			}else{
-				List<String> tooltip = Arrays.asList("Empty");
-				drawHoveringText(tooltip, mouseX, mouseY, fontRendererObj);
-			}
+			drawTankInfo(this.bloomTank, mouseX, mouseY);
 		}
     }
 
@@ -96,14 +79,9 @@ public class GuiBloomery extends GuiBase{
             this.drawTexturedModalRect(i + 101, j + 16, 176, 52, 18, 18);
         }
 
-        //tank bar
-		if(bloomery.bloomTank.getFluid() != null){
-			FluidStack temp = bloomery.bloomTank.getFluid();
-			int capacity = bloomery.bloomTank.getCapacity();
-			if(temp.amount > 5){
-				RenderUtils.bindBlockTexture();
-				RenderUtils.renderGuiTank(temp,capacity, temp.amount, i + 76, j + 17, zLevel, 24, 64);
-			}
+		//tank bar
+		if(this.bloomTank.getFluid() != null){
+			renderFluidBar(this.bloomTank.getFluid(), this.bloomTank.getCapacity(), i + 76, j + 17, 24, 64);
 		}
 
     }
