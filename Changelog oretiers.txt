@@ -1,3 +1,8 @@
+v1.29 changelog
+	Misc fixes
+		Code cleaning
+		Core updated and synced to v1.04
+
 v1.28 changelog
 	Rockhounding core updated to v1.02
 	Removed obsolete items (old method with iron lumps and pellets). Dried Peat shifted its itemDamage() by this
