@@ -1,4 +1,4 @@
-package com.globbypotato.rockhounding_oretiers.integration.crafttweaker;
+package com.globbypotato.rockhounding_oretiers.compat.crafttweaker;
 
 import com.globbypotato.rockhounding_oretiers.compat.jei.bloomery.BloomeryRecipeWrapper;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.BloomeryRecipes;
@@ -14,14 +14,14 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.rockhounding_oretiers.Bloomery")
-public class CastingRecipes {
+public class CastingRecipes extends CTSupport{
 	private static String name = "Bloomery";
 
     @ZenMethod
     public static void add(IItemStack ore, ILiquidStack bloom, int bloomAmount, IItemStack output) {
         if(ore == null || bloom == null || output == null) {MineTweakerAPI.logError(name + ": Invalid recipe."); return;}
-        FluidStack bloomStack = CTSupport.getFluid(bloom, bloomAmount);
-        MineTweakerAPI.apply(new AddToBloomery(new BloomeryRecipes(CTSupport.toStack(ore), bloomStack, CTSupport.toStack(output))));
+        FluidStack bloomStack = getFluid(bloom, bloomAmount);
+        MineTweakerAPI.apply(new AddToBloomery(new BloomeryRecipes(toStack(ore), bloomStack, toStack(output))));
     }
 		    private static class AddToBloomery implements IUndoableAction {
 		    	private BloomeryRecipes recipe;
@@ -58,7 +58,7 @@ public class CastingRecipes {
     @ZenMethod
     public static void remove(IItemStack input) {
         if(input == null) {MineTweakerAPI.logError(name + ": Invalid recipe."); return;}
-        MineTweakerAPI.apply(new RemoveFromBloomery(CTSupport.toStack(input)));
+        MineTweakerAPI.apply(new RemoveFromBloomery(toStack(input)));
     }
 		    private static class RemoveFromBloomery implements IUndoableAction {
 		    	private ItemStack input;

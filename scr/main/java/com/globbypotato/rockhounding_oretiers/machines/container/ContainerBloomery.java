@@ -5,13 +5,11 @@ import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityBloo
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerBloomery extends ContainerBase<TileEntityBloomery> {
-	Slot drain;
 
 	public ContainerBloomery(InventoryPlayer playerInventory, TileEntityBloomery tile){
 		super(playerInventory,tile);
@@ -29,7 +27,7 @@ public class ContainerBloomery extends ContainerBase<TileEntityBloomery> {
 
 		this.addSlotToContainer(new SlotItemHandler(output, 0, 132, 65));//output
 
-		drain = this.addSlotToContainer(new SlotItemHandler(template, 0, 102,  17));//drain
+		this.addSlotToContainer(new SlotItemHandler(template, 0, 102,  17));//drain
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class ModFluids {
 	public static final Set<IFluidBlock> MOD_FLUID_BLOCKS = new HashSet<>();
 
 	public static final Fluid BLOOM = createFluid("bloom", true,
-		fluid -> fluid.setDensity(60000).setLuminosity(15).setTemperature(1300).setViscosity(60000).canBePlacedInWorld(),
+		fluid -> fluid.setDensity(60000).setLuminosity(5).setTemperature(1300).setViscosity(60000).canBePlacedInWorld(),
 		fluid -> new BlockFluidClassic(fluid, new MaterialLiquid(MapColor.RED)){
 			@Override
 		    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn){

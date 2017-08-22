@@ -2,6 +2,7 @@ package com.globbypotato.rockhounding_oretiers.proxy;
 
 import com.globbypotato.rockhounding_oretiers.ModBlocks;
 import com.globbypotato.rockhounding_oretiers.ModItems;
+import com.globbypotato.rockhounding_oretiers.compat.crafttweaker.CTSupport;
 import com.globbypotato.rockhounding_oretiers.fluids.ModFluids;
 import com.globbypotato.rockhounding_oretiers.handlers.FuelHandler;
 import com.globbypotato.rockhounding_oretiers.handlers.GlobbyEventHandler;
@@ -11,7 +12,6 @@ import com.globbypotato.rockhounding_oretiers.handlers.ModDictionary;
 import com.globbypotato.rockhounding_oretiers.handlers.ModRecipes;
 import com.globbypotato.rockhounding_oretiers.handlers.OreEventHandler;
 import com.globbypotato.rockhounding_oretiers.handlers.Reference;
-import com.globbypotato.rockhounding_oretiers.integration.crafttweaker.CTSupport;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 import com.globbypotato.rockhounding_oretiers.utils.IMCUtils;
 import com.globbypotato.rockhounding_oretiers.world.TiersGenerator;

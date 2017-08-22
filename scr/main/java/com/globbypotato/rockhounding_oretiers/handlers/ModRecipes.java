@@ -79,7 +79,7 @@ public class ModRecipes extends BaseRecipes{
     	for(ItemStack ore : OreDictionary.getOres("logWood")) {
             if(ore != null)  {
                if(ore.getItemDamage() != -1 || ore.getItemDamage() != OreDictionary.WILDCARD_VALUE) {
-            		GameRegistry.addSmelting(ore, new ItemStack(ModItems.tiersItems, 1, EnumTiersItems.COALPELLET.ordinal()), 1.0F);
+            		GameRegistry.addSmelting(ore, new ItemStack(ModItems.tiersItems, 1, EnumTiersItems.TIERCHARCOAL.ordinal()), 1.0F);
                }
             }
         }

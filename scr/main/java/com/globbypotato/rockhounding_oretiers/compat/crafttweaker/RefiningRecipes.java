@@ -1,4 +1,4 @@
-package com.globbypotato.rockhounding_oretiers.integration.crafttweaker;
+package com.globbypotato.rockhounding_oretiers.compat.crafttweaker;
 
 import com.globbypotato.rockhounding_oretiers.compat.jei.refiner.RefinerRecipeWrapper;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
@@ -12,13 +12,13 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.rockhounding_oretiers.CoalRefiner")
-public class RefiningRecipes {
+public class RefiningRecipes extends CTSupport{
 	private static String name = "Basic Coal Refiner";
 
     @ZenMethod
     public static void add(IItemStack input, IItemStack output) {
         if(input == null || output == null) {MineTweakerAPI.logError(name + ": Invalid recipe."); return;}
-        MineTweakerAPI.apply(new AddToRefining(new RefinerRecipes(CTSupport.toStack(input), CTSupport.toStack(output))));
+        MineTweakerAPI.apply(new AddToRefining(new RefinerRecipes(toStack(input), toStack(output))));
     }
 		    private static class AddToRefining implements IUndoableAction {
 		    	private RefinerRecipes recipe;
@@ -55,7 +55,7 @@ public class RefiningRecipes {
     @ZenMethod
     public static void remove(IItemStack input) {
         if(input == null) {MineTweakerAPI.logError(name + ": Invalid recipe."); return;}
-        MineTweakerAPI.apply(new RemoveFromRefining(CTSupport.toStack(input)));    
+        MineTweakerAPI.apply(new RemoveFromRefining(toStack(input)));    
     }
 		    private static class RemoveFromRefining implements IUndoableAction {
 		    	private ItemStack input;
