@@ -159,12 +159,23 @@ public class TileEntityBloomery extends TileEntityMachineTank implements IFluidH
 		return new FluidHandlerConcatenate(lavaTank, bloomTank);
 	}
 
+	@Override
+	public void lavaHandler(){
+		if(this.getPower() <= this.getPowerMax() - lavaBurntime()){
+			if(lavaTank.getFluidAmount() >= Fluid.BUCKET_VOLUME){
+				lavaTank.getFluid().amount -= Fluid.BUCKET_VOLUME;
+				this.powerCount += lavaBurntime();
+				this.markDirtyClient();
+			}
+		}
+	}
+
 
 
 	//-------------- PROCESS ---------------- 
 	@Override
 	public void update() {
-		fuelHandler(input.getStackInSlot(FUEL_SLOT));
+		burnFuel(input.getStackInSlot(FUEL_SLOT));
 		lavaHandler();
 		if(!worldObj.isRemote){
 			if(canSmelt()){

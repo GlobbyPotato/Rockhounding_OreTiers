@@ -1,3 +1,14 @@
+v1.32 changelog
+	Fixed the Bloomery fueling being barred by the fuel blend
+	Core updated to v1.06
+
+v1.31 hotfix
+	Fixed wood accidentally smelting into pellet instead of tier charcoal
+
+v1.30 changelog
+	Final tweaks
+	Core updated to 1.05
+
 v1.29 changelog
 	Misc fixes
 		Code cleaning
