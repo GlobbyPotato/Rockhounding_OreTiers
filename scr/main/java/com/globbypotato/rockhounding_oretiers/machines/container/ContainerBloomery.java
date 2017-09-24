@@ -34,6 +34,7 @@ public class ContainerBloomery extends ContainerBase<TileEntityBloomery> {
 	public ItemStack slotClick(int slot, int dragType, ClickType clickTypeIn, EntityPlayer player){
 		if(slot == 4){
     		this.tile.drainScan = !this.tile.drainScan; 
+			doClickSound(player, tile.getWorld(), tile.getPos());
     		return null;
     	}else{
     		return super.slotClick(slot, dragType, clickTypeIn, player);

@@ -3,6 +3,8 @@ package com.globbypotato.rockhounding_oretiers.proxy;
 import com.globbypotato.rockhounding_oretiers.ModBlocks;
 import com.globbypotato.rockhounding_oretiers.ModItems;
 import com.globbypotato.rockhounding_oretiers.compat.crafttweaker.CTSupport;
+import com.globbypotato.rockhounding_oretiers.compat.top.TopCompat;
+import com.globbypotato.rockhounding_oretiers.compat.waila.WailaCompat;
 import com.globbypotato.rockhounding_oretiers.fluids.ModFluids;
 import com.globbypotato.rockhounding_oretiers.handlers.FuelHandler;
 import com.globbypotato.rockhounding_oretiers.handlers.GlobbyEventHandler;
@@ -50,6 +52,11 @@ public class CommonProxy {
 
 		// Register oreDictionary
 		ModDictionary.loadDictionary();
+
+		// Waila compatilbility
+        WailaCompat.init();
+        TopCompat.init();
+
 	}
 
 	public void init(FMLInitializationEvent e){

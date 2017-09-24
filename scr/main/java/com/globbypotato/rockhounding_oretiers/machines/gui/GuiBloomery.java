@@ -41,7 +41,7 @@ public class GuiBloomery extends GuiBase{
 
 	   //Activation
 	   if(mouseX >= 101+x && mouseX <= 118+x && mouseY >= 16+y && mouseY <= 33+y){
-			drawButtonLabel("Activation", mouseX, mouseY);
+			drawButtonLabel("Drain Fluids. Pipe out fluids for external uses", mouseX, mouseY);
 	   }
 
 	   //bloom tank

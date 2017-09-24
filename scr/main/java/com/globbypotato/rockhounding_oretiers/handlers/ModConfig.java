@@ -24,6 +24,7 @@ public class ModConfig {
 	public static final String IRON_TACONITE = "Taconite";
 	public static final String IRON_BANDED_IRON = "BandedIron";
 
+	public static final String SUPPORT_SETTINGS = "Absolute_Support";
 	public static final String GENERAL_SETTINGS = "Absolute_General";
 	public static final String DEVICE_SETTINGS = "Absolute_Devices";
 	public static final String DIMENSION_SETTINGS = "Absolute_Dimensions";
@@ -38,6 +39,8 @@ public class ModConfig {
     public static boolean enableCoalTiers;
     public static boolean enableIronTiers;
 
+	public static boolean enableTOP;
+
 	public static boolean AROMA_ENABLER;
 	public static int AROMA_ID;
 	public static int AROMA_HEIGHT;
@@ -50,6 +53,10 @@ public class ModConfig {
 	public static void loadConfig(FMLPreInitializationEvent event) {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
+
+//SUPPORT
+		config.addCustomCategoryComment("Integration", "Mod support and integration parameters.");
+		enableTOP 								= config.get(SUPPORT_SETTINGS, "SupportTheOneProbe",		true,	"Enable the additional info for The One Probe").getBoolean();
 
 //COAL SETTINGS
 		config.addCustomCategoryComment("Charcoal", "Parameters of the tier charcoal.");

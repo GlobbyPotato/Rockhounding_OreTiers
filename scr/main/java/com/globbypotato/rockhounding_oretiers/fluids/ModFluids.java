@@ -46,7 +46,7 @@ public class ModFluids {
 			@Override
 		    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn){
 				if(entityIn instanceof EntityLivingBase){
-					((EntityLivingBase)entityIn).attackEntityFrom(DamageSource.onFire, 3.0F);
+					((EntityLivingBase)entityIn).attackEntityFrom(DamageSource.onFire, 6.0F);
 				}
 			}
 		}
