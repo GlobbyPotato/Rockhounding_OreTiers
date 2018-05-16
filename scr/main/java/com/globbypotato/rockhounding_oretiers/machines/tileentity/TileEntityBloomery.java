@@ -39,8 +39,11 @@ public class TileEntityBloomery extends TileEntityMachineTank implements IFluidH
 	FluidStack moltenStack;
 	ItemStack outputStack;
 
+	public static int totInput = 3;
+	public static int totOutput = 1;
+	
 	public TileEntityBloomery() {
-		super(3, 1, 1);
+		super(totInput, totOutput, 1);
 
 		bloomTank = new FluidTank(Fluid.BUCKET_VOLUME + ModConfig.tankCapacity){
 			@Override  
@@ -56,7 +59,7 @@ public class TileEntityBloomery extends TileEntityMachineTank implements IFluidH
 		bloomTank.setTileEntity(this);
 		bloomTank.setCanFill(false);
 
-		input =  new MachineStackHandler(INPUT_SLOTS, this){
+		input =  new MachineStackHandler(totInput, this){
 			@Override
 			public ItemStack insertItem(int slot, ItemStack insertingStack, boolean simulate){
 				if(slot == INPUT_SLOT && hasRecipe(insertingStack)){

@@ -22,10 +22,13 @@ import net.minecraftforge.oredict.OreDictionary;
 public class TileEntityCoalRefiner extends TileEntityMachineEnergy {
 	private boolean cooking;
 
-	public TileEntityCoalRefiner() {
-		super(1, 1, 0);
+	public static int totInput = 1;
+	public static int totOutput = 1;
 
-		input =  new MachineStackHandler(INPUT_SLOTS, this){
+	public TileEntityCoalRefiner() {
+		super(totInput, totOutput, 0);
+
+		input =  new MachineStackHandler(totInput, this){
 			@Override
 			public ItemStack insertItem(int slot, ItemStack insertingStack, boolean simulate){
 				if(slot == INPUT_SLOT && hasRecipe(insertingStack)){
