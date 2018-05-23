@@ -3,10 +3,10 @@
 //----------------------------------
 //Parameters = input, output, time
 //input = the input itemstack
+//oredict = is the input extended to its oredict (if unused will be set false by default)
 //output = the output itemstack
 //time = the refining time to do the task (if unused, the config "Base Drying Time" will ve used)
-mods.rockhounding_oretiers.DryingPallet.add(<minecraft:rotten_flesh>, <minecraft:leather>);
-mods.rockhounding_oretiers.DryingPallet.add(<minecraft:rotten_flesh>, <minecraft:leather>, 500);
+mods.rockhounding_oretiers.DryingPallet.add(<minecraft:rotten_flesh>, true, <minecraft:leather>, 500);
 
 //Parameters = input
 //input = the input itemstack
@@ -18,10 +18,10 @@ mods.rockhounding_oretiers.DryingPallet.remove(<rockhounding_oretiers:tiersItems
 //----------------------------------
 //Parameters = input, output, time
 //input = the input itemstack
-//output = the refined output itemstack
-//time = the refining time to do the task (if unused, the cinfig "Base Refining Time" will ve used)
-mods.rockhounding_oretiers.CoalRefiner.add(<rockhounding_oretiers:tiersItems:1>, <rockhounding_oretiers:tiersItems:0>);
-mods.rockhounding_oretiers.CoalRefiner.add(<rockhounding_oretiers:tiersItems:1>, <rockhounding_oretiers:tiersItems:0>, 100);
+//oredict = is the input extended to its oredict (if unused will be set false by default)
+//output = the refined output itemstack 
+//time = the refining time to do the task (if unused, the config "Base Refining Time" will ve used)
+mods.rockhounding_oretiers.CoalRefiner.add(<rockhounding_oretiers:tiersItems:1>, false, <rockhounding_oretiers:tiersItems:0>, 100);
 
 //Parameters = input
 //input = the itemstack representing the input to remove
