@@ -1,30 +1,41 @@
 package com.globbypotato.rockhounding_oretiers.compat.crafttweaker;
 
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.liquid.ILiquidStack;
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
 
 public class CTSupport {
 
 	public static void init() {
-		if (Loader.isModLoaded("MineTweaker3")) {
+		if (Loader.isModLoaded("crafttweaker")) {
 			CTSupport.loadSupport();
 	    }
 	}
 
     public static void loadSupport() {
-        MineTweakerAPI.registerClass(DryingRecipes.class);
-        MineTweakerAPI.registerClass(RefiningRecipes.class);
-        MineTweakerAPI.registerClass(CastingRecipes.class);
+        CraftTweakerAPI.registerClass(DryingRecipes.class);
+        CraftTweakerAPI.registerClass(RefiningRecipes.class);
+        CraftTweakerAPI.registerClass(CastingRecipes.class);
+    }
+
+    public static String addCaption(String name) {
+		return "Adding a recipe for the " + name;
+	}
+
+    public static String removeCaption(String name) {
+		return "Removing a recipe for the " + name;
+	}
+
+    public static void error(String name) {
+    	CraftTweakerAPI.logError("Invalid recipe detected for " + name);
     }
 
     public static ItemStack toStack(IItemStack iStack){
 		if(iStack == null){
-			return null;
+			return ItemStack.EMPTY;
 		}
 		return (ItemStack) iStack.getInternal();
     }
