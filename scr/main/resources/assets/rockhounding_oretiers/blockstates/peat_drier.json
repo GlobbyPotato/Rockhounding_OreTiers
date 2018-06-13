@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "enabled=false,facing=down":  { "model": "rockhounding_oretiers:peat_drier"	},
+        "enabled=false,facing=up":    { "model": "rockhounding_oretiers:peat_drier" 	},
+        "enabled=false,facing=south": { "model": "rockhounding_oretiers:peat_drier"},
+        "enabled=false,facing=north": { "model": "rockhounding_oretiers:peat_drier", "y": 180 },
+        "enabled=false,facing=east":  { "model": "rockhounding_oretiers:peat_drier", "y": 270 },
+        "enabled=false,facing=west":  { "model": "rockhounding_oretiers:peat_drier", "y": 90  },
+        "enabled=true,facing=down":   { "model": "rockhounding_oretiers:peat_drier"	},
+        "enabled=true,facing=up":     { "model": "rockhounding_oretiers:peat_drier" 	},
+        "enabled=true,facing=south":  { "model": "rockhounding_oretiers:peat_drier"},
+        "enabled=true,facing=north":  { "model": "rockhounding_oretiers:peat_drier", "y": 180 },
+        "enabled=true,facing=east":   { "model": "rockhounding_oretiers:peat_drier", "y": 270 },
+        "enabled=true,facing=west":   { "model": "rockhounding_oretiers:peat_drier", "y": 90  }
+    }
+}

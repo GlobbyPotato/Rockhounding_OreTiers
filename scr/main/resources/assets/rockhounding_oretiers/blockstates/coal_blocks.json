@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "type=anthracite": 	{"model" : "rockhounding_oretiers:coal_blocks_anthracite"},
+        "type=bituminous": 	{"model" : "rockhounding_oretiers:coal_blocks_bituminous"},
+        "type=lignite": 	{"model" : "rockhounding_oretiers:coal_blocks_lignite"},
+        "type=peat": 		{"model" : "rockhounding_oretiers:coal_blocks_peat"},
+        "type=tiercharcoal":{"model" : "rockhounding_oretiers:coal_blocks_tiercharcoal"}
+    }
+}
