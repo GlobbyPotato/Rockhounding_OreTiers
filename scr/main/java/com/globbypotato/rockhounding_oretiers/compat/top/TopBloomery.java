@@ -32,7 +32,9 @@ public class TopBloomery implements IProbeInfoProvider{
 
 	public static class EnergyInfo implements IProbeConfigProvider{
 		@Override
-		public void getProbeConfig(IProbeConfig config, EntityPlayer player, World world, Entity entity, IProbeHitEntityData data) {}
+		public void getProbeConfig(IProbeConfig config, EntityPlayer player, World world, Entity entity, IProbeHitEntityData data) {
+			//
+		}
 
 		@Override
 		public void getProbeConfig(IProbeConfig config, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
@@ -50,13 +52,17 @@ public class TopBloomery implements IProbeInfoProvider{
 		if(te != null){
 			if(te instanceof TileEntityBloomery){
 				TileEntityBloomery tank = (TileEntityBloomery)te;
-				probeInfo.progress(tank.getPower(), tank.getPowerMax(), probeInfo.defaultProgressStyle().suffix(" ticks").filledColor(0xFFFFB400).alternateFilledColor(0xFFFF7200).borderColor(0x000000).numberFormat(NumberFormat.FULL));
-				probeInfo.progress(tank.bloomTank.getFluidAmount(), tank.bloomTank.getCapacity(), probeInfo.defaultProgressStyle()
+				if(tank.getPower() > 0){
+					probeInfo.progress(tank.getPower(), tank.getPowerMax(), probeInfo.defaultProgressStyle().suffix(" ticks").filledColor(0xFFFFB400).alternateFilledColor(0xFFFF7200).borderColor(0x000000).numberFormat(NumberFormat.FULL));
+				}
+				if(tank.bloomTank.getFluidAmount() > 0){
+					probeInfo.progress(tank.bloomTank.getFluidAmount(), tank.bloomTank.getCapacity(), probeInfo.defaultProgressStyle()
 																										.suffix(" mB")
 																										.filledColor(0xFFFF7608)
 																										.alternateFilledColor(0xFFFF0808)
 																										.borderColor(0x000000)
 																										.numberFormat(NumberFormat.FULL));
+				}
 			}
 		}
 	}
