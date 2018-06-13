@@ -14,10 +14,10 @@ public class ContainerCoalRefiner extends ContainerBase<TileEntityCoalRefiner> {
 
 	@Override
 	protected void addOwnSlots() {
-		IItemHandler input = tile.getInput();
-		IItemHandler output = tile.getOutput();
+		IItemHandler input = this.tile.getInput();
+		IItemHandler output = this.tile.getOutput();
 
-		this.addSlotToContainer(new SlotItemHandler(input, 0, 56, 18));//input
-		this.addSlotToContainer(new SlotItemHandler(output, 0, 104, 18));//output
+		this.addSlotToContainer(new SlotItemHandler(input, 0, 56, 38));//input
+		this.addSlotToContainer(new SlotItemHandler(output, 0, 104, 38));//output
 	}
 }
