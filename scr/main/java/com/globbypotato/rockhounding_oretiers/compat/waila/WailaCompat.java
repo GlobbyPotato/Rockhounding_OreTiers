@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 public class WailaCompat {
 	private static String part1 = "com.globbypotato.rockhounding_oretiers.compat.waila.";
 	private static String part2 = ".callbackRegister";
-	private static String wailaID = "Waila";
+	private static String wailaID = "waila";
 
 	public static void init() {
 		FMLInterModComms.sendMessage(wailaID, "register", part1 + "WailaBloomery" + part2);
