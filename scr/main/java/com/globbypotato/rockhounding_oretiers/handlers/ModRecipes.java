@@ -8,81 +8,72 @@ import com.globbypotato.rockhounding_oretiers.ModItems;
 import com.globbypotato.rockhounding_oretiers.enums.EnumCoalBlocks;
 import com.globbypotato.rockhounding_oretiers.enums.EnumCoalOres;
 import com.globbypotato.rockhounding_oretiers.enums.EnumTiersItems;
+import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 import com.globbypotato.rockhounding_oretiers.utils.BaseRecipes;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+@Mod.EventBusSubscriber
 public class ModRecipes extends BaseRecipes{
 
-	public static void init() {
-		ModRecipes.removeRecipes();
-		ModRecipes.tiersRecipes();
-	}
+	/**
+	 * @param event  
+	 */
+	@SubscribeEvent
+	public static void registerRecipes(final RegistryEvent.Register<IRecipe> event){
 
-	private static void tiersRecipes() {
-	//Book
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersBook), new Object[] { Items.PAPER, Items.PAPER, Items.PAPER, getOredict(EnumTiersItems.TIERCHARCOAL) }));
-	//drying pallet
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.peatDrier), new Object[] { "sss","SSS","P P", 's', "stickWood", 'S', "slabWood", 'P', "plankWood" }));
-	//coal refiner
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.coalRefiner), new Object[] { " S ","SFS","SIS", 'S', "stone", 'F', Blocks.FURNACE, 'I', "ingotIron"  }));
-	//bloomery
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.bloomery), new Object[] { "X X", "X X", "SFS", 'S', Blocks.STONEBRICK, 'X', Blocks.STONE_BRICK_STAIRS, 'F', Blocks.FURNACE }));
-	//hammer
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModItems.forgeHammer), new Object[] { " Ss", " sS", "s  ", 's', "stickWood", 'S', "stone" }));
-	//charcoal conversion
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.COAL, 1, 1), new Object[] { getOredict(EnumTiersItems.TIERCHARCOAL), getOredict(EnumTiersItems.TIERCHARCOAL), getOredict(EnumTiersItems.TIERCHARCOAL), getOredict(EnumTiersItems.TIERCHARCOAL) }));
+		removeRecipes();
+
 	//coal smelting
 		for(int x = 0; x < EnumCoalOres.size(); x++){
 	    	for(ItemStack ore : OreDictionary.getOres(EnumCoalOres.getOredict(x))) {
-	            if(ore != null){
-            		GameRegistry.addSmelting(ore, new ItemStack(ModItems.tiersItems, 1, x), 1.0F);
+	            if(!ore.isEmpty()){
+            		GameRegistry.addSmelting(ore, new ItemStack(ModItems.TIER_ITEMS, 1, x), 1.0F);
 	            }
 	        }
 		}
 
 	//coal/blocks
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.coalBlocks, 1, EnumCoalBlocks.ANTHRACITE.ordinal()), 	new Object[] {"XXX","XXX","XXX",'X', getOredict(EnumTiersItems.ANTHRACITE) }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.coalBlocks, 1, EnumCoalBlocks.BITUMINOUS.ordinal()), 	new Object[] {"XXX","XXX","XXX",'X', getOredict(EnumTiersItems.BITUMINOUS) }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.coalBlocks, 1, EnumCoalBlocks.LIGNITE.ordinal()), 		new Object[] {"XXX","XXX","XXX",'X', getOredict(EnumTiersItems.LIGNITE) }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.coalBlocks, 1, EnumCoalBlocks.PEAT.ordinal()), 			new Object[] {"XXX","XXX","XXX",'X', getOredict(EnumTiersItems.DRYPEAT) }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.coalBlocks, 1, EnumCoalBlocks.TIERCHARCOAL.ordinal()), 	new Object[] {"XXX","XXX","XXX",'X', getOredict(EnumTiersItems.TIERCHARCOAL) }));
+		GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID, "anthracite_item_to_block"), new ResourceLocation(Reference.MODID, "fuel"), new ItemStack(ModBlocks.COAL_BLOCKS, 1, EnumCoalBlocks.ANTHRACITE.ordinal()), 		new Object[] {"XXX","XXX","XXX",'X', getOredict(EnumTiersItems.ANTHRACITE) });
+		GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID, "bituminous_item_to_block"), new ResourceLocation(Reference.MODID, "fuel"), new ItemStack(ModBlocks.COAL_BLOCKS, 1, EnumCoalBlocks.BITUMINOUS.ordinal()), 		new Object[] {"XXX","XXX","XXX",'X', getOredict(EnumTiersItems.BITUMINOUS) });
+		GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID, "lignite_item_to_block"), new ResourceLocation(Reference.MODID, "fuel"), new ItemStack(ModBlocks.COAL_BLOCKS, 1, EnumCoalBlocks.LIGNITE.ordinal()),				new Object[] {"XXX","XXX","XXX",'X', getOredict(EnumTiersItems.LIGNITE) });
+		GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID, "drypeat_item_to_block"), new ResourceLocation(Reference.MODID, "fuel"), new ItemStack(ModBlocks.COAL_BLOCKS, 1, EnumCoalBlocks.PEAT.ordinal()), 				new Object[] {"XXX","XXX","XXX",'X', getOredict(EnumTiersItems.DRYPEAT) });
+		GameRegistry.addShapedRecipe(new ResourceLocation(Reference.MODID, "tier_charcoal_item_to_block"), new ResourceLocation(Reference.MODID, "fuel"), new ItemStack(ModBlocks.COAL_BLOCKS, 1, EnumCoalBlocks.TIERCHARCOAL.ordinal()), 	new Object[] {"XXX","XXX","XXX",'X', getOredict(EnumTiersItems.TIERCHARCOAL) });
 	//coal/items
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersItems, 9, EnumTiersItems.ANTHRACITE.ordinal()), 	new Object[] { getOredict(EnumCoalBlocks.ANTHRACITE) }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersItems, 9, EnumTiersItems.BITUMINOUS.ordinal()), 	new Object[] { getOredict(EnumCoalBlocks.BITUMINOUS) }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersItems, 9, EnumTiersItems.LIGNITE.ordinal()), 	  	new Object[] { getOredict(EnumCoalBlocks.LIGNITE) }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersItems, 9, EnumTiersItems.TIERCHARCOAL.ordinal()), new Object[] { getOredict(EnumCoalBlocks.TIERCHARCOAL) }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersItems, 9, EnumTiersItems.DRYPEAT.ordinal()), 		new Object[] { getOredict(EnumCoalBlocks.PEAT) }));
+		GameRegistry.addShapelessRecipe(new ResourceLocation(Reference.MODID, "anthracite_block_to_item"), new ResourceLocation(Reference.MODID, "fuel"), new ItemStack(ModItems.TIER_ITEMS, 9, EnumTiersItems.ANTHRACITE.ordinal()), 		new Ingredient[] { getOredict(EnumCoalBlocks.ANTHRACITE) });
+		GameRegistry.addShapelessRecipe(new ResourceLocation(Reference.MODID, "bituminous_block_to_item"), new ResourceLocation(Reference.MODID, "fuel"), new ItemStack(ModItems.TIER_ITEMS, 9, EnumTiersItems.BITUMINOUS.ordinal()), 		new Ingredient[] { getOredict(EnumCoalBlocks.BITUMINOUS) });
+		GameRegistry.addShapelessRecipe(new ResourceLocation(Reference.MODID, "lignite_block_to_item"), new ResourceLocation(Reference.MODID, "fuel"), new ItemStack(ModItems.TIER_ITEMS, 9, EnumTiersItems.LIGNITE.ordinal()), 	  		new Ingredient[] { getOredict(EnumCoalBlocks.LIGNITE) });
+		GameRegistry.addShapelessRecipe(new ResourceLocation(Reference.MODID, "drypeat_block_to_item"), new ResourceLocation(Reference.MODID, "fuel"), new ItemStack(ModItems.TIER_ITEMS, 9, EnumTiersItems.TIERCHARCOAL.ordinal()), 		new Ingredient[] { getOredict(EnumCoalBlocks.TIERCHARCOAL) });
+		GameRegistry.addShapelessRecipe(new ResourceLocation(Reference.MODID, "tier_charcoal_block_to_item"), new ResourceLocation(Reference.MODID, "fuel"), new ItemStack(ModItems.TIER_ITEMS, 9, EnumTiersItems.DRYPEAT.ordinal()), 		new Ingredient[] { getOredict(EnumCoalBlocks.PEAT) });
 	//coal pellet
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersItems, 16, EnumTiersItems.COALPELLET.ordinal()), new Object[] { getOredict(EnumTiersItems.ANTHRACITE) }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersItems, 12, EnumTiersItems.COALPELLET.ordinal()), new Object[] { getOredict(EnumTiersItems.BITUMINOUS) }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersItems, 8,  EnumTiersItems.COALPELLET.ordinal()), new Object[] { new ItemStack(Items.COAL, 1, 0) }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersItems, 6,  EnumTiersItems.COALPELLET.ordinal()), new Object[] { new ItemStack(Items.COAL, 1, 1) }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersItems, 5,  EnumTiersItems.COALPELLET.ordinal()), new Object[] { getOredict(EnumTiersItems.LIGNITE) }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersItems, 3,  EnumTiersItems.COALPELLET.ordinal()), new Object[] { getOredict(EnumTiersItems.TIERCHARCOAL) }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ModItems.tiersItems, 2,  EnumTiersItems.COALPELLET.ordinal()), new Object[] { getOredict(EnumTiersItems.DRYPEAT) }));
-	//vanilla torches
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.TORCH, 8), new Object[] { "Y","X", 'Y', getOredict(EnumTiersItems.ANTHRACITE), 	 'X', "stickWood", }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.TORCH, 6), new Object[] { "Y","X", 'Y', getOredict(EnumTiersItems.BITUMINOUS), 	 'X', "stickWood", }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.TORCH, 3), new Object[] { "Y","X", 'Y', getOredict(EnumTiersItems.LIGNITE), 	 'X', "stickWood", }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.TORCH, 1), new Object[] { "Y","X", 'Y', getOredict(EnumTiersItems.DRYPEAT), 	 'X', "stickWood", }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.TORCH, 2), new Object[] { "Y","X", 'Y', getOredict(EnumTiersItems.TIERCHARCOAL), 'X', "stickWood", }));
+		GameRegistry.addShapelessRecipe(new ResourceLocation(Reference.MODID, "anthracite_item_to_pellet"), new ResourceLocation(Reference.MODID, "fuel"), new ItemStack(ModItems.TIER_ITEMS, 16, EnumTiersItems.COALPELLET.ordinal()), 	new Ingredient[] { getOredict(EnumTiersItems.ANTHRACITE) });
+		GameRegistry.addShapelessRecipe(new ResourceLocation(Reference.MODID, "bituminous_item_to_pellet"), new ResourceLocation(Reference.MODID, "fuel"), new ItemStack(ModItems.TIER_ITEMS, 12, EnumTiersItems.COALPELLET.ordinal()), 	new Ingredient[] { getOredict(EnumTiersItems.BITUMINOUS) });
+		GameRegistry.addShapelessRecipe(new ResourceLocation(Reference.MODID, "coal_item_to_pellet"), new ResourceLocation(Reference.MODID, "fuel"),new ItemStack(ModItems.TIER_ITEMS, 8,  EnumTiersItems.COALPELLET.ordinal()), 			new Ingredient[] { Ingredient.fromStacks(new ItemStack(Items.COAL, 1, 0)) });
+		GameRegistry.addShapelessRecipe(new ResourceLocation(Reference.MODID, "charcoal_item_to_pellet"), new ResourceLocation(Reference.MODID, "fuel"),new ItemStack(ModItems.TIER_ITEMS, 6,  EnumTiersItems.COALPELLET.ordinal()), 		new Ingredient[] { Ingredient.fromStacks(new ItemStack(Items.COAL, 1, 1)) });
+		GameRegistry.addShapelessRecipe(new ResourceLocation(Reference.MODID, "lignite_item_to_pellet"), new ResourceLocation(Reference.MODID, "fuel"),new ItemStack(ModItems.TIER_ITEMS, 5,  EnumTiersItems.COALPELLET.ordinal()), 		new Ingredient[] { getOredict(EnumTiersItems.LIGNITE) });
+		GameRegistry.addShapelessRecipe(new ResourceLocation(Reference.MODID, "tier_charcoal_item_to_pellet"), new ResourceLocation(Reference.MODID, "fuel"),new ItemStack(ModItems.TIER_ITEMS, 3,  EnumTiersItems.COALPELLET.ordinal()),	new Ingredient[] { getOredict(EnumTiersItems.TIERCHARCOAL) });
+		GameRegistry.addShapelessRecipe(new ResourceLocation(Reference.MODID, "drypeat_item_to_pellet"), new ResourceLocation(Reference.MODID, "fuel"),new ItemStack(ModItems.TIER_ITEMS, 2,  EnumTiersItems.COALPELLET.ordinal()), 		new Ingredient[] { getOredict(EnumTiersItems.DRYPEAT) });
 
 	//charcoal smelting
     	for(ItemStack ore : OreDictionary.getOres("logWood")) {
-            if(ore != null)  {
+            if(!ore.isEmpty()){
                if(ore.getItemDamage() != -1 || ore.getItemDamage() != OreDictionary.WILDCARD_VALUE) {
-            		GameRegistry.addSmelting(ore, new ItemStack(ModItems.tiersItems, 1, EnumTiersItems.TIERCHARCOAL.ordinal()), 1.0F);
+            		GameRegistry.addSmelting(ore, new ItemStack(ModItems.TIER_ITEMS, 1, EnumTiersItems.TIERCHARCOAL.ordinal()), 1.0F);
                }
             }
         }
+
+		MachineRecipes.machinesRecipes();
 
 	}
 

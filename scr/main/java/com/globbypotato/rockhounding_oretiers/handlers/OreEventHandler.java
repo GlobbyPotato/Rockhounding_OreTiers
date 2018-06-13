@@ -11,15 +11,13 @@ public class OreEventHandler {
 		    case IRON:
 		    	if(ModConfig.enableIronTiers){
 			    		event.setResult(Result.DENY); break;
-		    	}else{
-		    		event.setResult(Result.DEFAULT); break;
 		    	}
+			event.setResult(Result.DEFAULT); break;
 		    case COAL:
 		    	if(ModConfig.enableCoalTiers){
 					event.setResult(Result.DENY); break;
-		    	}else{
-		    		event.setResult(Result.DEFAULT); break;
 		    	}
+			event.setResult(Result.DEFAULT); break;
 		    default:
 	    }
     }
