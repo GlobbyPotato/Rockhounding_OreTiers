@@ -4,20 +4,33 @@ import net.minecraft.item.ItemStack;
 
 public class DrierRecipes {
 
-	private ItemStack input;
-	private ItemStack output;
+	private ItemStack input, output;
+	private int refining;
+	boolean oredict;
 
-	public DrierRecipes(ItemStack input, ItemStack output){
+	public DrierRecipes(ItemStack input, boolean oredict, ItemStack output, int refining){
 		this.input = input;
 		this.output = output;
+		this.refining = refining;
+		this.oredict = oredict;
 	}
 
 	public ItemStack getInput(){
-		return this.input.copy();
+		if(!this.input.isEmpty()) return this.input.copy();
+		return ItemStack.EMPTY;
+	}
+
+	public boolean canOredict(){
+		return this.oredict;
 	}
 
 	public ItemStack getOutput() {
-		return this.output.copy();
+		if(!this.output.isEmpty()) return this.output.copy();
+		return ItemStack.EMPTY;
+	}
+
+	public int getRefining(){
+		return this.refining;
 	}
 
 }

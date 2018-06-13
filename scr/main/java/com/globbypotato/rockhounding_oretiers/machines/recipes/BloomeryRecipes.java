@@ -16,15 +16,18 @@ public class BloomeryRecipes {
 	}
 
 	public ItemStack getInput(){
-		return this.input.copy();
+		if(!this.input.isEmpty()) return this.input.copy();
+		return ItemStack.EMPTY;
 	}
 
 	public FluidStack getMolten(){
-		return this.molten;
+		if(this.molten != null) return this.molten.copy();
+		return null;
 	}
 
 	public ItemStack getOutput() {
-		return this.output.copy();
+		if(!this.output.isEmpty()) return this.output.copy();
+		return ItemStack.EMPTY;
 	}
 
 }
