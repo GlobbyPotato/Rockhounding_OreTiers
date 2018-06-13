@@ -4,12 +4,13 @@ package com.globbypotato.rockhounding_oretiers.compat.jei;
 import javax.annotation.Nonnull;
 
 import com.globbypotato.rockhounding_core.utils.Translator;
+import com.globbypotato.rockhounding_oretiers.handlers.Reference;
 
 import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
-public abstract class RHRecipeCategory<T extends IRecipeWrapper> extends BlankRecipeCategory<T> {
+public abstract class RHRecipeCategory<T extends IRecipeWrapper> implements IRecipeCategory<T> {
 	@Nonnull
 	private final IDrawable background;
 	@Nonnull
@@ -23,12 +24,18 @@ public abstract class RHRecipeCategory<T extends IRecipeWrapper> extends BlankRe
 	@Nonnull
 	@Override
 	public String getTitle() {
-		return localizedName;
+		return this.localizedName;
 	}
 
 	@Nonnull
 	@Override
 	public IDrawable getBackground() {
-		return background;
+		return this.background;
 	}
+	
+	@Override
+	public String getModName() {
+		return Reference.NAME;
+	}
+
 }

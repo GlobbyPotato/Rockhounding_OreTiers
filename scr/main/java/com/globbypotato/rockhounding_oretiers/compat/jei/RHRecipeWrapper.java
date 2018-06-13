@@ -2,9 +2,9 @@ package com.globbypotato.rockhounding_oretiers.compat.jei;
 
 import javax.annotation.Nonnull;
 
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 
-public abstract class RHRecipeWrapper<R> extends BlankRecipeWrapper {
+public abstract class RHRecipeWrapper<R> implements IRecipeWrapper {
 
 	@Nonnull
 	private final R recipe;
@@ -15,7 +15,7 @@ public abstract class RHRecipeWrapper<R> extends BlankRecipeWrapper {
 
 	@Nonnull
 	public R getRecipe() {
-		return recipe;
+		return this.recipe;
 	}
 
 }
