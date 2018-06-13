@@ -21,19 +21,21 @@ public class DrierRecipeWrapper extends RHRecipeWrapper<DrierRecipes> {
 	public static List<DrierRecipeWrapper> getRecipes() {
 		List<DrierRecipeWrapper> recipes = new ArrayList<>();
 		for (DrierRecipes recipe : MachineRecipes.drierRecipe) {
-			recipes.add(new DrierRecipeWrapper(recipe));
+			if(!recipe.getInput().isEmpty() && !recipe.getOutput().isEmpty()){
+				recipes.add(new DrierRecipeWrapper(recipe));
+			}
 		}
 		return recipes;
 	}
 
-	@Override
+	@Nonnull
 	public List<ItemStack> getInputs(){
 		List<ItemStack> inputs = new ArrayList<ItemStack>();
 		inputs.add(getRecipe().getInput());
 		return inputs;
 	}
 
-	@Override
+	@Nonnull
 	public List<ItemStack> getOutputs(){
 		List<ItemStack> outputs = new ArrayList<ItemStack>();
 		outputs.add(getRecipe().getOutput());
@@ -41,6 +43,9 @@ public class DrierRecipeWrapper extends RHRecipeWrapper<DrierRecipes> {
 	}
 
 	@Override
-	public void getIngredients(IIngredients ingredients) {}
+	public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, getInputs());
+        ingredients.setOutputs(ItemStack.class, getOutputs());
+	}
 
 }
