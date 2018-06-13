@@ -40,13 +40,14 @@ public class SeamFireIB extends ItemBlock {
 	}
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
         IBlockState iblockstate = worldIn.getBlockState(pos);
         Block block = iblockstate.getBlock();
+		ItemStack stack = playerIn.getHeldItem(EnumHand.MAIN_HAND);
         if(block == Blocks.CAULDRON){
-            int i = ((Integer)iblockstate.getValue(BlockCauldron.LEVEL)).intValue();
+            int i = iblockstate.getValue(BlockCauldron.LEVEL).intValue();
             if(i == 3){
-	        	if(playerIn.getHeldItem(EnumHand.MAIN_HAND) != null && playerIn.getHeldItemMainhand().getItem() == Item.getItemFromBlock(ModBlocks.seamFire)){
+	        	if(!stack.isEmpty() && playerIn.getHeldItemMainhand().getItem() == Item.getItemFromBlock(ModBlocks.SEAM_FIRE)){
 	                if (!worldIn.isRemote){
                         if (!playerIn.inventory.addItemStackToInventory(new ItemStack(Blocks.COAL_BLOCK))){
                         	playerIn.dropItem(new ItemStack(Blocks.COAL_BLOCK), false);
@@ -55,40 +56,36 @@ public class SeamFireIB extends ItemBlock {
         		        playerIn.addStat(StatList.CAULDRON_USED);
 	                }
                     playerIn.playSound(SoundEvents.BLOCK_LAVA_EXTINGUISH, 0.5F, 1.5F);
-                    spawnParticles(worldIn, iblockstate, pos);
-        			playerIn.getHeldItem(EnumHand.MAIN_HAND).stackSize--;
+                    spawnParticles(worldIn, pos);
+        			playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
 			        return EnumActionResult.SUCCESS;
-	        	}else{
-	    	        return EnumActionResult.FAIL;
 	        	}
-        	}else{
-    	        return EnumActionResult.FAIL;
+				return EnumActionResult.FAIL;
         	}
-	    }else{
-	        if (!block.isReplaceable(worldIn, pos)){
-	            pos = pos.offset(facing);
-	        }
-	        if (stack.stackSize != 0 && playerIn.canPlayerEdit(pos, facing, stack) && worldIn.canBlockBePlaced(this.block, pos, false, facing, (Entity)null, stack)){
-	            int i = this.getMetadata(stack.getMetadata());
-	            IBlockState iblockstate1 = this.block.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, i, playerIn);
-	            if (placeBlockAt(stack, playerIn, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1)){
-	                SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, playerIn);
-	                worldIn.playSound(playerIn, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-	                --stack.stackSize;
-	            }
-	            return EnumActionResult.SUCCESS;
-	        }else{
-	            return EnumActionResult.FAIL;
-	        }
+			return EnumActionResult.FAIL;
 	    }
+		if (!block.isReplaceable(worldIn, pos)){
+		    pos = pos.offset(facing);
+		}
+		if (!stack.isEmpty() && playerIn.canPlayerEdit(pos, facing, stack) && worldIn.mayPlace(this.block, pos, false, facing, (Entity)null)){
+		    int i = this.getMetadata(stack.getMetadata());
+		    IBlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, playerIn, hand);
+		    if (placeBlockAt(stack, playerIn, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1)){
+		        SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, playerIn);
+		        worldIn.playSound(playerIn, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+		        stack.shrink(1);
+		    }
+		    return EnumActionResult.SUCCESS;
+		}
+		return EnumActionResult.FAIL;
     }
 
     Random rand = new Random();
-	private void spawnParticles(World worldIn, IBlockState iblockstate, BlockPos pos) {
+	private void spawnParticles(World worldIn, BlockPos pos) {
 		for (int p = 0; p < 8; p++){
-            double d0 = (double)pos.getX() + rand.nextDouble();
-            double d1 = (double)pos.getY() + 1D;
-            double d2 = (double)pos.getZ() + rand.nextDouble();
+            double d0 = pos.getX() + this.rand.nextDouble();
+            double d1 = pos.getY() + 1D;
+            double d2 = pos.getZ() + this.rand.nextDouble();
             worldIn.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0, d1, d2, 0.0D, 0.0D, 0.0D, new int[0]);
 		}
 	}
