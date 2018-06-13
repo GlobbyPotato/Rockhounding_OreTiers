@@ -3,99 +3,128 @@ package com.globbypotato.rockhounding_oretiers.machines.tileentity;
 import java.util.ArrayList;
 
 import com.globbypotato.rockhounding_core.machines.tileentity.MachineStackHandler;
-import com.globbypotato.rockhounding_core.machines.tileentity.TileEntityMachineEnergy;
+import com.globbypotato.rockhounding_core.machines.tileentity.TileEntityInv;
 import com.globbypotato.rockhounding_core.machines.tileentity.WrappedItemHandler;
 import com.globbypotato.rockhounding_core.machines.tileentity.WrappedItemHandler.WriteMode;
-import com.globbypotato.rockhounding_core.utils.Utils;
+import com.globbypotato.rockhounding_core.utils.CoreUtils;
 import com.globbypotato.rockhounding_oretiers.handlers.ModConfig;
-import com.globbypotato.rockhounding_oretiers.machines.gui.GuiCoalRefiner;
+import com.globbypotato.rockhounding_oretiers.machines.gui.GuiBase;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.RefinerRecipes;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockTorch;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class TileEntityCoalRefiner extends TileEntityMachineEnergy {
+public class TileEntityCoalRefiner extends TileEntityInv {
 	private boolean cooking;
 
-	public static int totInput = 1;
-	public static int totOutput = 1;
-
+	public static int inputSlots = 1;
+	public static int outputSlots = 1;
 	public TileEntityCoalRefiner() {
-		super(totInput, totOutput, 0);
+		super(inputSlots, outputSlots, 0);
 
-		input =  new MachineStackHandler(totInput, this){
+		this.input =  new MachineStackHandler(inputSlots, this){
 			@Override
 			public ItemStack insertItem(int slot, ItemStack insertingStack, boolean simulate){
-				if(slot == INPUT_SLOT && hasRecipe(insertingStack)){
+				if(slot == INPUT_SLOT && isValidIngredient(insertingStack)){
 					return super.insertItem(slot, insertingStack, simulate);
 				}
 				return insertingStack;
 			}
 		};
-		automationInput = new WrappedItemHandler(input, WriteMode.IN);
-		this.markDirtyClient();
+		this.automationInput = new WrappedItemHandler(this.input, WriteMode.IN);
+	}
+
+
+
+	//-------------- SLOTS ---------------- 
+	public ItemStack inputSlot(){
+		return this.input.getStackInSlot(INPUT_SLOT);
+	}
+
+	public ItemStack outputSlot(){
+		return this.output.getStackInSlot(OUTPUT_SLOT);
 	}
 
 
 
 	//-------------- HANDLERS ---------------- 
-    public int getCookTime(){
-        return ModConfig.refiningMultiplier <= 1 ? ModConfig.baseSpeed : ModConfig.baseSpeed * ModConfig.refiningMultiplier;
-    }
-
 	@Override
 	public int getGUIHeight() {
-		return GuiCoalRefiner.HEIGHT;
+		return GuiBase.HEIGHT;
+	}
+
+	public String getName() {
+		return "coal_refiner";
+	}
+
+	public boolean isBurning(){
+		return this.cooking;
 	}
 
 
 
 	//-------------- CUSTOM ---------------- 
-	public boolean hasRecipe(ItemStack stack){
-		return MachineRecipes.refinerRecipe.stream().anyMatch(
-				recipe -> stack != null && recipe.getInput() != null && stack.isItemEqual(recipe.getInput()));
+	public ArrayList<RefinerRecipes> recipeList(){
+		return MachineRecipes.refinerRecipe;
 	}
 
-	private boolean isValidOredict(ItemStack stack) {
-		if(stack != null){
-			ArrayList<Integer> inputOreIDs = Utils.intArrayToList(OreDictionary.getOreIDs(stack));
-			for(RefinerRecipes recipe: MachineRecipes.refinerRecipe){
-				ArrayList<Integer> recipeOreIDs = Utils.intArrayToList(OreDictionary.getOreIDs(recipe.getInput()));
-				for(Integer oreID: recipeOreIDs){
-					if(inputOreIDs.contains(oreID)) return true;
-				}
-			}
-		}
-		return false;
+	public RefinerRecipes getRecipeList(int x){
+		return recipeList().get(x);
 	}
 
-	public ItemStack getRecipeOutput(ItemStack inputStack){
-		if(inputStack != null){
-			for(RefinerRecipes recipe: MachineRecipes.refinerRecipe){
-				if(inputStack.isItemEqual(recipe.getInput())){
-					return recipe.getOutput();
+	public RefinerRecipes getCurrentRecipe(){
+		if(!inputSlot().isEmpty()){
+			for(int x = 0; x < recipeList().size(); x++){
+				if(!getRecipeList(x).getInput().isEmpty() && CoreUtils.isMatchingIngredient(inputSlot(), getRecipeList(x).canOredict(), getRecipeList(x).getInput())){
+					return getRecipeList(x);
 				}
 			}
 		}
 		return null;
 	}
 
-	public boolean isHeated() {
-		return  (checkBlockInstance(0, -1, 0) || (checkBlock(0, -1, 0, Blocks.HOPPER) && checkBlockInstance(0, -2, 0))) ||
-				(checkBlock(0, -1, 0, Blocks.FIRE)  || (checkBlock(0, -1, 0, Blocks.HOPPER) && checkBlock(0, -2, 0, Blocks.FIRE)));
+	public boolean isValidRecipe() {
+		return getCurrentRecipe() != null;
 	}
 
-	private boolean checkBlockInstance(int offX, int offY, int offZ){
-		return worldObj.getBlockState(new BlockPos(pos.getX() + offX, pos.getY() + offY, pos.getZ() + offZ)).getBlock() instanceof BlockTorch;
+	private boolean isValidIngredient(ItemStack stack) {
+		if(!stack.isEmpty()){
+			ArrayList<Integer> inputOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(stack));
+			if(!inputOreIDs.isEmpty()){
+				for(RefinerRecipes recipe: recipeList()){
+					if(recipe.canOredict()){
+						ArrayList<Integer> recipeOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(recipe.getInput()));
+						if(!inputOreIDs.isEmpty()){
+							if(CoreUtils.compareDictArrays(inputOreIDs, recipeOreIDs)){
+								return true;
+							}
+						}
+					}
+				}
+			}
+			return recipeList().stream().anyMatch(recipe -> !stack.isEmpty() && !recipe.getInput().isEmpty() && stack.isItemEqual(recipe.getInput()));
+		}
+		return false;
+	}
+
+    public int getCooktimeMax(){
+        return isValidRecipe() ? getCurrentRecipe().getRefining() : ModConfig.refiningSpeed;
+    }
+
+	public boolean isHeated() {
+		return  (burnableBlocks(-1)  || (checkBlock(0, -1, 0, Blocks.HOPPER) && burnableBlocks(-2)));
+	}
+
+	private boolean burnableBlocks(int i) {
+		return checkBlock(0, i, 0, Blocks.FIRE) || checkBlock(0, i, 0, Blocks.LAVA);
 	}
 
 	private boolean checkBlock(int offX, int offY, int offZ, Block block){
-		return worldObj.getBlockState(new BlockPos(pos.getX() + offX, pos.getY() + offY, pos.getZ() + offZ)).getBlock() == block;
+		return this.world.getBlockState(new BlockPos(this.pos.getX() + offX, this.pos.getY() + offY, this.pos.getZ() + offZ)).getBlock() == block;
 	}
 
 	@Override
@@ -104,11 +133,10 @@ public class TileEntityCoalRefiner extends TileEntityMachineEnergy {
 	}
 
 	private void burnState(){
-		if(worldObj.isRemote){
-			if (isCooking() != cooking) {
-				cooking = isCooking();
-				worldObj.notifyBlockOfStateChange(pos, worldObj.getBlockState(pos).getBlock());
-				worldObj.markBlockRangeForRenderUpdate(pos, pos);
+		if(this.world.isRemote){
+			if (isCooking() != isBurning()) {
+				this.cooking = isCooking();
+				this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
 			}
 		}
 	}
@@ -118,37 +146,34 @@ public class TileEntityCoalRefiner extends TileEntityMachineEnergy {
 	//-------------- PROCESS ---------------- 
 	@Override
 	public void update() {
-		if(!worldObj.isRemote){
-			if(canRefine()){
-	            this.cookTime++;
-				if(cookTime >= getCookTime()) { 
-					cookTime = 0; 
-					refine(); 
+		if(!this.world.isRemote){
+			if(!this.inputSlot().isEmpty()){
+				if(canRefine()){
+		            this.cooktime++;
+					if(getCooktime() >= getCooktimeMax()) { 
+						this.cooktime = 0; 
+						refine(); 
+					}
+					this.markDirtyClient();
+				}else{
+					tickOff();
 				}
 			}else{
-				cookTime = 0;
+				tickOff();
 			}
-			this.markDirtyClient();
 		}
 		burnState();
 	}
 
 	private boolean canRefine() {
-		return (hasRecipe(input.getStackInSlot(INPUT_SLOT)) || isValidOredict(input.getStackInSlot(INPUT_SLOT)))  
-			&& canOutput(input.getStackInSlot(INPUT_SLOT)) 
-			&& (isHeated());
+		return isHeated()
+			&& isValidRecipe()
+			&& this.output.canSetOrStack(outputSlot(), getCurrentRecipe().getOutput());
 	}
 
 	private void refine() {
-		if(canRefine()) {
-			ItemStack recipeOutput = getRecipeOutput(input.getStackInSlot(INPUT_SLOT));
-			output.setOrStack(OUTPUT_SLOT, recipeOutput);
-			input.decrementSlot(INPUT_SLOT);
-		}
+		this.output.setOrStack(OUTPUT_SLOT, getCurrentRecipe().getOutput());
+		this.input.decrementSlot(INPUT_SLOT);
 	}
 
-	private boolean canOutput(ItemStack stack){
-		ItemStack recipeOutput = getRecipeOutput(stack);
-		return recipeOutput != null && output.canSetOrStack(output.getStackInSlot(OUTPUT_SLOT), recipeOutput);
-	}
 }

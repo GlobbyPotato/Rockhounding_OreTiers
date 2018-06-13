@@ -1,11 +1,13 @@
 package com.globbypotato.rockhounding_oretiers.machines.renders;
 
+import com.globbypotato.rockhounding_core.machines.tileentity.TileEntityInv;
 import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityPeatDrier;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -13,26 +15,27 @@ public class RendererPeatDrier extends TileEntitySpecialRenderer<TileEntityPeatD
 	private static EntityItem peat;
 
 	@Override
-	public void renderTileEntityAt(TileEntityPeatDrier te, double x, double y, double z, float partialTicks, int destroyStage) {
-		super.renderTileEntityAt(te, x, y, z, partialTicks, destroyStage);
+	public void render(TileEntityPeatDrier drier, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		super.render(drier, x, y, z, partialTicks, destroyStage, alpha);
 
-		TileEntityPeatDrier drier = (TileEntityPeatDrier)te;
 		if(drier != null){
-			if(drier.getInput().getStackInSlot(drier.INPUT_SLOT) != null){
-				ItemStack inputStack = new ItemStack(drier.getInput().getStackInSlot(drier.INPUT_SLOT).getItem(), 1, drier.getInput().getStackInSlot(drier.INPUT_SLOT).getItemDamage());
-				int peatSize = drier.getInput().getStackInSlot(drier.INPUT_SLOT).stackSize;
-				World world = Minecraft.getMinecraft().theWorld;
+			if(!drier.getInput().getStackInSlot(TileEntityInv.INPUT_SLOT).isEmpty()){
+				ItemStack inputStack = new ItemStack(drier.getInput().getStackInSlot(TileEntityInv.INPUT_SLOT).getItem(), 1, drier.getInput().getStackInSlot(TileEntityInv.INPUT_SLOT).getItemDamage());
+				int peatSize = drier.getInput().getStackInSlot(TileEntityInv.INPUT_SLOT).getCount();
+				World world = Minecraft.getMinecraft().world;
 	
-				if(inputStack != null){
+				if(!inputStack.isEmpty()){
 					peat = new EntityItem(world, 0, 0, 0, inputStack);
 					peat.hoverStart = 0;
+					double h = -0.27;
+					if(inputStack.getItem() instanceof ItemBlock){h = -0.37;}
 					GlStateManager.pushMatrix();
 					{
 						GlStateManager.translate(x, y, z);
 						GlStateManager.rotate(90F, 1, 0, 0);
 						GlStateManager.scale(0.5, 0.5, 0.5);
-						GlStateManager.translate(-0.25, -0.25, -0.3);
-						int i = 0; int j = 0; int k = 1;
+						GlStateManager.translate(-0.25, -0.25, h);
+						int i = 0; int k = 1;
 						float gapX = 0F;
 						float gapZ = 0F;
 						int slotSize = peatSize/4;
@@ -59,7 +62,7 @@ public class RendererPeatDrier extends TileEntitySpecialRenderer<TileEntityPeatD
 								}
 							}
 							GlStateManager.translate(gapX, gapZ, 0);
-							Minecraft.getMinecraft().getRenderManager().doRenderEntity(peat, 0, 0, 0, 0F, 0F, false);
+							Minecraft.getMinecraft().getRenderManager().renderEntity(peat, 0, 0, 0, 0F, 0F, false);
 						}
 					}
 					GlStateManager.popMatrix();

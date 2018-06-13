@@ -1,5 +1,6 @@
 package com.globbypotato.rockhounding_oretiers.machines.renders;
 
+import com.globbypotato.rockhounding_core.machines.tileentity.TileEntityInv;
 import com.globbypotato.rockhounding_oretiers.machines.tileentity.TileEntityCoalRefiner;
 
 import net.minecraft.client.Minecraft;
@@ -13,17 +14,15 @@ public class RendererCoalRefiner extends TileEntitySpecialRenderer<TileEntityCoa
 	private static EntityItem peat;
 
 	@Override
-	public void renderTileEntityAt(TileEntityCoalRefiner te, double x, double y, double z, float partialTicks, int destroyStage) {
-		super.renderTileEntityAt(te, x, y, z, partialTicks, destroyStage);
+	public void render(TileEntityCoalRefiner refiner, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		super.render(refiner, x, y, z, partialTicks, destroyStage, alpha);
 
-		TileEntityCoalRefiner refiner = (TileEntityCoalRefiner)te;
 		if(refiner != null){
-			if(refiner.getInput().getStackInSlot(refiner.INPUT_SLOT) != null){
-				ItemStack inputStack = new ItemStack(refiner.getInput().getStackInSlot(refiner.INPUT_SLOT).getItem(), 1, refiner.getInput().getStackInSlot(refiner.INPUT_SLOT).getItemDamage());
-				int peatSize = refiner.getInput().getStackInSlot(refiner.INPUT_SLOT).stackSize;
-				World world = Minecraft.getMinecraft().theWorld;
+			if(!refiner.getInput().getStackInSlot(TileEntityInv.INPUT_SLOT).isEmpty()){
+				ItemStack inputStack = new ItemStack(refiner.getInput().getStackInSlot(TileEntityInv.INPUT_SLOT).getItem(), 1, refiner.getInput().getStackInSlot(TileEntityInv.INPUT_SLOT).getItemDamage());
+				World world = Minecraft.getMinecraft().world;
 				int metadata = refiner.getBlockMetadata();
-				if(inputStack != null){
+				if(!inputStack.isEmpty()){
 					peat = new EntityItem(world, 0, 0, 0, inputStack);
 					peat.hoverStart = 0;
 					GlStateManager.pushMatrix();
@@ -40,7 +39,7 @@ public class RendererCoalRefiner extends TileEntitySpecialRenderer<TileEntityCoa
 						}else if(metadata == 5){
 							GlStateManager.translate(0.30, 0.04, -0.13);
 						}
-						Minecraft.getMinecraft().getRenderManager().doRenderEntity(peat, 0, 0, 0, 0F, 0F, false);
+						Minecraft.getMinecraft().getRenderManager().renderEntity(peat, 0, 0, 0, 0F, 0F, false);
 					}
 					GlStateManager.popMatrix();
 				}

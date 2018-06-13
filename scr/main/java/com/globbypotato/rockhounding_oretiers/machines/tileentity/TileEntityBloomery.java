@@ -2,21 +2,19 @@ package com.globbypotato.rockhounding_oretiers.machines.tileentity;
 
 import java.util.ArrayList;
 
-import com.globbypotato.rockhounding_core.machines.tileentity.IFluidHandlingTile;
 import com.globbypotato.rockhounding_core.machines.tileentity.MachineStackHandler;
 import com.globbypotato.rockhounding_core.machines.tileentity.TemplateStackHandler;
-import com.globbypotato.rockhounding_core.machines.tileentity.TileEntityMachineTank;
+import com.globbypotato.rockhounding_core.machines.tileentity.TileEntityFueledTank;
 import com.globbypotato.rockhounding_core.machines.tileentity.WrappedItemHandler;
 import com.globbypotato.rockhounding_core.machines.tileentity.WrappedItemHandler.WriteMode;
 import com.globbypotato.rockhounding_core.utils.CoreUtils;
-import com.globbypotato.rockhounding_core.utils.FuelUtils;
-import com.globbypotato.rockhounding_core.utils.Utils;
 import com.globbypotato.rockhounding_oretiers.handlers.ModConfig;
-import com.globbypotato.rockhounding_oretiers.machines.gui.GuiBloomery;
+import com.globbypotato.rockhounding_oretiers.machines.gui.GuiBase;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.BloomeryRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 import com.globbypotato.rockhounding_oretiers.utils.ToolUtils;
 
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
@@ -26,8 +24,11 @@ import net.minecraftforge.fluids.capability.templates.FluidHandlerConcatenate;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class TileEntityBloomery extends TileEntityMachineTank implements IFluidHandlingTile {
-	private ItemStackHandler template = new TemplateStackHandler(1);
+public class TileEntityBloomery extends TileEntityFueledTank {
+	public static int inputSlots = 3;
+	public static int outputSlots = 1;
+	public static int templateSlots = 1;
+	private ItemStackHandler template = new TemplateStackHandler(templateSlots);
 
 	public static int consumedBloom;
 	private boolean cooking;
@@ -36,19 +37,13 @@ public class TileEntityBloomery extends TileEntityMachineTank implements IFluidH
 	public int castTime;
 	public boolean drainScan;
 
-	FluidStack moltenStack;
-	ItemStack outputStack;
-
-	public static int totInput = 3;
-	public static int totOutput = 1;
-	
 	public TileEntityBloomery() {
-		super(totInput, totOutput, 1);
+		super(inputSlots, outputSlots, templateSlots);
 
-		bloomTank = new FluidTank(Fluid.BUCKET_VOLUME + ModConfig.tankCapacity){
+		this.bloomTank = new FluidTank(Fluid.BUCKET_VOLUME + ModConfig.tankCapacity){
 			@Override  
-			public boolean canFillFluidType(FluidStack fluid){
-				return moltenHasRecipe(fluid);
+			public boolean canFillFluidType(FluidStack fluidin){
+				return moltenHasRecipe(fluidin);
 		    }
 
 			@Override
@@ -56,16 +51,15 @@ public class TileEntityBloomery extends TileEntityMachineTank implements IFluidH
 		        return canDrainTank();
 		    }
 		};
-		bloomTank.setTileEntity(this);
-		bloomTank.setCanFill(false);
+		this.bloomTank.setTileEntity(this);
 
-		input =  new MachineStackHandler(totInput, this){
+		this.input =  new MachineStackHandler(inputSlots, this){
 			@Override
 			public ItemStack insertItem(int slot, ItemStack insertingStack, boolean simulate){
-				if(slot == INPUT_SLOT && hasRecipe(insertingStack)){
+				if(slot == INPUT_SLOT && isValidInput(insertingStack)){
 					return super.insertItem(slot, insertingStack, simulate);
 				}
-				if(slot == FUEL_SLOT && FuelUtils.isItemFuel(insertingStack)){
+				if (slot == fuelID() && isGatedPowerSource(insertingStack)){
 					return super.insertItem(slot, insertingStack, simulate);
 				}
 				if(slot == CONSUMABLE_SLOT && CoreUtils.hasConsumable(ToolUtils.hammer, insertingStack)){
@@ -74,66 +68,25 @@ public class TileEntityBloomery extends TileEntityMachineTank implements IFluidH
 				return insertingStack;
 			}
 		};
-		automationInput = new WrappedItemHandler(input, WriteMode.IN);
+		this.automationInput = new WrappedItemHandler(this.input, WriteMode.IN);
 		this.markDirtyClient();
 	}
 
 
 
-	//-------------- HANDLERS ---------------- 
-	public ItemStackHandler getTemplate(){
-		return this.template;
+	//----------------------- SLOTS -----------------------
+	public ItemStack inputSlot(){
+		return this.input.getStackInSlot(INPUT_SLOT);
 	}
 
-	public int getCookTime(){
-        return ModConfig.bloomingSpeed;
-    }
-
-	@Override
-	public int getGUIHeight() {
-		return GuiBloomery.HEIGHT;
+	public ItemStack outputSlot(){
+		return this.output.getStackInSlot(OUTPUT_SLOT);
 	}
 
-
-
-	//-------------- CUSTOM ---------------- 
-	public boolean hasRecipe(ItemStack stack){
-		return MachineRecipes.bloomeryRecipe.stream().anyMatch(
-				recipe -> stack != null && recipe.getInput() != null && stack.isItemEqual(recipe.getInput()));
+	public ItemStack hammerSlot(){
+		return this.input.getStackInSlot(CONSUMABLE_SLOT);
 	}
 
-	public static boolean moltenHasRecipe(FluidStack stack){
-		return MachineRecipes.bloomeryRecipe.stream().anyMatch(
-				recipe -> stack != null && recipe.getMolten() != null && recipe.getMolten().isFluidEqual(stack));
-	}
-
-	public boolean hasOutput(){
-		return MachineRecipes.bloomeryRecipe.stream().anyMatch(
-				recipe -> bloomTank.getFluid() != null && recipe.getMolten() != null && recipe.getOutput() != null && bloomTank.getFluid().isFluidEqual(recipe.getMolten()) && bloomTank.getFluidAmount() >= consumedBloom);
-	}
-
-	public boolean isCorrectMolten(FluidStack fluid){
-		return bloomTank.getFluid() != null && bloomTank.getFluid().isFluidEqual(fluid) && bloomTank.getFluidAmount() <= bloomTank.getCapacity() - fluid.amount;
-	}
-
-	public boolean canDrainTank() {
-		return bloomTank.getFluid() != null && bloomTank.getFluid().amount > 0 && drainScan;
-	}
-
-	@Override
-	public boolean isCooking(){
-		return (canSmelt() && cookTime > 0) || (canCast() && castTime > 0);
-	}
-
-	private void burnState(){
-		if(worldObj.isRemote){
-			if (isCooking() != cooking) {
-				cooking = isCooking();
-				worldObj.notifyBlockOfStateChange(pos, worldObj.getBlockState(pos).getBlock());
-				worldObj.markBlockRangeForRenderUpdate(pos, pos);
-			}
-		}
-	}
 
 
 	//-------------- I/O ---------------- 
@@ -148,8 +101,8 @@ public class TileEntityBloomery extends TileEntityMachineTank implements IFluidH
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound){
 		super.writeToNBT(compound);
-		compound.setInteger("CastTime", this.castTime);
-		compound.setBoolean("DrainScan", this.drainScan);
+		compound.setInteger("CastTime", getCastTime());
+		compound.setBoolean("DrainScan", isDraining());
 		
 		NBTTagCompound bloomTankNBT = new NBTTagCompound();
 		this.bloomTank.writeToNBT(bloomTankNBT);
@@ -159,18 +112,141 @@ public class TileEntityBloomery extends TileEntityMachineTank implements IFluidH
 
 	@Override
 	public FluidHandlerConcatenate getCombinedTank(){
-		return new FluidHandlerConcatenate(lavaTank, bloomTank);
+		return new FluidHandlerConcatenate(this.lavaTank, this.bloomTank);
+	}
+
+
+
+	//-------------- HANDLERS ---------------- 
+	public ItemStackHandler getTemplate(){
+		return this.template;
+	}
+
+	public int getCooktimeMax(){
+        return ModConfig.bloomingSpeed;
+    }
+
+	@Override
+	public int getGUIHeight() {
+		return GuiBase.HEIGHT;
+	}
+
+	public String getName() {
+		return "bloomery";
 	}
 
 	@Override
-	public void lavaHandler(){
-		if(this.getPower() <= this.getPowerMax() - lavaBurntime()){
-			if(lavaTank.getFluidAmount() >= Fluid.BUCKET_VOLUME){
-				lavaTank.getFluid().amount -= Fluid.BUCKET_VOLUME;
-				this.powerCount += lavaBurntime();
-				this.markDirtyClient();
+	public int fuelID() {
+		return 1;
+	}
+
+
+
+	//-------------- CUSTOM ---------------- 
+	public boolean isDraining(){
+		return this.drainScan;
+	}
+
+	public int getCastTime(){
+		return this.castTime;
+	}
+
+	public int getConsumedBloom(){
+		return this.consumedBloom;
+	}
+
+	public boolean isBurning(){
+		return this.cooking;
+	}
+
+	public boolean canDrainTank() {
+		return this.bloomTank.getFluid() != null && this.bloomTank.getFluidAmount() > 0 && isDraining();
+	}
+
+	@Override
+	public boolean isCooking(){
+		return (canSmelt() && getCooktime() > 0) || (canCast() && getCastTime() > 0);
+	}
+
+	private void burnState(){
+		if(this.world.isRemote){
+			if (isCooking() != isBurning()) {
+				this.cooking = isCooking();
+				this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
 			}
 		}
+	}
+
+
+	
+	//-------------- RECIPE ---------------- 
+	public ArrayList<BloomeryRecipes> recipeList(){
+		return MachineRecipes.bloomeryRecipe;
+	}
+
+	public BloomeryRecipes getRecipeList(int x){
+		return recipeList().get(x);
+	}
+
+	public BloomeryRecipes getCurrentMelting(){
+		if(!inputSlot().isEmpty()){
+			for(int x = 0; x < recipeList().size(); x++){
+				if(!getRecipeList(x).getInput().isEmpty() && CoreUtils.isMatchingIngredient(inputSlot(), getRecipeList(x).getInput())){
+					return getRecipeList(x);
+				}
+			}
+		}
+		return null;
+	}
+
+	public boolean isValidMelting() {
+		return getCurrentMelting() != null;
+	}
+
+	public FluidStack recipeMolten(){
+		return isValidMelting() ? getCurrentMelting().getMolten().copy() : null;
+	}
+
+	public BloomeryRecipes getCurrentCasting(){
+		if(this.bloomTank.getFluid() != null){
+			for(int x = 0; x < recipeList().size(); x++){
+				if(getRecipeList(x).getMolten() != null && this.input.canDrainFluid(this.bloomTank.getFluid(), getRecipeList(x).getMolten(), getConsumedBloom())){
+					return getRecipeList(x);
+				}
+			}
+		}
+		return null;
+	}
+
+	public boolean isValidCasting() {
+		return getCurrentCasting() != null;
+	}
+
+	public ItemStack recipeOutput(){
+		return isValidCasting() ? getCurrentCasting().getOutput().copy() : ItemStack.EMPTY;
+	}
+
+	boolean isValidInput(ItemStack stack) {
+		if(!stack.isEmpty()){
+			ArrayList<Integer> inputOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(stack));
+			if(!inputOreIDs.isEmpty()){
+				for(BloomeryRecipes recipe: recipeList()){
+					ArrayList<Integer> recipeOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(recipe.getInput()));
+					if(!recipeOreIDs.isEmpty()){
+						if(CoreUtils.compareDictArrays(inputOreIDs, recipeOreIDs)){
+							return true;
+						}
+					}
+				}
+			}
+			return recipeList().stream().anyMatch(recipe -> !stack.isEmpty() && !recipe.getInput().isEmpty() && stack.isItemEqual(recipe.getInput()));
+		}
+		return false;
+	}
+	
+	public boolean moltenHasRecipe(FluidStack stack){
+		return recipeList().stream().anyMatch(
+				recipe -> stack != null && recipe.getMolten() != null && recipe.getMolten().isFluidEqual(stack));
 	}
 
 
@@ -178,118 +254,87 @@ public class TileEntityBloomery extends TileEntityMachineTank implements IFluidH
 	//-------------- PROCESS ---------------- 
 	@Override
 	public void update() {
-		burnFuel(input.getStackInSlot(FUEL_SLOT));
-		lavaHandler();
-		if(!worldObj.isRemote){
-			if(canSmelt()){
-				cookTime++; powerCount--;
-				if(cookTime >= getCookTime()) { 
-					cookTime = 0; 
-					addBloom(input.getStackInSlot(INPUT_SLOT)); 
+		if(!this.world.isRemote){
+			boolean flag = false;
+			handleSupplies();
+
+			if(!this.inputSlot().isEmpty()){
+				if(canSmelt()){
+					this.cooktime++; 
+					this.powerCount--;
+					if(getCooktime() >= getCooktimeMax()) { 
+						addBloom(); 
+						this.cooktime = 0; 
+						this.markDirtyClient();
+					}
+					if(!flag) flag = true;
+				}else{
+					tickOff();
 				}
 			}else{
-				cookTime = 0;
+				tickOff();
 			}
 
-			if(canCast()){
-				castTime++;
-				if(castTime >= getCookTime()) { 
-					castTime = 0; 
-					castIngot(); 
+			if(hasBloom()){
+				if(canCast()){
+					this.castTime++;
+					if(getCastTime() >= getCooktimeMax()) { 
+						castIngot(); 
+						this.castTime = 0; 
+					}
+					if(!flag) flag = true;
+				}else{
+					if(this.getCastTime() > 0){
+						this.castTime = 0;
+						this.markDirtyClient();
+					}
 				}
 			}else{
-				castTime = 0;
+				if(this.getCastTime() > 0){
+					this.castTime = 0;
+					this.markDirtyClient();
+				}
 			}
-			this.markDirtyClient();
+
+			if(flag){
+				this.markDirtyClient();
+			}
 		}
+
 		burnState();
 	}
 
-	private boolean canSmelt() {
-		return powerCount >= getCookTime() && (hasRecipe(input.getStackInSlot(INPUT_SLOT)) || isValidOredict(input.getStackInSlot(INPUT_SLOT))) && canContainBloom(input.getStackInSlot(INPUT_SLOT));
+	private void handleSupplies() {
+		fuelHandler(this.input.getStackInSlot(fuelID()));
+		lavaHandler();
 	}
 
-			private boolean isValidOredict(ItemStack stack) {
-				if(stack != null){
-					ArrayList<Integer> inputOreIDs = Utils.intArrayToList(OreDictionary.getOreIDs(stack));
-					for(BloomeryRecipes recipe: MachineRecipes.bloomeryRecipe){
-						ArrayList<Integer> recipeOreIDs = Utils.intArrayToList(OreDictionary.getOreIDs(recipe.getInput()));
-						for(Integer oreID: recipeOreIDs){
-							if(inputOreIDs.contains(oreID)) return true;
-						}
-					}
-				}
-				return false;
-			}
+	private boolean hasBloom() {
+		return this.bloomTank.getFluid() != null && this.bloomTank.getFluidAmount() >= getConsumedBloom();
+	}
 
-			private boolean canContainBloom(ItemStack stack) {
-				if(stack != null){
-					for(BloomeryRecipes recipe: MachineRecipes.bloomeryRecipe){
-						if(stack.isItemEqual(recipe.getInput())){
-							if(bloomTank.getFluid() == null){
-								return true;
-							}else{
-								if(bloomTank.getFluid().isFluidEqual(recipe.getMolten()) && bloomTank.getFluidAmount() <= bloomTank.getCapacity() - recipe.getMolten().amount){
-									return true;
-								}
-							}
-						}
-					}
-				}
-				return false;
-			}
+	private boolean canSmelt() {
+		return isValidMelting() 
+			&& getPower() > 0
+			&& this.input.canSetOrFillFluid(this.bloomTank, this.bloomTank.getFluid(), getCurrentMelting().getMolten());
+	}
 
-	private void addBloom(ItemStack stack) {
-		if(stack != null){
-			for(BloomeryRecipes recipe: MachineRecipes.bloomeryRecipe){
-				if(stack.isItemEqual(recipe.getInput())){
-					bloomTank.fillInternal(recipe.getMolten(), true);
-				}
-			}
-		}
-		input.decrementSlot(INPUT_SLOT);
-		if(bloomTank.getFluid().amount >= bloomTank.getCapacity()){bloomTank.getFluid().amount = bloomTank.getCapacity();}
+	private void addBloom() {
+		this.input.setOrFillFluid(this.bloomTank, recipeMolten());
+		this.input.decrementSlot(INPUT_SLOT);
 	}
 
 	private boolean canCast() {
-		return hasOutput() && canStackOutput(output.getStackInSlot(OUTPUT_SLOT)) && CoreUtils.hasConsumable(ToolUtils.hammer, input.getStackInSlot(CONSUMABLE_SLOT));
+		return isValidCasting() 
+			&& this.output.canSetOrStack(outputSlot(), recipeOutput()) 
+			&& CoreUtils.hasConsumable(ToolUtils.hammer, hammerSlot());
 	}
 
-			private boolean canStackOutput(ItemStack stack) {
-				return (stack == null || (isCorrectOutput(stack) && stack.stackSize < stack.getMaxStackSize()));
-			}
-
-					private boolean isCorrectOutput(ItemStack stack) {
-						if(stack != null){
-							for(BloomeryRecipes recipe: MachineRecipes.bloomeryRecipe){
-								if(bloomTank.getFluid() != null){
-									if(recipe.getMolten().isFluidEqual(bloomTank.getFluid())){
-										if(recipe.getOutput() != null){
-											if(stack.isItemEqual(recipe.getOutput())){
-												return true;
-											}
-										}
-									}
-								}
-							}
-						}
-						return false;
-					}
-
 	private void castIngot() {
-		if(canCast()){
-			for(BloomeryRecipes recipe: MachineRecipes.bloomeryRecipe){
-				if(bloomTank.getFluid() != null && bloomTank.getFluid().isFluidEqual(recipe.getMolten()) && bloomTank.getFluidAmount() >= consumedBloom){
-					if(recipe.getOutput() != null){
-						moltenStack = recipe.getMolten();
-						outputStack = recipe.getOutput();
-					}
-				}
-			}
-			output.setOrStack(OUTPUT_SLOT, outputStack);
-    		bloomTank.drainInternal(new FluidStack(moltenStack.getFluid(), consumedBloom), true);
-    		input.damageSlot(CONSUMABLE_SLOT);
-		}
+		int unbreakingLevel = CoreUtils.getEnchantmentLevel(Enchantments.UNBREAKING, hammerSlot());
+		this.output.setOrStack(OUTPUT_SLOT, recipeOutput());
+		this.input.drainOrCleanFluid(this.bloomTank, getConsumedBloom(), true);
+		this.input.damageUnbreakingSlot(unbreakingLevel, CONSUMABLE_SLOT);
 	}
 
 }
