@@ -2,6 +2,7 @@ package com.globbypotato.rockhounding_oretiers.utils;
 
 import java.util.List;
 
+import com.globbypotato.rockhounding_oretiers.handlers.ModConfig;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.BloomeryRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.DrierRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
@@ -11,97 +12,61 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
+import rockhounding.api.IReciperBase;
 
-public class IMCUtils {
-	public static String BLOOMERY_KEY = "addToBloomery";
-	public static String BLOOMERY_KEY_REMOVER = "removeFromBloomery";
-	public static String REFINERY_KEY = "addToRefinery";
-	public static String REFINERY_KEY_REMOVER = "removeFromRefinery";
-	public static String PALLET_KEY = "addToPallet";
-	public static String PALLET_KEY_REMOVER = "removeFromPallet";
-	static ItemStack input;
-	static FluidStack molten;
-	static ItemStack output;
+public class IMCUtils extends IReciperBase{
+	private static ItemStack input = ItemStack.EMPTY;
+	private static ItemStack output = ItemStack.EMPTY;
+	private static FluidStack bloom = null;
 
 	public static void extraRecipes(List<IMCMessage> messages) {
 		for(IMCMessage message : messages) {
 			if(message.isNBTMessage()){
 				try {
 		    		NBTTagCompound tag = message.getNBTValue();
-		    		/**
-		    		 * REMOVE RECIPES
-		    		 */
-		    		if(message.key.equalsIgnoreCase(BLOOMERY_KEY_REMOVER)){
-		    			ItemStack casted = null;
-		        		if(tag.hasKey("Input")){
-		        			casted = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
+		    		if(message.key.equalsIgnoreCase(add_bloomery_key)){
+		        		if(tag.hasKey(tagInput)){
+		        			input = new ItemStack(tag.getCompoundTag(tagInput));
 		        		}
-		        		if(casted != null){
-		        			for(int x = 0; x < MachineRecipes.bloomeryRecipe.size(); x++){
-		        				if(MachineRecipes.bloomeryRecipe.get(x).getInput().isItemEqual(casted)){
-		        					MachineRecipes.bloomeryRecipe.remove(x);
-		        				}
-		        			}
+		        		if(tag.hasKey(tagSolvent)){
+		        			bloom = FluidStack.loadFluidStackFromNBT(tag.getCompoundTag(tagSolvent));
 		        		}
-		    		}else if(message.key.equalsIgnoreCase(REFINERY_KEY_REMOVER)){
-		        		if(tag.hasKey("Input")){
-		        			input = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
+		        		if(tag.hasKey(tagOutput)){
+		        			output = new ItemStack(tag.getCompoundTag("Output"));
 		        		}
-		        		if(input != null){
-		        			for(int x = 0; x < MachineRecipes.refinerRecipe.size(); x++){
-		        				if(MachineRecipes.refinerRecipe.get(x).getInput().isItemEqual(input)){
-		        					MachineRecipes.refinerRecipe.remove(x);
-		        				}
-		        			}
+	        			MachineRecipes.bloomeryRecipe.add(new BloomeryRecipes(input, bloom, output));
+		    		}else if(message.key.equalsIgnoreCase(add_coal_refiner_key)){
+		        		if(tag.hasKey(tagInput)){
+		        			input = new ItemStack(tag.getCompoundTag(tagInput));
 		        		}
-		    		}else if(message.key.equalsIgnoreCase(PALLET_KEY_REMOVER)){
-		        		if(tag.hasKey("Input")){
-		        			input = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
+		        		boolean oredict = false;
+		        		if(tag.hasKey(tagOredict)){
+		        			oredict = tag.getBoolean(tagOredict);
 		        		}
-		        		if(input != null){
-		        			for(int x = 0; x < MachineRecipes.drierRecipe.size(); x++){
-		        				if(MachineRecipes.drierRecipe.get(x).getInput().isItemEqual(input)){
-		        					MachineRecipes.drierRecipe.remove(x);
-		        				}
-		        			}
+		        		if(tag.hasKey(tagOutput)){
+		        			output = new ItemStack(tag.getCompoundTag(tagOutput));
 		        		}
-
-		    		/**
-		    		 * ADD RECIPES
-		    		 */
-		    		}else if(message.key.equalsIgnoreCase(BLOOMERY_KEY)){
-		        		if(tag.hasKey("Input")){
-		        			input = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
+		        		int refining = ModConfig.refiningSpeed;
+		        		if(tag.hasKey(tagWeights)){
+		        			refining = tag.getInteger(tagWeights);
 		        		}
-		        		if(tag.hasKey("Molten")){
-		        			molten = FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("Molten"));
+	        			MachineRecipes.refinerRecipe.add(new RefinerRecipes(input, oredict, output, refining));
+		    		}else if(message.key.equalsIgnoreCase(add_drying_pallet_key)){
+		        		if(tag.hasKey(tagInput)){
+		        			input = new ItemStack(tag.getCompoundTag(tagInput));
 		        		}
-		        		if(tag.hasKey("Output")){
-		        			output = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output"));
+		        		boolean oredict = false;
+		        		if(tag.hasKey(tagOredict)){
+		        			oredict = tag.getBoolean(tagOredict);
 		        		}
-		        		if(input != null && molten != null && output != null){
-		        			MachineRecipes.bloomeryRecipe.add(new BloomeryRecipes(input, molten, output));
+		        		if(tag.hasKey(tagOutput)){
+		        			output = new ItemStack(tag.getCompoundTag(tagOutput));
 		        		}
-		    		}else if(message.key.equalsIgnoreCase(REFINERY_KEY)){
-		        		if(tag.hasKey("Input")){
-		        			input = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
+		        		int refining = ModConfig.dryingSpeed;
+		        		if(tag.hasKey(tagWeights)){
+		        			refining = tag.getInteger(tagWeights);
 		        		}
-		        		if(tag.hasKey("Output")){
-		        			output = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output"));
-		        		}
-		        		if(input != null && output != null){
-		        			MachineRecipes.refinerRecipe.add(new RefinerRecipes(input, output));
-		        		}
-		    		}else if(message.key.equalsIgnoreCase(PALLET_KEY)){
-		        		if(tag.hasKey("Input")){
-		        			input = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Input"));
-		        		}
-		        		if(tag.hasKey("Output")){
-		        			output = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Output"));
-		        		}
-		        		if(input != null && output != null){
-		        			MachineRecipes.drierRecipe.add(new DrierRecipes(input, output));
-		        		}
+	        			MachineRecipes.drierRecipe.add(new DrierRecipes(input, oredict, output, refining));
 					}
 				}catch (Exception e){
 					e.printStackTrace();

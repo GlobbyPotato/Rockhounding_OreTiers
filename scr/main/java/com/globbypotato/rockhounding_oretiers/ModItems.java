@@ -1,41 +1,58 @@
 package com.globbypotato.rockhounding_oretiers;
 
+import com.globbypotato.rockhounding_core.handlers.RegistryHandler;
+import com.globbypotato.rockhounding_oretiers.enums.EnumIronOres;
 import com.globbypotato.rockhounding_oretiers.enums.EnumTiersItems;
 import com.globbypotato.rockhounding_oretiers.handlers.ModConfig;
-import com.globbypotato.rockhounding_oretiers.items.ArrayIO;
-import com.globbypotato.rockhounding_oretiers.items.ConsumableIO;
+import com.globbypotato.rockhounding_oretiers.handlers.Reference;
+import com.globbypotato.rockhounding_oretiers.items.IronPebbles;
+import com.globbypotato.rockhounding_oretiers.items.TierItems;
 import com.globbypotato.rockhounding_oretiers.items.TiersBook;
+import com.globbypotato.rockhounding_oretiers.items.io.ConsumableIO;
+import com.globbypotato.rockhounding_oretiers.utils.ToolUtils;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public class ModItems {
 
-	public static Item tiersItems;
-	public static ConsumableIO forgeHammer;
-	public static Item tiersBook;
+	public static final Item TIER_ITEMS = new TierItems("tier_items", EnumTiersItems.getNames());
+	public static final Item IRON_PEBBLES = new IronPebbles("iron_pebbles", EnumIronOres.getNames());
+	public static final Item FORGING_HAMMER = new ConsumableIO("forging_hammer", ModConfig.hammerUses);
+	public static final Item TIERS_BOOK = new TiersBook("tiers_book");
 
-	public static void init() {
-		tiersItems = new ArrayIO("tiersItems", EnumTiersItems.getNames());										
-		tiersBook = new TiersBook("tiersBook");										
-		forgeHammer = new ConsumableIO("forgeHammer", ModConfig.hammerUses);
-	}
+	@Mod.EventBusSubscriber(modid = Reference.MODID)
+	public static class RegistrationHandler {
 
-	public static void initClient(){
-		for(int i = 0; i < EnumTiersItems.size(); i++){				registerMetaItemRender(tiersItems, i, EnumTiersItems.getName(i));	}
-		registerSimpleItemRender(tiersBook, 0, "guide");
-		registerSimpleItemRender(forgeHammer, 0, "forgeHammer");
-	}
+		// register the item
+		@SubscribeEvent
+		public static void registerItems(final RegistryEvent.Register<Item> event) {
+			final IForgeRegistry<Item> registry = event.getRegistry();
+			registry.register(FORGING_HAMMER);
+			registry.register(TIER_ITEMS);
+			if(ToolUtils.registerAsPebbles()){
+				registry.register(IRON_PEBBLES);
+			}
+			registry.register(TIERS_BOOK);
+		}
+		
+		// register the model
+		/**
+		 * @param event  
+		 */
+		@SubscribeEvent
+		public static void registerModels(ModelRegistryEvent event){
+			RegistryHandler.registerSingleModel(FORGING_HAMMER);
+			RegistryHandler.registerMetaModel(TIER_ITEMS, EnumTiersItems.getNames());
+			if(ToolUtils.registerAsPebbles()){
+				RegistryHandler.registerMetaModel(IRON_PEBBLES, EnumIronOres.getNames());
+			}
+			RegistryHandler.registerSingleModel(TIERS_BOOK);
+		}
 
-	//render meta item
-	public static void registerMetaItemRender(Item item, int meta, String fileName){
-		ModelResourceLocation model = new ModelResourceLocation(item.getRegistryName() + "_" + fileName, "inventory");
-		ModelLoader.setCustomModelResourceLocation(item, meta, model );
-	}
-	//render simple item
-	public static void registerSimpleItemRender(Item item, int meta, String fileName){
-		ModelResourceLocation model = new ModelResourceLocation(item.getRegistryName(), "inventory");
-		ModelLoader.setCustomModelResourceLocation(item, meta, model );
 	}
 }
