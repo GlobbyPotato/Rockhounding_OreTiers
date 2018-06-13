@@ -22,25 +22,27 @@ public class BloomeryRecipeWrapper extends RHRecipeWrapper<BloomeryRecipes> {
 	public static List<BloomeryRecipeWrapper> getRecipes() {
 		List<BloomeryRecipeWrapper> recipes = new ArrayList<>();
 		for (BloomeryRecipes recipe : MachineRecipes.bloomeryRecipe) {
-			recipes.add(new BloomeryRecipeWrapper(recipe));
+			if(!recipe.getInput().isEmpty() && !recipe.getOutput().isEmpty() && recipe.getMolten() != null){
+				recipes.add(new BloomeryRecipeWrapper(recipe));
+			}
 		}
 		return recipes;
 	}
 
-	@Override
+	@Nonnull
 	public List<ItemStack> getInputs(){
 		List<ItemStack> inputs = new ArrayList<ItemStack>();
 		inputs.add(getRecipe().getInput());
 		return inputs;
 	}
 
-	public List<FluidStack> getMoltens(){
+	@Nonnull	public List<FluidStack> getMoltens(){
 		List<FluidStack> molten = new ArrayList<FluidStack>();
 		molten.add(getRecipe().getMolten());
 		return molten;
 	}
 
-	@Override
+	@Nonnull
 	public List<ItemStack> getOutputs(){
 		List<ItemStack> outputs = new ArrayList<ItemStack>();
 		outputs.add(getRecipe().getOutput());
@@ -48,6 +50,10 @@ public class BloomeryRecipeWrapper extends RHRecipeWrapper<BloomeryRecipes> {
 	}
 
 	@Override
-	public void getIngredients(IIngredients ingredients) {}
+	public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, getInputs());
+        ingredients.setOutputs(ItemStack.class, getOutputs());
+        ingredients.setOutputs(FluidStack.class, getMoltens());
+	}
 
 }
