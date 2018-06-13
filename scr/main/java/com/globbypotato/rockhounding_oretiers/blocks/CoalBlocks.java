@@ -1,6 +1,6 @@
 package com.globbypotato.rockhounding_oretiers.blocks;
 
-import com.globbypotato.rockhounding_core.blocks.itemblocks.BaseMetaIB;
+import com.globbypotato.rockhounding_oretiers.blocks.io.MetaIO;
 import com.globbypotato.rockhounding_oretiers.enums.EnumCoalBlocks;
 
 import net.minecraft.block.SoundType;
@@ -9,15 +9,12 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class CoalBlocks extends BlockIO{
+public class CoalBlocks extends MetaIO{
 	public static final PropertyEnum VARIANT = PropertyEnum.create("type", EnumCoalBlocks.class);
 
-    public CoalBlocks(Material material, String[] array, float hardness, float resistance, String name, SoundType stepSound){
-        super(material, array, hardness, resistance, name, stepSound);
-        GameRegistry.register(new BaseMetaIB(this, EnumCoalBlocks.getNames()).setRegistryName(name));
-        setHarvestLevel("pickaxe", 0);
+    public CoalBlocks(String name){
+		super(name, Material.ROCK, EnumCoalBlocks.getNames(), 2.0F, 4.0F, SoundType.STONE);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumCoalBlocks.values()[0]));
     }
 

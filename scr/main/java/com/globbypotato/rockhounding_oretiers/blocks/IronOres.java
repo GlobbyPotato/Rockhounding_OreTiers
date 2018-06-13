@@ -1,6 +1,6 @@
 package com.globbypotato.rockhounding_oretiers.blocks;
 
-import com.globbypotato.rockhounding_core.blocks.itemblocks.BaseMetaIB;
+import com.globbypotato.rockhounding_oretiers.blocks.io.MetaIO;
 import com.globbypotato.rockhounding_oretiers.enums.EnumIronOres;
 
 import net.minecraft.block.SoundType;
@@ -9,15 +9,12 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class IronOres extends BlockIO{
+public class IronOres extends MetaIO{
 	public static final PropertyEnum VARIANT = PropertyEnum.create("type", EnumIronOres.class);
 
-    public IronOres(Material material, String[] array, float hardness, float resistance, String name, SoundType stepSound){
-        super(material, array, hardness, resistance, name, stepSound);
-        GameRegistry.register(new BaseMetaIB(this, EnumIronOres.getNames()	).setRegistryName(name));
-        setHarvestLevel("pickaxe", 0);
+    public IronOres(String name){
+		super(name, Material.ROCK, EnumIronOres.getNames(), 1.0F, 2.0F, SoundType.STONE);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumIronOres.values()[0]));
     }
 

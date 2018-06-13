@@ -2,8 +2,8 @@ package com.globbypotato.rockhounding_oretiers.blocks;
 
 import java.util.Random;
 
-import com.globbypotato.rockhounding_core.blocks.itemblocks.BaseMetaIB;
 import com.globbypotato.rockhounding_oretiers.ModItems;
+import com.globbypotato.rockhounding_oretiers.blocks.io.MetaIO;
 import com.globbypotato.rockhounding_oretiers.enums.EnumCoalOres;
 
 import net.minecraft.block.SoundType;
@@ -16,15 +16,12 @@ import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class CoalOres extends BlockIO{
+public class CoalOres extends MetaIO{
 	public static final PropertyEnum VARIANT = PropertyEnum.create("type", EnumCoalOres.class);
 
-    public CoalOres(Material material, String[] array, float hardness, float resistance, String name, SoundType stepSound){
-        super(material, array, hardness, resistance, name, stepSound);
-        GameRegistry.register(new BaseMetaIB(this, EnumCoalOres.getNames()).setRegistryName(name));
-        setHarvestLevel("pickaxe", 0);
+    public CoalOres(String name){
+		super(name, Material.ROCK, EnumCoalOres.getNames(), 2.0F, 4.0F, SoundType.STONE);
 		setHarvestLevel("shovel", 0, this.blockState.getBaseState().withProperty(VARIANT, EnumCoalOres.PEAT));
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumCoalOres.values()[0]));
     }
@@ -46,7 +43,7 @@ public class CoalOres extends BlockIO{
 
 	@Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune){
-    	return ModItems.tiersItems;
+    	return ModItems.TIER_ITEMS;
 	}
 
 	@Override
@@ -56,21 +53,22 @@ public class CoalOres extends BlockIO{
 
     @Override
     public int quantityDroppedWithBonus(int fortune, Random random){
-        if (fortune > 0 && Item.getItemFromBlock(this) != this.getItemDropped((IBlockState)this.getBlockState().getValidStates().iterator().next(), random, fortune)){
-            int j = random.nextInt(fortune + 2) - 1;
-            if (j < 0){j = 0;}
-            return this.quantityDropped(random) * (j + 1);
-        }else{
-            return this.quantityDropped(random);
+        if (fortune > 0 && Item.getItemFromBlock(this) != this.getItemDropped(this.getBlockState().getValidStates().iterator().next(), random, fortune)){
+            int i = random.nextInt(fortune + 2) - 1;
+            if (i < 0){
+                i = 0;
+            }
+            return this.quantityDropped(random) * (i + 1);
         }
+		return this.quantityDropped(random);
     }
 
     @Override
     public int getExpDrop(IBlockState state, net.minecraft.world.IBlockAccess world, BlockPos pos, int fortune){
         Random rand = world instanceof World ? ((World)world).rand : new Random();
-        if (this.getMetaFromState(state) < 5 && this.getItemDropped(state, rand, fortune) != Item.getItemFromBlock(this)){
+        if (this.getItemDropped(state, rand, fortune) != Item.getItemFromBlock(this)){
             int j = 0;
-            j = MathHelper.getRandomIntegerInRange(rand, 0, 2);
+            j = MathHelper.getInt(rand, 0, 2);
             return j;
         }
         return 0;

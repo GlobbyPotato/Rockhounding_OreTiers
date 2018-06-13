@@ -2,10 +2,10 @@ package com.globbypotato.rockhounding_oretiers.blocks;
 
 import java.util.Random;
 
-import com.globbypotato.rockhounding_oretiers.blocks.itemblocks.SeamFireIB;
-import com.globbypotato.rockhounding_oretiers.handlers.Reference;
+import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
+import com.globbypotato.rockhounding_oretiers.blocks.io.BlockIO;
+
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -19,24 +19,15 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class SeamFire extends Block {
+public class SeamFire extends BlockIO {
 	public static final AxisAlignedBB COLLISION = new AxisAlignedBB(0.01D, 0.01D, 0.01D, 0.99D, 0.99D, 0.99D);
     Random rand = new Random();
 
-    public SeamFire(float hardness, float resistance, String name) {
-		super(Material.ROCK);
-		setRegistryName(name);
-		setUnlocalizedName(getRegistryName().toString());
-		GameRegistry.register(this); 
-		GameRegistry.register(new SeamFireIB(this).setRegistryName(name));		
-		setHardness(hardness); setResistance(resistance);	
-		setHarvestLevel("pickaxe", 0);
-		setCreativeTab(Reference.RockhoundingTiers);
-		setSoundType(SoundType.STONE);
+    public SeamFire(String name) {
+		super(name, Material.ROCK, 2.0F, 5.0F, SoundType.STONE);
 		this.setDefaultState(this.blockState.getBaseState());
 	}
 
@@ -45,13 +36,14 @@ public class SeamFire extends Block {
     	return Item.getItemFromBlock(this);
 	}
 
+	@Override
 	public int quantityDropped(Random rand) {
 		return 1;
 	}
 
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return 11;
+		return 8;
 	}
 
 	@Override
@@ -61,7 +53,7 @@ public class SeamFire extends Block {
     			for(int z = -3; z <= 3; z++){
     				BlockPos spreadPos = new BlockPos(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
 					if(worldIn.getBlockState(spreadPos).getBlock() == Blocks.AIR){
-    					if(rand.nextInt(5) == 0){
+    					if(this.rand.nextInt(5) == 0){
     						if(!worldIn.isRemote){
     							worldIn.setBlockState(spreadPos, Blocks.FIRE.getDefaultState());
     						}
@@ -76,7 +68,7 @@ public class SeamFire extends Block {
     public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn){
         if (!entityIn.isImmuneToFire() && entityIn instanceof EntityLivingBase && !EnchantmentHelper.hasFrostWalkerEnchantment((EntityLivingBase)entityIn)){
         	entityIn.setFire(8);
-        	entityIn.attackEntityFrom(DamageSource.onFire, 3.0F);
+        	entityIn.attackEntityFrom(DamageSource.ON_FIRE, 3.0F);
         }
         super.onEntityWalk(worldIn, pos, entityIn);
     }
@@ -84,14 +76,15 @@ public class SeamFire extends Block {
     @Override
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn){
     	entityIn.setFire(4);
-		entityIn.attackEntityFrom(DamageSource.onFire, 1.5F);
-		if(rand.nextInt(10) == 0 ){
+		entityIn.attackEntityFrom(DamageSource.ON_FIRE, 1.5F);
+		if(this.rand.nextInt(10) == 0 ){
         	super.breakBlock(worldIn, pos, state);
 		}
     }
 
+    @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos){
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos){
         return COLLISION;
     }
 
