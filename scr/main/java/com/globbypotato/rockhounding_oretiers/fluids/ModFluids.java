@@ -26,7 +26,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 //Courtesy of Choonster, (MIT License) https://github.com/Choonster/TestMod3
 public class ModFluids {
@@ -46,7 +46,7 @@ public class ModFluids {
 			@Override
 		    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn){
 				if(entityIn instanceof EntityLivingBase){
-					((EntityLivingBase)entityIn).attackEntityFrom(DamageSource.onFire, 6.0F);
+					((EntityLivingBase)entityIn).attackEntityFrom(DamageSource.ON_FIRE, 3.0F);
 				}
 			}
 		}
