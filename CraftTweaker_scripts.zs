@@ -34,10 +34,9 @@ mods.rockhounding_oretiers.CoalRefiner.remove(<minecraft:coal:0>);
 //Parameters = ore, molten, output
 //ore = the itemstack being smelted
 //molten = the molten fluidstack
-//moltenAmount = the resulting amount of molten
 //output = the casted output itemstack
-mods.rockhounding_oretiers.Bloomery.add(<minecraft:slime_ball>, <liquid:lava>, 500, <minecraft:magma>);
-mods.rockhounding_oretiers.Bloomery.add("slimeball", <liquid:lava>, 500, <minecraft:magma>);
+mods.rockhounding_oretiers.Bloomery.add(<minecraft:slime_ball>, <liquid:lava>*500, <minecraft:magma>);
+mods.rockhounding_oretiers.Bloomery.add("oreCopper", <liquid:molten_copper>*500, <rockhounding_chemistry:metal_items:11>);
 
 //Parameters = input
 //input = the itemstack representing the input to remove
