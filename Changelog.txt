@@ -2,6 +2,16 @@
 1.12.2 CHANGELOG
 ----------------------
 
+v3.10
+	Fixed missing tootips
+
+v3.09
+	Drying Pallet will process up to 9 items at once (issue #9)
+	All machines can smelt either a specific itemstack or an OreDictionary entry  (issue #10)
+	Fixed Craftweaker scripts
+	Minor fixes
+	Required Core v3.17
+
 v3.08
 	Minor fixes and tweaks
 	Core updated to v3.12
