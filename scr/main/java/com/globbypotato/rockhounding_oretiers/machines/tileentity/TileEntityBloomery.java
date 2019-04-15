@@ -35,10 +35,9 @@ public class TileEntityBloomery extends TileEntityFueledTank {
 
 	public FluidTank bloomTank;
 	public int castTime;
-	public boolean drainScan;
 
 	public TileEntityBloomery() {
-		super(inputSlots, outputSlots, templateSlots);
+		super(inputSlots, outputSlots, templateSlots, 0);
 
 		this.bloomTank = new FluidTank(Fluid.BUCKET_VOLUME + ModConfig.tankCapacity){
 			@Override  
@@ -48,7 +47,7 @@ public class TileEntityBloomery extends TileEntityFueledTank {
 
 			@Override
 		    public boolean canDrain(){
-		        return canDrainTank();
+		        return true;
 		    }
 		};
 		this.bloomTank.setTileEntity(this);
@@ -94,7 +93,6 @@ public class TileEntityBloomery extends TileEntityFueledTank {
 	public void readFromNBT(NBTTagCompound compound){
 		super.readFromNBT(compound);
 		this.castTime = compound.getInteger("CastTime");
-		this.drainScan = compound.getBoolean("DrainScan");
 		this.bloomTank.readFromNBT(compound.getCompoundTag("BloomTank"));
 	}
 
@@ -102,7 +100,6 @@ public class TileEntityBloomery extends TileEntityFueledTank {
 	public NBTTagCompound writeToNBT(NBTTagCompound compound){
 		super.writeToNBT(compound);
 		compound.setInteger("CastTime", getCastTime());
-		compound.setBoolean("DrainScan", isDraining());
 		
 		NBTTagCompound bloomTankNBT = new NBTTagCompound();
 		this.bloomTank.writeToNBT(bloomTankNBT);
@@ -143,10 +140,6 @@ public class TileEntityBloomery extends TileEntityFueledTank {
 
 
 	//-------------- CUSTOM ---------------- 
-	public boolean isDraining(){
-		return this.drainScan;
-	}
-
 	public int getCastTime(){
 		return this.castTime;
 	}
@@ -157,10 +150,6 @@ public class TileEntityBloomery extends TileEntityFueledTank {
 
 	public boolean isBurning(){
 		return this.cooking;
-	}
-
-	public boolean canDrainTank() {
-		return this.bloomTank.getFluid() != null && this.bloomTank.getFluidAmount() > 0 && isDraining();
 	}
 
 	@Override
@@ -191,8 +180,15 @@ public class TileEntityBloomery extends TileEntityFueledTank {
 	public BloomeryRecipes getCurrentMelting(){
 		if(!inputSlot().isEmpty()){
 			for(int x = 0; x < recipeList().size(); x++){
-				if(!getRecipeList(x).getInput().isEmpty() && CoreUtils.isMatchingIngredient(inputSlot(), getRecipeList(x).getInput())){
-					return getRecipeList(x);
+				if(getRecipeList(x).getType()){
+					ArrayList<Integer> inputOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(inputSlot()));
+					if(inputOreIDs.contains(OreDictionary.getOreID(getRecipeList(x).getOredict()))){
+						return getRecipeList(x);
+					}
+				}else{
+					if(getRecipeList(x).getInput().isItemEqual(inputSlot())){
+						return getRecipeList(x);
+					}
 				}
 			}
 		}
@@ -228,25 +224,26 @@ public class TileEntityBloomery extends TileEntityFueledTank {
 
 	boolean isValidInput(ItemStack stack) {
 		if(!stack.isEmpty()){
-			ArrayList<Integer> inputOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(stack));
-			if(!inputOreIDs.isEmpty()){
-				for(BloomeryRecipes recipe: recipeList()){
-					ArrayList<Integer> recipeOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(recipe.getInput()));
-					if(!recipeOreIDs.isEmpty()){
-						if(CoreUtils.compareDictArrays(inputOreIDs, recipeOreIDs)){
+			for(BloomeryRecipes recipe: recipeList()){
+				if(recipe.getType()){
+					ArrayList<Integer> inputOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(stack));
+					if(!inputOreIDs.isEmpty()){
+						if(inputOreIDs.contains(OreDictionary.getOreID(recipe.getOredict()))){
 							return true;
 						}
 					}
+				}else{
+					if(recipe.getInput().isItemEqual(stack)){
+						return true;
+					}
 				}
 			}
-			return recipeList().stream().anyMatch(recipe -> !stack.isEmpty() && !recipe.getInput().isEmpty() && stack.isItemEqual(recipe.getInput()));
 		}
 		return false;
 	}
-	
+
 	public boolean moltenHasRecipe(FluidStack stack){
-		return recipeList().stream().anyMatch(
-				recipe -> stack != null && recipe.getMolten() != null && recipe.getMolten().isFluidEqual(stack));
+		return recipeList().stream().anyMatch(recipe -> stack != null && recipe.getMolten() != null && recipe.getMolten().isFluidEqual(stack));
 	}
 
 

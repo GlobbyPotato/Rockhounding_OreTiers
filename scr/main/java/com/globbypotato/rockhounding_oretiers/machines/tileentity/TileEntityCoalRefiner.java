@@ -24,7 +24,7 @@ public class TileEntityCoalRefiner extends TileEntityInv {
 	public static int inputSlots = 1;
 	public static int outputSlots = 1;
 	public TileEntityCoalRefiner() {
-		super(inputSlots, outputSlots, 0);
+		super(inputSlots, outputSlots, 0, 0);
 
 		this.input =  new MachineStackHandler(inputSlots, this){
 			@Override
@@ -79,8 +79,15 @@ public class TileEntityCoalRefiner extends TileEntityInv {
 	public RefinerRecipes getCurrentRecipe(){
 		if(!inputSlot().isEmpty()){
 			for(int x = 0; x < recipeList().size(); x++){
-				if(!getRecipeList(x).getInput().isEmpty() && CoreUtils.isMatchingIngredient(inputSlot(), getRecipeList(x).canOredict(), getRecipeList(x).getInput())){
-					return getRecipeList(x);
+				if(getRecipeList(x).getType()){
+					ArrayList<Integer> inputOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(inputSlot()));
+					if(inputOreIDs.contains(OreDictionary.getOreID(getRecipeList(x).getOredict()))){
+						return getRecipeList(x);
+					}
+				}else{
+					if(getRecipeList(x).getInput().isItemEqual(inputSlot())){
+						return getRecipeList(x);
+					}
 				}
 			}
 		}
@@ -93,20 +100,20 @@ public class TileEntityCoalRefiner extends TileEntityInv {
 
 	private boolean isValidIngredient(ItemStack stack) {
 		if(!stack.isEmpty()){
-			ArrayList<Integer> inputOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(stack));
-			if(!inputOreIDs.isEmpty()){
-				for(RefinerRecipes recipe: recipeList()){
-					if(recipe.canOredict()){
-						ArrayList<Integer> recipeOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(recipe.getInput()));
-						if(!inputOreIDs.isEmpty()){
-							if(CoreUtils.compareDictArrays(inputOreIDs, recipeOreIDs)){
-								return true;
-							}
+			for(RefinerRecipes recipe: recipeList()){
+				if(recipe.getType()){
+					ArrayList<Integer> inputOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(stack));
+					if(!inputOreIDs.isEmpty()){
+						if(inputOreIDs.contains(OreDictionary.getOreID(recipe.getOredict()))){
+							return true;
 						}
+					}
+				}else{
+					if(recipe.getInput().isItemEqual(stack)){
+						return true;
 					}
 				}
 			}
-			return recipeList().stream().anyMatch(recipe -> !stack.isEmpty() && !recipe.getInput().isEmpty() && stack.isItemEqual(recipe.getInput()));
 		}
 		return false;
 	}

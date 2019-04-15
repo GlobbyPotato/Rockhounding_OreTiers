@@ -1,0 +1,27 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "rockhounding_oretiers:machines",
+	"pattern": [
+		" S ",
+		"SFS",
+		"SIS"
+	],
+	"key": {
+		"S":{
+				"ore": "stone",
+				"type": "forge:ore_dict"
+			},
+		"I":{
+				"ore": "ingotIron",
+				"type": "forge:ore_dict"
+			},
+		"F":{
+				"item": "minecraft:furnace",
+				"data": 0
+			}
+	},
+	"result":{
+				"item": "rockhounding_oretiers:coal_refiner",
+				"data": 0
+			}
+}

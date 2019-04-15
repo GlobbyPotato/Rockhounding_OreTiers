@@ -36,7 +36,7 @@ public class GuiBloomery extends GuiBase{
 
 	   //activation
 	   if(GuiUtils.hoveringArea(101, 36, 18, 18, mouseX, mouseY, x, y)){
-		   List<String> tooltip = GuiUtils.drawLabel("Drain fluids for external uses", mouseX, mouseY);
+		   List<String> tooltip = GuiUtils.drawLabel("Void Tank", mouseX, mouseY);
 		   drawHoveringText(tooltip, mouseX, mouseY, this.fontRenderer);
 	   }
 
@@ -70,11 +70,6 @@ public class GuiBloomery extends GuiBase{
         if (this.bloomery.castTime > 0){
             int k = GuiUtils.getScaledValue(28, this.bloomery.castTime, this.bloomery.getCooktimeMax());
             this.drawTexturedModalRect(i + 102, j + 87, 176, 0, k, 12);
-        }
-
-        //activations
-        if(this.bloomery.drainScan){
-            this.drawTexturedModalRect(i + 101, j + 36, 176, 52, 18, 18);
         }
 
 		//tank bar

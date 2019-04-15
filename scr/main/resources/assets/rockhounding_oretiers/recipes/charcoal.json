@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "rockhounding_oretiers:fuel",
+	"ingredients":[
+		{
+			"ore": "itemTiercharcoal",
+			"type": "forge:ore_dict"
+		},
+		{
+			"ore": "itemTiercharcoal",
+			"type": "forge:ore_dict"
+		},
+		{
+			"ore": "itemTiercharcoal",
+			"type": "forge:ore_dict"
+		},
+		{
+			"ore": "itemTiercharcoal",
+			"type": "forge:ore_dict"
+		}
+	],
+	"result":{
+				"item": "minecraft:coal",
+				"data": 1
+			}
+}

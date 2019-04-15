@@ -153,7 +153,7 @@ public class TiersBook extends ItemWrittenBook {
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
 					    "The device needs fuel to melt the ore, producing a dense fluid that will fill the tank. A Forge Hammer will automatically forge ingots when enough fluid is available while a Draining Valve will allow to drain the fluid for external uses."))));
 			bookPages.appendTag(new NBTTagString(ITextComponent.Serializer.componentToJson(new TextComponentString( 
-						"An alternative to iron ores are the iron pebbles, usable in example for skyblock resources. A config value will allow to decide which one to use. Pebble have no generation recipe by default, they need to be customized."))));
+						"An alternative to iron ores are the iron pebbles, usable in example for skyblock resources. A config value will allow to decide which one to use. Pebbles have no generation recipe by default, they need to be customized."))));
 
 			// Add detals
 			itemStackIn.setTagInfo("pages", bookPages);

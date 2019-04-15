@@ -1,7 +1,6 @@
 package com.globbypotato.rockhounding_oretiers.compat.jei.bloomery;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -12,6 +11,7 @@ import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class BloomeryRecipeWrapper extends RHRecipeWrapper<BloomeryRecipes> {
 	
@@ -19,32 +19,42 @@ public class BloomeryRecipeWrapper extends RHRecipeWrapper<BloomeryRecipes> {
 		super(recipe);
 	}
 
-	public static List<BloomeryRecipeWrapper> getRecipes() {
-		List<BloomeryRecipeWrapper> recipes = new ArrayList<>();
+	public static ArrayList<BloomeryRecipeWrapper> getRecipes() {
+		ArrayList<BloomeryRecipeWrapper> recipes = new ArrayList<>();
 		for (BloomeryRecipes recipe : MachineRecipes.bloomeryRecipe) {
-			if(!recipe.getInput().isEmpty() && !recipe.getOutput().isEmpty() && recipe.getMolten() != null){
+			if(isValidRecipe(recipe)){
 				recipes.add(new BloomeryRecipeWrapper(recipe));
 			}
 		}
 		return recipes;
 	}
 
-	@Nonnull
-	public List<ItemStack> getInputs(){
-		List<ItemStack> inputs = new ArrayList<ItemStack>();
-		inputs.add(getRecipe().getInput());
+	private static boolean isValidRecipe(BloomeryRecipes recipe){
+		return ((!recipe.getType() && !recipe.getInput().isEmpty()) || (recipe.getType() && OreDictionary.getOres(recipe.getOredict()).size() > 0))
+			&& recipe.getMolten() != null
+			&& recipe.getOutput() != null;
+	}
+
+	public ArrayList<ItemStack> getInputs(){
+		ArrayList<ItemStack> inputs = new ArrayList<ItemStack>();
+		if(getRecipe().getType()){
+			inputs.addAll(OreDictionary.getOres(getRecipe().getOredict()));
+		}else{
+			inputs.add(getRecipe().getInput());
+		}
 		return inputs;
 	}
 
-	@Nonnull	public List<FluidStack> getMoltens(){
-		List<FluidStack> molten = new ArrayList<FluidStack>();
+	@Nonnull	
+	public ArrayList<FluidStack> getMoltens(){
+		ArrayList<FluidStack> molten = new ArrayList<FluidStack>();
 		molten.add(getRecipe().getMolten());
 		return molten;
 	}
 
 	@Nonnull
-	public List<ItemStack> getOutputs(){
-		List<ItemStack> outputs = new ArrayList<ItemStack>();
+	public ArrayList<ItemStack> getOutputs(){
+		ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
 		outputs.add(getRecipe().getOutput());
 		return outputs;
 	}

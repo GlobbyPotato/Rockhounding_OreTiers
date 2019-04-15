@@ -10,7 +10,6 @@ import crafttweaker.IAction;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -20,10 +19,14 @@ public class CastingRecipes extends CTSupport{
 	public static ArrayList<BloomeryRecipes> recipeList = MachineRecipes.bloomeryRecipe;
 
     @ZenMethod
-    public static void add(IItemStack ore, ILiquidStack bloom, int bloomAmount, IItemStack output) {
+    public static void add(IItemStack ore, ILiquidStack bloom, IItemStack output) {
         if(ore == null || bloom == null || output == null) {error(name); return;}
-        FluidStack bloomStack = getFluid(bloom, bloomAmount);
-        CraftTweakerAPI.apply(new AddToBloomery(new BloomeryRecipes(toStack(ore), bloomStack, toStack(output))));
+        CraftTweakerAPI.apply(new AddToBloomery(new BloomeryRecipes(toStack(ore), toFluid(bloom), toStack(output))));
+    }
+    @ZenMethod
+    public static void add(String oredict, ILiquidStack bloom, IItemStack output) {
+        if(bloom == null || output == null) {error(name); return;}
+        CraftTweakerAPI.apply(new AddToBloomery(new BloomeryRecipes(oredict, toFluid(bloom), toStack(output))));
     }
 		    private static class AddToBloomery implements IAction {
 		    	private BloomeryRecipes recipe;

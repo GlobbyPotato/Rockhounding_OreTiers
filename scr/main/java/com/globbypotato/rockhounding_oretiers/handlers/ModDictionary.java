@@ -35,6 +35,7 @@ public class ModDictionary {
 					OreDictionary.registerOre(EnumIronOres.getOredict(x), 	new ItemStack(ModBlocks.IRON_ORES, 1, x));
 				}
 			}
+
 		//BLOCKS
 			for(int x = 0; x < EnumCoalBlocks.size(); x++){
 				OreDictionary.registerOre(EnumCoalBlocks.getOredict(x), 	new ItemStack(ModBlocks.COAL_BLOCKS, 1, x));

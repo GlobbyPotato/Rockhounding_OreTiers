@@ -2,7 +2,6 @@ package com.globbypotato.rockhounding_oretiers.compat.crafttweaker;
 
 import java.util.ArrayList;
 
-import com.globbypotato.rockhounding_oretiers.handlers.ModConfig;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.DrierRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 
@@ -19,24 +18,14 @@ public class DryingRecipes extends CTSupport{
 	public static ArrayList<DrierRecipes> recipeList = MachineRecipes.drierRecipe;
 
     @ZenMethod
-    public static void add(IItemStack input, boolean oredict, IItemStack output, int refining) {
-        if(input == null || output == null) {error(name); return;}
-        CraftTweakerAPI.apply(new AddToDrying(new DrierRecipes(toStack(input), oredict, toStack(output), refining)));
-    }
-    @ZenMethod
-    public static void add(IItemStack input, boolean oredict, IItemStack output) {
-        if(input == null || output == null) {error(name); return;}
-        CraftTweakerAPI.apply(new AddToDrying(new DrierRecipes(toStack(input), oredict, toStack(output), ModConfig.dryingSpeed)));
-    }
-    @ZenMethod
     public static void add(IItemStack input, IItemStack output, int refining) {
         if(input == null || output == null) {error(name); return;}
-        CraftTweakerAPI.apply(new AddToDrying(new DrierRecipes(toStack(input), false, toStack(output), refining)));
+        CraftTweakerAPI.apply(new AddToDrying(new DrierRecipes(toStack(input), toStack(output), refining)));
     }
     @ZenMethod
-    public static void add(IItemStack input, IItemStack output) {
-        if(input == null || output == null) {error(name); return;}
-        CraftTweakerAPI.apply(new AddToDrying(new DrierRecipes(toStack(input), false, toStack(output), ModConfig.dryingSpeed)));
+    public static void add(String oredict, IItemStack output, int refining) {
+        if(output == null) {error(name); return;}
+        CraftTweakerAPI.apply(new AddToDrying(new DrierRecipes(oredict, toStack(output), refining)));
     }
 		    private static class AddToDrying implements IAction {
 		    	private DrierRecipes recipe;

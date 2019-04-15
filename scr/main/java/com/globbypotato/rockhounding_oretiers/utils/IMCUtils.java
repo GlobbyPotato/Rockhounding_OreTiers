@@ -50,7 +50,7 @@ public class IMCUtils extends IReciperBase{
 		        		if(tag.hasKey(tagWeights)){
 		        			refining = tag.getInteger(tagWeights);
 		        		}
-	        			MachineRecipes.refinerRecipe.add(new RefinerRecipes(input, oredict, output, refining));
+	        			MachineRecipes.refinerRecipe.add(new RefinerRecipes(input, output, refining));
 		    		}else if(message.key.equalsIgnoreCase(add_drying_pallet_key)){
 		        		if(tag.hasKey(tagInput)){
 		        			input = new ItemStack(tag.getCompoundTag(tagInput));
@@ -66,7 +66,7 @@ public class IMCUtils extends IReciperBase{
 		        		if(tag.hasKey(tagWeights)){
 		        			refining = tag.getInteger(tagWeights);
 		        		}
-	        			MachineRecipes.drierRecipe.add(new DrierRecipes(input, oredict, output, refining));
+	        			MachineRecipes.drierRecipe.add(new DrierRecipes(input, output, refining));
 					}
 				}catch (Exception e){
 					e.printStackTrace();

@@ -21,7 +21,7 @@ public class RefinerRecipeCategory extends RHRecipeCategory {
 	private final static ResourceLocation guiTexture = GuiCoalRefiner.TEXTURE_REF;
 
 	public RefinerRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper.createDrawable(guiTexture, 35, 15, 105, 60), "jei.refiner.name");
+		super(guiHelper.createDrawable(guiTexture, 35, 35, 105, 60), "jei.refiner.name");
 	}
 
 	@Nonnull
@@ -31,7 +31,7 @@ public class RefinerRecipeCategory extends RHRecipeCategory {
 	}
 
 	@Override
-	public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
+	public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		RefinerRecipeWrapper wrapper = (RefinerRecipeWrapper) recipeWrapper;	
 
@@ -40,10 +40,5 @@ public class RefinerRecipeCategory extends RHRecipeCategory {
 
 		guiItemStacks.init(OUTPUT_SLOT, false, 68, 2);
 		guiItemStacks.set(OUTPUT_SLOT, wrapper.getOutputs());
-	}
-
-	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {
-		setRecipe(recipeLayout,recipeWrapper);
 	}
 }

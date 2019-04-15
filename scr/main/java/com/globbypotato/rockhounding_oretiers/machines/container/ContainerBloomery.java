@@ -33,7 +33,7 @@ public class ContainerBloomery extends ContainerBase<TileEntityBloomery> {
 	@Override
 	public ItemStack slotClick(int slot, int dragType, ClickType clickTypeIn, EntityPlayer player){
 		if(slot == 4){
-    		this.tile.drainScan = !this.tile.drainScan; 
+    		this.tile.bloomTank.setFluid(null); 
 			doClickSound(player, this.tile.getWorld(), this.tile.getPos());
     		return ItemStack.EMPTY;
     	}

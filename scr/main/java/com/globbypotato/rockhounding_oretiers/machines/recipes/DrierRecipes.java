@@ -6,13 +6,23 @@ public class DrierRecipes {
 
 	private ItemStack input, output;
 	private int refining;
-	boolean oredict;
+	private String oredict;
+	private boolean type;
 
-	public DrierRecipes(ItemStack input, boolean oredict, ItemStack output, int refining){
+	public DrierRecipes(ItemStack input, String oredict, boolean type, ItemStack output, int refining){
 		this.input = input;
 		this.output = output;
 		this.refining = refining;
 		this.oredict = oredict;
+		this.type = type;
+	}
+
+	public DrierRecipes(ItemStack input, ItemStack output, int refining){
+		this(input, "", false, output, refining);
+	}
+
+	public DrierRecipes(String oredict, ItemStack output, int refining){
+		this(ItemStack.EMPTY, oredict, true, output, refining);
 	}
 
 	public ItemStack getInput(){
@@ -20,8 +30,12 @@ public class DrierRecipes {
 		return ItemStack.EMPTY;
 	}
 
-	public boolean canOredict(){
+	public String getOredict(){
 		return this.oredict;
+	}
+
+	public boolean getType(){
+		return this.type;
 	}
 
 	public ItemStack getOutput() {

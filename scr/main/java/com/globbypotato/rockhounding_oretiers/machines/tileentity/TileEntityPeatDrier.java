@@ -20,8 +20,9 @@ public class TileEntityPeatDrier extends TileEntityInv {
 
 	public static int inputSlots = 1;
 	public static int outputSlots = 1;
+
 	public TileEntityPeatDrier() {
-		super(inputSlots, outputSlots, 0);
+		super(inputSlots, outputSlots, 0, 0);
 
 		this.input =  new MachineStackHandler(inputSlots,this){
 			@Override
@@ -76,8 +77,15 @@ public class TileEntityPeatDrier extends TileEntityInv {
 	public DrierRecipes getCurrentRecipe(){
 		if(!inputSlot().isEmpty()){
 			for(int x = 0; x < recipeList().size(); x++){
-				if(!getRecipeList(x).getInput().isEmpty() && CoreUtils.isMatchingIngredient(inputSlot(), getRecipeList(x).canOredict(), getRecipeList(x).getInput())){
-					return getRecipeList(x);
+				if(getRecipeList(x).getType()){
+					ArrayList<Integer> inputOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(inputSlot()));
+					if(inputOreIDs.contains(OreDictionary.getOreID(getRecipeList(x).getOredict()))){
+						return getRecipeList(x);
+					}
+				}else{
+					if(getRecipeList(x).getInput().isItemEqual(inputSlot())){
+						return getRecipeList(x);
+					}
 				}
 			}
 		}
@@ -90,20 +98,20 @@ public class TileEntityPeatDrier extends TileEntityInv {
 
 	private boolean isValidIngredient(ItemStack stack) {
 		if(!stack.isEmpty()){
-			ArrayList<Integer> inputOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(stack));
-			if(!inputOreIDs.isEmpty()){
-				for(DrierRecipes recipe: recipeList()){
-					if(recipe.canOredict()){
-						ArrayList<Integer> recipeOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(recipe.getInput()));
-						if(!inputOreIDs.isEmpty()){
-							if(CoreUtils.compareDictArrays(inputOreIDs, recipeOreIDs)){
-								return true;
-							}
+			for(DrierRecipes recipe: recipeList()){
+				if(recipe.getType()){
+					ArrayList<Integer> inputOreIDs = CoreUtils.intArrayToList(OreDictionary.getOreIDs(stack));
+					if(!inputOreIDs.isEmpty()){
+						if(inputOreIDs.contains(OreDictionary.getOreID(recipe.getOredict()))){
+							return true;
 						}
+					}
+				}else{
+					if(recipe.getInput().isItemEqual(stack)){
+						return true;
 					}
 				}
 			}
-			return recipeList().stream().anyMatch(recipe -> !stack.isEmpty() && !recipe.getInput().isEmpty() && stack.isItemEqual(recipe.getInput()));
 		}
 		return false;
 	}
@@ -114,7 +122,7 @@ public class TileEntityPeatDrier extends TileEntityInv {
 
 	@Override
 	public boolean isCooking(){
-		return canRefine() && getCooktime() > 0;
+		return isValidRecipe() && canRefine() && getCooktime() > 0;
 	}
 
 	private void burnState(){
@@ -132,6 +140,7 @@ public class TileEntityPeatDrier extends TileEntityInv {
 	@Override
 	public void update() {
 		if(!this.world.isRemote){
+			
 			if(!this.inputSlot().isEmpty()){
 				if(canRefine()){
 		            this.cooktime++;
@@ -151,13 +160,25 @@ public class TileEntityPeatDrier extends TileEntityInv {
 	}
 
 	private boolean canRefine() {
-		return isValidRecipe()
-			&& this.output.canSetOrStack(outputSlot(), getCurrentRecipe().getOutput());
+		ItemStack dried = getCurrentRecipe().getOutput();
+		dried.setCount(drySize());
+		return isValidRecipe() && this.output.canSetOrStack(outputSlot(), dried);
 	}
 
 	private void refine() {
-		this.output.setOrStack(OUTPUT_SLOT, getCurrentRecipe().getOutput());
-		this.input.decrementSlot(INPUT_SLOT);
+		ItemStack dried = getCurrentRecipe().getOutput();
+		dried.setCount(drySize());
+		this.output.setOrStack(OUTPUT_SLOT, dried);
+		this.input.decrementSlotBy(INPUT_SLOT, drySize());
+	}
+
+	private int drySize() {
+		if(inputSlot().getCount() > 9){
+			return 9;
+		}else if(inputSlot().getCount() > 0 && inputSlot().getCount() <= 9){
+			return inputSlot().getCount();
+		}
+		return 0;
 	}
 
 }

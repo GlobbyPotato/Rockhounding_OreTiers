@@ -1,0 +1,26 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "rockhounding_oretiers:utils",
+	"ingredients":[
+		{
+				"item": "minecraft:paper",
+				"data": 0
+		},
+		{
+				"item": "minecraft:paper",
+				"data": 0
+		},
+		{
+				"item": "minecraft:paper",
+				"data": 0
+		},
+		{
+			"ore": "itemTiercharcoal",
+			"type": "forge:ore_dict"
+		}
+	],
+	"result":{
+				"item": "rockhounding_oretiers:tiers_book",
+				"data": 0
+			}
+}

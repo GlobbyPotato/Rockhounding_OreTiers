@@ -34,24 +34,23 @@ public class RendererPeatDrier extends TileEntitySpecialRenderer<TileEntityPeatD
 						GlStateManager.translate(x, y, z);
 						GlStateManager.rotate(90F, 1, 0, 0);
 						GlStateManager.scale(0.5, 0.5, 0.5);
-						GlStateManager.translate(-0.25, -0.25, h);
+						GlStateManager.translate(-0.50, -0.20, h);
 						int i = 0; int k = 1;
 						float gapX = 0F;
 						float gapZ = 0F;
-						int slotSize = peatSize/4;
-						if(slotSize < 1) slotSize = 1;
-						for(int size = 0; size < slotSize; size++){
-							if(i < 4){
+
+						for(int size = 0; size < slotSize(peatSize); size++){
+							if(i < 3){
 								i++;
-								gapX = 0.5F;
+								gapX = 0.75F;
 								gapZ = 0.0F;
 							}else{
-								if(k < 4){
+								if(k < 3){
 									GlStateManager.translate(-1.5F, 0, 0);
 									i = 1;
 									k++;
 									gapX = 0.0F;
-									gapZ = 0.5F;
+									gapZ = 0.75F;
 								}else{
 									GlStateManager.translate(0, -1.5F, 0);
 									GlStateManager.translate(-1.5F, 0, 0);
@@ -70,4 +69,24 @@ public class RendererPeatDrier extends TileEntitySpecialRenderer<TileEntityPeatD
 			}
 		}
 	}
+
+	private int slotSize(int size) {
+		if(size > 9){
+			return 9;
+		}else if(size > 0 && size <= 9){
+			return size;
+		}
+		return 0;
+	}
+	
+	/*
+	 	private int drySize() {
+		if(inputSlot().getCount() > 9){
+			return 9;
+		}else if(inputSlot().getCount() > 0 && inputSlot().getCount() <= 9){
+			return inputSlot().getCount();
+		}
+		return 0;
+		}
+	 */
 }

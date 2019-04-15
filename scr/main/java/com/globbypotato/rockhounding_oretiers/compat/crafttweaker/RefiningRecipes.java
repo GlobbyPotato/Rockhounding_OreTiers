@@ -2,7 +2,6 @@ package com.globbypotato.rockhounding_oretiers.compat.crafttweaker;
 
 import java.util.ArrayList;
 
-import com.globbypotato.rockhounding_oretiers.handlers.ModConfig;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.MachineRecipes;
 import com.globbypotato.rockhounding_oretiers.machines.recipes.RefinerRecipes;
 
@@ -19,26 +18,15 @@ public class RefiningRecipes extends CTSupport{
 	public static ArrayList<RefinerRecipes> recipeList = MachineRecipes.refinerRecipe;
 
     @ZenMethod
-    public static void add(IItemStack input, boolean oredict, IItemStack output) {
-        if(input == null || output == null) {error(name); return;}
-        CraftTweakerAPI.apply(new AddToRefining(new RefinerRecipes(toStack(input), oredict, toStack(output), ModConfig.refiningSpeed)));
-    }
-    @ZenMethod
-    public static void add(IItemStack input, boolean oredict, IItemStack output, int refining) {
-        if(input == null || output == null) {error(name); return;}
-        CraftTweakerAPI.apply(new AddToRefining(new RefinerRecipes(toStack(input), oredict, toStack(output), refining)));
-    }
-    @ZenMethod
-    public static void add(IItemStack input, IItemStack output) {
-        if(input == null || output == null) {error(name); return;}
-        CraftTweakerAPI.apply(new AddToRefining(new RefinerRecipes(toStack(input), false, toStack(output), ModConfig.refiningSpeed)));
-    }
-    @ZenMethod
     public static void add(IItemStack input, IItemStack output, int refining) {
         if(input == null || output == null) {error(name); return;}
-        CraftTweakerAPI.apply(new AddToRefining(new RefinerRecipes(toStack(input), false, toStack(output), refining)));
+        CraftTweakerAPI.apply(new AddToRefining(new RefinerRecipes(toStack(input), toStack(output), refining)));
     }
-
+    @ZenMethod
+    public static void add(String oredict, IItemStack output, int refining) {
+        if(output == null) {error(name); return;}
+        CraftTweakerAPI.apply(new AddToRefining(new RefinerRecipes(oredict, toStack(output), refining)));
+    }
     	private static class AddToRefining implements IAction {
 	    	private RefinerRecipes recipe;
 	    	public AddToRefining(RefinerRecipes recipe){

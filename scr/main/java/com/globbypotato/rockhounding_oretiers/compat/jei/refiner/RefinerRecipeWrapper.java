@@ -1,7 +1,6 @@
 package com.globbypotato.rockhounding_oretiers.compat.jei.refiner;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -11,6 +10,7 @@ import com.globbypotato.rockhounding_oretiers.machines.recipes.RefinerRecipes;
 
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RefinerRecipeWrapper extends RHRecipeWrapper<RefinerRecipes> {
 	
@@ -18,29 +18,43 @@ public class RefinerRecipeWrapper extends RHRecipeWrapper<RefinerRecipes> {
 		super(recipe);
 	}
 
-	public static List<RefinerRecipeWrapper> getRecipes() {
-		List<RefinerRecipeWrapper> recipes = new ArrayList<>();
+	public static ArrayList<RefinerRecipeWrapper> getRecipes() {
+		ArrayList<RefinerRecipeWrapper> recipes = new ArrayList<>();
 		for (RefinerRecipes recipe : MachineRecipes.refinerRecipe) {
-			recipes.add(new RefinerRecipeWrapper(recipe));
+			if(isValidRecipe(recipe)){
+				recipes.add(new RefinerRecipeWrapper(recipe));
+			}
 		}
 		return recipes;
 	}
 
-	@Override
-	public List<ItemStack> getInputs(){
-		List<ItemStack> inputs = new ArrayList<ItemStack>();
-		inputs.add(getRecipe().getInput());
+	private static boolean isValidRecipe(RefinerRecipes recipe){
+		return ((!recipe.getType() && !recipe.getInput().isEmpty()) || (recipe.getType() && OreDictionary.getOres(recipe.getOredict()).size() > 0))
+			&& recipe.getOutput() != null;
+	}
+
+	@Nonnull
+	public ArrayList<ItemStack> getInputs(){
+		ArrayList<ItemStack> inputs = new ArrayList<ItemStack>();
+		if(getRecipe().getType()){
+			inputs.addAll(OreDictionary.getOres(getRecipe().getOredict()));
+		}else{
+			inputs.add(getRecipe().getInput());
+		}
 		return inputs;
 	}
 
-	@Override
-	public List<ItemStack> getOutputs() {
-		List<ItemStack> outputs = new ArrayList<ItemStack>();
+	@Nonnull
+	public ArrayList<ItemStack> getOutputs() {
+		ArrayList<ItemStack> outputs = new ArrayList<ItemStack>();
 		outputs.add(getRecipe().getOutput());
 		return outputs;
 	}
 
 	@Override
-	public void getIngredients(IIngredients ingredients) {}
+	public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, getInputs());
+        ingredients.setOutputs(ItemStack.class, getOutputs());
+	}
 
 }

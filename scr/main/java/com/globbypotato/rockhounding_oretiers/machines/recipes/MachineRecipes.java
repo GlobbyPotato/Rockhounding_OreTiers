@@ -42,9 +42,10 @@ public class MachineRecipes extends BaseRecipes{
 			bloomeryRecipe.add(new BloomeryRecipes(new ItemStack(ModItems.IRON_PEBBLES, 1, 7), 	new FluidStack(ModFluids.BLOOM, TiersGenerator.VALUE_BANDED_IRON/4),	new ItemStack(Items.IRON_INGOT))); //banded iron
 		}
 
-		drierRecipe.add(new DrierRecipes(new ItemStack(ModItems.TIER_ITEMS, 1, 3), 			false,	new ItemStack(ModItems.TIER_ITEMS, 1, 6),	4000)); //peat+
+		drierRecipe.add(new DrierRecipes("itemPeat", 										new ItemStack(ModItems.TIER_ITEMS, 1, 6),	4000)); //peat+
+		drierRecipe.add(new DrierRecipes(new ItemStack(Items.ROTTEN_FLESH), 				new ItemStack(Items.LEATHER),				500)); //peat+
 
-		refinerRecipe.add(new RefinerRecipes(new ItemStack(ModItems.TIER_ITEMS, 1, 2), 		false,	new ItemStack(Items.COAL),					1500)); //lignite+
-		refinerRecipe.add(new RefinerRecipes(new ItemStack(Items.COAL),				 		false,	new ItemStack(ModItems.TIER_ITEMS, 1, 1),	2000)); //coal+
+		refinerRecipe.add(new RefinerRecipes("itemLignite", 								new ItemStack(Items.COAL),					1500)); //lignite+
+		refinerRecipe.add(new RefinerRecipes(new ItemStack(Items.COAL),				 		new ItemStack(ModItems.TIER_ITEMS, 1, 1),	2000)); //coal+
 	}
 }
